@@ -56,14 +56,14 @@ public interface BookingApi {
     ResponseEntity<Void> addTrainClassType(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType);
 
 
-    @ApiOperation(value = "Add a new station", nickname = "addUser", notes = "", tags={ "booking", })
+    @ApiOperation(value = "Add a new station", nickname = "addStation", notes = "", tags={ "booking", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Station created successfully") })
     @RequestMapping(value = "/booking/station",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addUser(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody Station station);
+    ResponseEntity<Void> addStation(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody Station station);
 
 
     @ApiOperation(value = "Create a new booking", nickname = "bookTrain", notes = "", response = Integer.class, tags={ "booking", })

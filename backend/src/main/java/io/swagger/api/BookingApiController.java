@@ -55,7 +55,7 @@ public class BookingApiController implements BookingApi {
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> addUser(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody Station station) {
+    public ResponseEntity<Void> addStation(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody Station station) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }

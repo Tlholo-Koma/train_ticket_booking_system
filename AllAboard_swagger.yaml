@@ -64,7 +64,7 @@ paths:
       tags:
         - booking
       summary: Add a new station
-      operationId: addUser
+      operationId: addStation
       consumes:
         - application/json
       produces: 
