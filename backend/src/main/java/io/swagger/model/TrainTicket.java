@@ -1,24 +1,21 @@
 package io.swagger.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.Passenger;
+import org.springframework.validation.annotation.Validated;
+import org.threeten.bp.LocalDate;
+
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import org.threeten.bp.LocalDate;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
 
 /**
  * TrainTicket
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T11:15:32.579+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 
 public class TrainTicket   {
@@ -49,8 +46,8 @@ public class TrainTicket   {
   @JsonProperty("train_class")
   private String trainClass = null;
 
-  @JsonProperty("user_id")
-  private Integer userId = null;
+  @JsonProperty("user_email")
+  private String userEmail = null;
 
   @JsonProperty("passengers")
   @Valid
@@ -238,8 +235,8 @@ public class TrainTicket   {
     this.trainClass = trainClass;
   }
 
-  public TrainTicket userId(Integer userId) {
-    this.userId = userId;
+  public TrainTicket userId(String userEmail) {
+    this.userEmail = userEmail;
     return this;
   }
 
@@ -250,12 +247,12 @@ public class TrainTicket   {
   @ApiModelProperty(value = "")
 
 
-  public Integer getUserId() {
-    return userId;
+  public String getUserEmail() {
+    return userEmail;
   }
 
-  public void setUserId(Integer userId) {
-    this.userId = userId;
+  public void setUserEmail(String userEmail) {
+    this.userEmail = userEmail;
   }
 
   public TrainTicket passengers(List<Passenger> passengers) {
@@ -306,13 +303,13 @@ public class TrainTicket   {
         Objects.equals(this.bookingDate, trainTicket.bookingDate) &&
         Objects.equals(this.ticketPrice, trainTicket.ticketPrice) &&
         Objects.equals(this.trainClass, trainTicket.trainClass) &&
-        Objects.equals(this.userId, trainTicket.userId) &&
+        Objects.equals(this.userEmail, trainTicket.userEmail) &&
         Objects.equals(this.passengers, trainTicket.passengers);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(trainName, sourceStation, destinationStation, travelDate, departureTime, bookingId, bookingDate, ticketPrice, trainClass, userId, passengers);
+    return Objects.hash(trainName, sourceStation, destinationStation, travelDate, departureTime, bookingId, bookingDate, ticketPrice, trainClass, userEmail, passengers);
   }
 
   @Override
@@ -329,7 +326,7 @@ public class TrainTicket   {
     sb.append("    bookingDate: ").append(toIndentedString(bookingDate)).append("\n");
     sb.append("    ticketPrice: ").append(toIndentedString(ticketPrice)).append("\n");
     sb.append("    trainClass: ").append(toIndentedString(trainClass)).append("\n");
-    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    userEmail: ").append(toIndentedString(userEmail)).append("\n");
     sb.append("    passengers: ").append(toIndentedString(passengers)).append("\n");
     sb.append("}");
     return sb.toString();

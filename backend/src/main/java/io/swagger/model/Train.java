@@ -1,24 +1,20 @@
 package io.swagger.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.TrainClass;
-import io.swagger.model.TrainSeat;
+import org.springframework.validation.annotation.Validated;
+import org.threeten.bp.LocalDate;
+
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import org.threeten.bp.LocalDate;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
 
 /**
  * Train
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T11:15:32.579+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 
 public class Train   {

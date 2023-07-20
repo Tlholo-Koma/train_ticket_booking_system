@@ -1,22 +1,19 @@
 package io.swagger.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.Passenger;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import java.util.Objects;
 
 /**
  * UserBooking
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T11:15:32.579+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 
 public class UserBooking   {
@@ -26,8 +23,8 @@ public class UserBooking   {
   @JsonProperty("train_class")
   private String trainClass = null;
 
-  @JsonProperty("email")
-  private String email = null;
+  @JsonProperty("user_email")
+  private String userEmail = null;
 
   @JsonProperty("passengers")
   @Valid
@@ -73,24 +70,24 @@ public class UserBooking   {
     this.trainClass = trainClass;
   }
 
-  public UserBooking email(String email) {
-    this.email = email;
+  public UserBooking userEmail(String userEmail) {
+    this.userEmail = userEmail;
     return this;
   }
 
   /**
-   * Get email
-   * @return email
+   * Get userEmail
+   * @return userEmail
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getEmail() {
-    return email;
+  public String getUserEmail() {
+    return userEmail;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setUserEmail(String userEmail) {
+    this.userEmail = userEmail;
   }
 
   public UserBooking passengers(List<Passenger> passengers) {
@@ -134,13 +131,13 @@ public class UserBooking   {
     UserBooking userBooking = (UserBooking) o;
     return Objects.equals(this.trainId, userBooking.trainId) &&
         Objects.equals(this.trainClass, userBooking.trainClass) &&
-        Objects.equals(this.email, userBooking.email) &&
+        Objects.equals(this.userEmail, userBooking.userEmail) &&
         Objects.equals(this.passengers, userBooking.passengers);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(trainId, trainClass, email, passengers);
+    return Objects.hash(trainId, trainClass, userEmail, passengers);
   }
 
   @Override
@@ -150,7 +147,7 @@ public class UserBooking   {
     
     sb.append("    trainId: ").append(toIndentedString(trainId)).append("\n");
     sb.append("    trainClass: ").append(toIndentedString(trainClass)).append("\n");
-    sb.append("    email: ").append(toIndentedString(email)).append("\n");
+    sb.append("    userEmail: ").append(toIndentedString(userEmail)).append("\n");
     sb.append("    passengers: ").append(toIndentedString(passengers)).append("\n");
     sb.append("}");
     return sb.toString();

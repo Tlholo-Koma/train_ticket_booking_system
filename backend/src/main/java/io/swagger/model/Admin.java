@@ -7,57 +7,57 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Objects;
 
 /**
- * Station
+ * Admin
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 
-public class Station   {
-  @JsonProperty("station_id")
-  private Integer stationId = null;
+public class Admin   {
+  @JsonProperty("admin_id")
+  private Integer adminId = null;
 
-  @JsonProperty("station_name")
-  private String stationName = null;
+  @JsonProperty("admin_email")
+  private String adminEmail = null;
 
-  public Station stationId(Integer stationId) {
-    this.stationId = stationId;
+  public Admin adminId(Integer adminId) {
+    this.adminId = adminId;
     return this;
   }
 
   /**
-   * Get stationId
-   * @return stationId
+   * Get adminId
+   * @return adminId
   **/
   @ApiModelProperty(value = "")
 
 
-  public Integer getStationId() {
-    return stationId;
+  public Integer getAdminId() {
+    return adminId;
   }
 
-  public void setStationId(Integer stationId) {
-    this.stationId = stationId;
+  public void setAdminId(Integer adminId) {
+    this.adminId = adminId;
   }
 
-  public Station stationName(String stationName) {
-    this.stationName = stationName;
+  public Admin adminEmail(String adminEmail) {
+    this.adminEmail = adminEmail;
     return this;
   }
 
   /**
-   * Get stationName
-   * @return stationName
+   * Get adminEmail
+   * @return adminEmail
   **/
   @ApiModelProperty(value = "")
 
 
-  public String getStationName() {
-    return stationName;
+  public String getAdminEmail() {
+    return adminEmail;
   }
 
-  public void setStationName(String stationName) {
-    this.stationName = stationName;
+  public void setAdminEmail(String adminEmail) {
+    this.adminEmail = adminEmail;
   }
 
 
@@ -69,23 +69,23 @@ public class Station   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Station station = (Station) o;
-    return Objects.equals(this.stationId, station.stationId) &&
-        Objects.equals(this.stationName, station.stationName);
+    Admin admin = (Admin) o;
+    return Objects.equals(this.adminId, admin.adminId) &&
+        Objects.equals(this.adminEmail, admin.adminEmail);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(stationId, stationName);
+    return Objects.hash(adminId, adminEmail);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Station {\n");
+    sb.append("class Admin {\n");
     
-    sb.append("    stationId: ").append(toIndentedString(stationId)).append("\n");
-    sb.append("    stationName: ").append(toIndentedString(stationName)).append("\n");
+    sb.append("    adminId: ").append(toIndentedString(adminId)).append("\n");
+    sb.append("    adminEmail: ").append(toIndentedString(adminEmail)).append("\n");
     sb.append("}");
     return sb.toString();
   }
