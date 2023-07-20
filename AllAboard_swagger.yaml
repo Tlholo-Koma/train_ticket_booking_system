@@ -576,7 +576,7 @@ paths:
           in: path
           description: User email of bookings to get 
           required: true
-          type: integer
+          type: string
       responses: 
         200:
           description: Bookings 
@@ -706,8 +706,8 @@ definitions:
         type: number
       train_class:
         type: string 
-      user_id: 
-        type: integer
+      user_email: 
+        type: string
       passengers: 
         type: array
         items: 

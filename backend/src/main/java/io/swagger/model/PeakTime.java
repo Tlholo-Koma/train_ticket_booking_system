@@ -14,10 +14,13 @@ import javax.validation.constraints.*;
  * PeakTime
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:33:10.367+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 
 public class PeakTime   {
+  @JsonProperty("peak_time_id")
+  private Integer peakTimeId = null;
+
   @JsonProperty("start_time")
   private String startTime = null;
 
@@ -26,6 +29,26 @@ public class PeakTime   {
 
   @JsonProperty("price_increase_percentage")
   private BigDecimal priceIncreasePercentage = null;
+
+  public PeakTime peakTimeId(Integer peakTimeId) {
+    this.peakTimeId = peakTimeId;
+    return this;
+  }
+
+  /**
+   * Get peakTimeId
+   * @return peakTimeId
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Integer getPeakTimeId() {
+    return peakTimeId;
+  }
+
+  public void setPeakTimeId(Integer peakTimeId) {
+    this.peakTimeId = peakTimeId;
+  }
 
   public PeakTime startTime(String startTime) {
     this.startTime = startTime;
@@ -98,14 +121,15 @@ public class PeakTime   {
       return false;
     }
     PeakTime peakTime = (PeakTime) o;
-    return Objects.equals(this.startTime, peakTime.startTime) &&
+    return Objects.equals(this.peakTimeId, peakTime.peakTimeId) &&
+        Objects.equals(this.startTime, peakTime.startTime) &&
         Objects.equals(this.endTime, peakTime.endTime) &&
         Objects.equals(this.priceIncreasePercentage, peakTime.priceIncreasePercentage);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(startTime, endTime, priceIncreasePercentage);
+    return Objects.hash(peakTimeId, startTime, endTime, priceIncreasePercentage);
   }
 
   @Override
@@ -113,6 +137,7 @@ public class PeakTime   {
     StringBuilder sb = new StringBuilder();
     sb.append("class PeakTime {\n");
     
+    sb.append("    peakTimeId: ").append(toIndentedString(peakTimeId)).append("\n");
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
     sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
     sb.append("    priceIncreasePercentage: ").append(toIndentedString(priceIncreasePercentage)).append("\n");

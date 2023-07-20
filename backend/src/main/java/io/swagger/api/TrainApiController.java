@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:33:10.367+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 @Controller
 public class TrainApiController implements TrainApi {
