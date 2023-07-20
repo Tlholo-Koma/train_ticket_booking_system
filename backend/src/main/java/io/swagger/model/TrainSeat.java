@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.Booking;
+import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * TrainSeat
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T11:15:32.579+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:33:10.367+02:00")
 
 
 public class TrainSeat   {
@@ -30,8 +30,8 @@ public class TrainSeat   {
   @JsonProperty("is_booked")
   private Boolean isBooked = null;
 
-  @JsonProperty("booking")
-  private Booking booking = null;
+  @JsonProperty("seat_price")
+  private BigDecimal seatPrice = null;
 
   public TrainSeat seatType(String seatType) {
     this.seatType = seatType;
@@ -113,25 +113,25 @@ public class TrainSeat   {
     this.isBooked = isBooked;
   }
 
-  public TrainSeat booking(Booking booking) {
-    this.booking = booking;
+  public TrainSeat seatPrice(BigDecimal seatPrice) {
+    this.seatPrice = seatPrice;
     return this;
   }
 
   /**
-   * Get booking
-   * @return booking
+   * Get seatPrice
+   * @return seatPrice
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public Booking getBooking() {
-    return booking;
+  public BigDecimal getSeatPrice() {
+    return seatPrice;
   }
 
-  public void setBooking(Booking booking) {
-    this.booking = booking;
+  public void setSeatPrice(BigDecimal seatPrice) {
+    this.seatPrice = seatPrice;
   }
 
 
@@ -148,12 +148,12 @@ public class TrainSeat   {
         Objects.equals(this.classType, trainSeat.classType) &&
         Objects.equals(this.seatNumber, trainSeat.seatNumber) &&
         Objects.equals(this.isBooked, trainSeat.isBooked) &&
-        Objects.equals(this.booking, trainSeat.booking);
+        Objects.equals(this.seatPrice, trainSeat.seatPrice);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(seatType, classType, seatNumber, isBooked, booking);
+    return Objects.hash(seatType, classType, seatNumber, isBooked, seatPrice);
   }
 
   @Override
@@ -165,7 +165,7 @@ public class TrainSeat   {
     sb.append("    classType: ").append(toIndentedString(classType)).append("\n");
     sb.append("    seatNumber: ").append(toIndentedString(seatNumber)).append("\n");
     sb.append("    isBooked: ").append(toIndentedString(isBooked)).append("\n");
-    sb.append("    booking: ").append(toIndentedString(booking)).append("\n");
+    sb.append("    seatPrice: ").append(toIndentedString(seatPrice)).append("\n");
     sb.append("}");
     return sb.toString();
   }

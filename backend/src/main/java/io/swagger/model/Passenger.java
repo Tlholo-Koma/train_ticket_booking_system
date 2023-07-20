@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -13,7 +14,7 @@ import javax.validation.constraints.*;
  * Passenger
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T11:15:32.579+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:33:10.367+02:00")
 
 
 public class Passenger   {
@@ -25,6 +26,9 @@ public class Passenger   {
 
   @JsonProperty("seat_number")
   private String seatNumber = null;
+
+  @JsonProperty("seat_price")
+  private BigDecimal seatPrice = null;
 
   @JsonProperty("passenger_id")
   private Integer passengerId = null;
@@ -93,6 +97,27 @@ public class Passenger   {
 
   public void setSeatNumber(String seatNumber) {
     this.seatNumber = seatNumber;
+  }
+
+  public Passenger seatPrice(BigDecimal seatPrice) {
+    this.seatPrice = seatPrice;
+    return this;
+  }
+
+  /**
+   * Get seatPrice
+   * @return seatPrice
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public BigDecimal getSeatPrice() {
+    return seatPrice;
+  }
+
+  public void setSeatPrice(BigDecimal seatPrice) {
+    this.seatPrice = seatPrice;
   }
 
   public Passenger passengerId(Integer passengerId) {
@@ -168,6 +193,7 @@ public class Passenger   {
     return Objects.equals(this.seatId, passenger.seatId) &&
         Objects.equals(this.seatType, passenger.seatType) &&
         Objects.equals(this.seatNumber, passenger.seatNumber) &&
+        Objects.equals(this.seatPrice, passenger.seatPrice) &&
         Objects.equals(this.passengerId, passenger.passengerId) &&
         Objects.equals(this.passengerName, passenger.passengerName) &&
         Objects.equals(this.age, passenger.age);
@@ -175,7 +201,7 @@ public class Passenger   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(seatId, seatType, seatNumber, passengerId, passengerName, age);
+    return Objects.hash(seatId, seatType, seatNumber, seatPrice, passengerId, passengerName, age);
   }
 
   @Override
@@ -186,6 +212,7 @@ public class Passenger   {
     sb.append("    seatId: ").append(toIndentedString(seatId)).append("\n");
     sb.append("    seatType: ").append(toIndentedString(seatType)).append("\n");
     sb.append("    seatNumber: ").append(toIndentedString(seatNumber)).append("\n");
+    sb.append("    seatPrice: ").append(toIndentedString(seatPrice)).append("\n");
     sb.append("    passengerId: ").append(toIndentedString(passengerId)).append("\n");
     sb.append("    passengerName: ").append(toIndentedString(passengerName)).append("\n");
     sb.append("    age: ").append(toIndentedString(age)).append("\n");
