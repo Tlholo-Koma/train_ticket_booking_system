@@ -1,22 +1,25 @@
 package io.swagger.model;
 
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Station
  */
+@Entity 
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T11:15:32.579+02:00")
+public class Station {
 
-
-public class Station   {
+  @Id
+  @GeneratedValue(strategy=GenerationType.AUTO)
   @JsonProperty("station_id")
   private Integer stationId = null;
 
@@ -33,8 +36,6 @@ public class Station   {
    * @return stationId
   **/
   @ApiModelProperty(value = "")
-
-
   public Integer getStationId() {
     return stationId;
   }
@@ -53,8 +54,6 @@ public class Station   {
    * @return stationName
   **/
   @ApiModelProperty(value = "")
-
-
   public String getStationName() {
     return stationName;
   }
@@ -62,7 +61,6 @@ public class Station   {
   public void setStationName(String stationName) {
     this.stationName = stationName;
   }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -86,7 +84,6 @@ public class Station   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Station {\n");
-    
     sb.append("    stationId: ").append(toIndentedString(stationId)).append("\n");
     sb.append("    stationName: ").append(toIndentedString(stationName)).append("\n");
     sb.append("}");
