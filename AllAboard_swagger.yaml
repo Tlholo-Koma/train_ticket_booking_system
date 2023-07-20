@@ -480,7 +480,7 @@ paths:
         404:
           description: Peak time not found  
 
-  /booking:
+  /booking/booking:
     post:
       tags:
         - booking
@@ -503,7 +503,7 @@ paths:
           schema: 
             type: integer
   
-  /booking/{bookingId}:
+  /booking/booking/{bookingId}:
     get:
       tags:
         - booking 
@@ -545,6 +545,45 @@ paths:
           description: Invalid request data
         404:
           description: Booking not found
+
+    delete:
+      tags:
+        - booking
+      summary: Delete a booking
+      operationId: deleteBooking 
+      parameters: 
+        - name: bookingId
+          in: path
+          description: ID of the booking to delete
+          required: true
+          type: integer
+      responses: 
+        200: 
+          description: Booking deleted successfully 
+        400:
+          description: Invalid request data
+        404:
+          description: Booking not found 
+
+  /booking/getBooking/{userEmail}:
+    get:
+      tags:
+        - booking
+      summary: Get bookings of a user 
+      operationId: getBookings 
+      parameters: 
+        - name: userEmail
+          in: path
+          description: User email of bookings to get 
+          required: true
+          type: integer
+      responses: 
+        200:
+          description: Bookings 
+          schema: 
+            type: array
+            items:
+              $ref: '#/definitions/TrainTicket'
 
 definitions:
   Admin: 
@@ -632,6 +671,8 @@ definitions:
   PeakTime: 
     type: object 
     properties: 
+      peak_time_id:
+        type: integer
       start_time: 
         type: string 
         format: time 
