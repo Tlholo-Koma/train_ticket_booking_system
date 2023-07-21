@@ -365,6 +365,72 @@ paths:
             items:
               $ref: '#/definitions/Train'
   
+  /train/train:
+    post:
+      tags:
+        - train 
+      summary: Add a new train 
+      operationId: addTrain
+      consumes: 
+        - application/json
+      produces: 
+        - application/json 
+      parameters: 
+        - in: body 
+          name: train 
+          description: Train object 
+          required: true 
+          schema: 
+            $ref: '#/definitions/Train'
+      responses: 
+        '200': 
+          description: Train created successfully 
+  
+  /train/train/{trainId}:
+    put:
+      tags:
+        - train
+      summary: Update a train
+      operationId: updateTrain
+      parameters:
+        - name: trainId
+          in: path 
+          description: ID of the train to update 
+          required: true
+          type: integer
+        - name: train
+          in: body
+          description: Updated train 
+          required: true
+          schema: 
+            $ref: '#/definitions/Train'
+      responses:
+        200:
+          description: Train updated successfully
+        400: 
+          description: Invalid request data
+        404:
+          description: Train not found
+    
+    delete:
+      tags:
+        - train 
+      summary: Delete a train 
+      operationId: deleteTrain
+      parameters:
+        - name: trainId
+          in: path
+          description: ID of the train to delete
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Train deleted successfully
+        400:
+          description: Invalid request data 
+        404:
+          description: Train not found  
+  
   /train/getTrainsBasedOnStation:
     get:
       tags:
