@@ -7,6 +7,7 @@ import org.threeten.bp.LocalDate;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,7 +32,7 @@ public class Train   {
   private String destinationStation = null;
 
   @JsonProperty("travel_date")
-  private LocalDate travelDate = null;
+  private Date travelDate = null;
 
   @JsonProperty("departure_time")
   private String departureTime = null;
@@ -124,7 +125,7 @@ public class Train   {
     this.destinationStation = destinationStation;
   }
 
-  public Train travelDate(LocalDate travelDate) {
+  public Train travelDate(Date travelDate) {
     this.travelDate = travelDate;
     return this;
   }
@@ -137,11 +138,11 @@ public class Train   {
 
   @Valid
 
-  public LocalDate getTravelDate() {
+  public Date getTravelDate() {
     return travelDate;
   }
 
-  public void setTravelDate(LocalDate travelDate) {
+  public void setTravelDate(Date travelDate) {
     this.travelDate = travelDate;
   }
 

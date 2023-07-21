@@ -3,6 +3,8 @@ package io.swagger.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Train;
+import io.swagger.service.TrainSearchService;
+import io.swagger.service.TrainService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +30,16 @@ public class TrainApiController implements TrainApi {
 
     private final HttpServletRequest request;
 
+    private final TrainService trainService;
+
+    private final TrainSearchService trainSearchService;
+
     @org.springframework.beans.factory.annotation.Autowired
-    public TrainApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    public TrainApiController(ObjectMapper objectMapper, HttpServletRequest request, TrainService trainService, TrainSearchService trainSearchService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.trainService = trainService;
+        this.trainSearchService = trainSearchService;
     }
 
     public ResponseEntity<ApiResponseMessage> getTrains() {
@@ -38,7 +47,7 @@ public class TrainApiController implements TrainApi {
         log.debug("Received request to /train/trains GET (getTrains)");
 
         try {
-            List<Train> trains = new ArrayList<>();
+            List<Train> trains = trainService.getAllTrains();
 
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Trains retrieved successfully", trains);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
@@ -50,13 +59,22 @@ public class TrainApiController implements TrainApi {
         }
     }
 
-    public ResponseEntity<ApiResponseMessage> getTrainsBasedOnStation(@NotNull @ApiParam(value = "The source station", required = true) @Valid @RequestParam(value = "from", required = true) String from,@NotNull @ApiParam(value = "The destination station", required = true) @Valid @RequestParam(value = "to", required = true) String to,@NotNull @ApiParam(value = "The travel date", required = true) @Valid @RequestParam(value = "date", required = true) Date date) {
+    public ResponseEntity<ApiResponseMessage> getTrainsBasedOnStation(@ApiParam(value = "The source station") @Valid @RequestParam(value = "from", required = false) String from,@ApiParam(value = "The destination station") @Valid @RequestParam(value = "to", required = false) String to,@ApiParam(value = "The travel date") @Valid @RequestParam(value = "date", required = false) Date date) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /train/getTrainsBasedOnStation GET (getTrainsBasedOnStation) with from=" + from + " AND to=" + to + " AND date=" + date);
 
-        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
-        log.debug("Response: " + responseMessage);
-        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
+        try {
+            List<Train> searchResults = trainSearchService.search(from, to, date);
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Results retrieved successfully.", searchResults);
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error in searching for trains.");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

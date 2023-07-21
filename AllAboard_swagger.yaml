@@ -375,17 +375,17 @@ paths:
         - name: from
           in: query
           description: The source station
-          required: true
+          required: false
           type: string
         - name: to
           in: query
           description: The destination station
-          required: true
+          required: false
           type: string
         - name: date
           in: query
           description: The travel date
-          required: true
+          required: false
           type: string
           format: date
       produces:
