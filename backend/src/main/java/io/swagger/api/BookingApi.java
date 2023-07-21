@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
-import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 @Validated
@@ -31,7 +30,7 @@ public interface BookingApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Integer> bookTrain(@ApiParam(value = "User Booking" ,required=true )  @Valid @RequestBody UserBooking booking);
+    ResponseEntity<ApiResponseMessage> bookTrain(@ApiParam(value = "User Booking" ,required=true )  @Valid @RequestBody UserBooking booking);
 
 
     @ApiOperation(value = "Delete a booking", nickname = "deleteBooking", notes = "", tags={ "booking", })
@@ -41,7 +40,7 @@ public interface BookingApi {
         @ApiResponse(code = 404, message = "Booking not found") })
     @RequestMapping(value = "/booking/booking/{bookingId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteBooking(@ApiParam(value = "ID of the booking to delete",required=true) @PathVariable("bookingId") Integer bookingId);
+    ResponseEntity<ApiResponseMessage> deleteBooking(@ApiParam(value = "ID of the booking to delete",required=true) @PathVariable("bookingId") Integer bookingId);
 
 
     @ApiOperation(value = "Get a booking", nickname = "getBooking", notes = "", response = TrainTicket.class, tags={ "booking", })
@@ -49,7 +48,7 @@ public interface BookingApi {
         @ApiResponse(code = 200, message = "Train Ticket", response = TrainTicket.class) })
     @RequestMapping(value = "/booking/booking/{bookingId}",
         method = RequestMethod.GET)
-    ResponseEntity<TrainTicket> getBooking(@ApiParam(value = "ID of the booking to get",required=true) @PathVariable("bookingId") Integer bookingId);
+    ResponseEntity<ApiResponseMessage> getBooking(@ApiParam(value = "ID of the booking to get",required=true) @PathVariable("bookingId") Integer bookingId);
 
 
     @ApiOperation(value = "Get bookings of a user", nickname = "getBookings", notes = "", response = TrainTicket.class, responseContainer = "List", tags={ "booking", })
@@ -57,7 +56,7 @@ public interface BookingApi {
         @ApiResponse(code = 200, message = "Bookings", response = TrainTicket.class, responseContainer = "List") })
     @RequestMapping(value = "/booking/getBooking/{userEmail}",
         method = RequestMethod.GET)
-    ResponseEntity<List<TrainTicket>> getBookings(@ApiParam(value = "User email of bookings to get",required=true) @PathVariable("userEmail") String userEmail);
+    ResponseEntity<ApiResponseMessage> getBookings(@ApiParam(value = "User email of bookings to get",required=true) @PathVariable("userEmail") String userEmail);
 
 
     @ApiOperation(value = "Update a booking", nickname = "updateBooking", notes = "", tags={ "booking", })
@@ -67,6 +66,6 @@ public interface BookingApi {
         @ApiResponse(code = 404, message = "Booking not found") })
     @RequestMapping(value = "/booking/booking/{bookingId}",
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateBooking(@ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,@ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody TrainTicket booking);
+    ResponseEntity<ApiResponseMessage> updateBooking(@ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,@ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody TrainTicket booking);
 
 }

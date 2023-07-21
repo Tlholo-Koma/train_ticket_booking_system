@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 @Controller
@@ -32,33 +30,47 @@ public class StationApiController implements StationApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addStation(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody Station station) {
+    public ResponseEntity<ApiResponseMessage> addStation(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody Station station) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        log.debug("Received request to /station/station POST (addStation) with station=" + station);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> deleteStation(@ApiParam(value = "ID of the station to delete",required=true) @PathVariable("stationId") Integer stationId) {
+    public ResponseEntity<ApiResponseMessage> deleteStation(@ApiParam(value = "ID of the station to delete",required=true) @PathVariable("stationId") Integer stationId) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-    }
+        log.debug("Received request to /station/station/{stationId} DELETE (deleteStation) with stationId=" + stationId);
 
-    public ResponseEntity<List<Station>> getStations() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Station>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Station>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        Station station = null;
+
+        if (station == null) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Station with ID " + stationId + " not found!");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<List<Station>>(HttpStatus.NOT_IMPLEMENTED);
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> updateStation(@ApiParam(value = "ID of the station to update",required=true) @PathVariable("stationId") Integer stationId,@ApiParam(value = "Updated station object" ,required=true )  @Valid @RequestBody Station station) {
+    public ResponseEntity<ApiResponseMessage> getStations() {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        log.debug("Received request to /station/stations GET (getStations)");
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<ApiResponseMessage> updateStation(@ApiParam(value = "ID of the station to update",required=true) @PathVariable("stationId") Integer stationId,@ApiParam(value = "Updated station object" ,required=true )  @Valid @RequestBody Station station) {
+        String accept = request.getHeader("Accept");
+        log.debug("Received request to /station/station/{stationId} PUT (updateStation) with stationId=" + stationId + " AND station=" + station);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

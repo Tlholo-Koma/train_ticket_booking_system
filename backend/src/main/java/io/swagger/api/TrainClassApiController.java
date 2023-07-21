@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 @Controller
@@ -32,33 +30,40 @@ public class TrainClassApiController implements TrainClassApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addTrainClassType(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
+    public ResponseEntity<ApiResponseMessage> addTrainClassType(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        log.debug("Received request to /trainClass/trainClass POST (addTrainClassType) with trainClassType=" + trainClassType);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> deleteTrainClassType(@ApiParam(value = "ID of the train class type to delete",required=true) @PathVariable("classId") Integer classId) {
+    public ResponseEntity<ApiResponseMessage> deleteTrainClassType(@ApiParam(value = "ID of the train class type to delete",required=true) @PathVariable("classId") Integer classId) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        log.debug("Received request to /trainClass/trainClass/{classId} DELETE (deleteTrainClassType) with classId=" + classId);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<List<TrainClassType>> getClasses() {
+    public ResponseEntity<ApiResponseMessage> getClasses() {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<TrainClassType>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<TrainClassType>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
+        log.debug("Received request to /trainClass/trainClasses GET (getClasses)");
 
-        return new ResponseEntity<List<TrainClassType>>(HttpStatus.NOT_IMPLEMENTED);
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> updateTrainClassType(@ApiParam(value = "ID of the train class type to update",required=true) @PathVariable("classId") Integer classId,@ApiParam(value = "Updated train class type object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
+    public ResponseEntity<ApiResponseMessage> updateTrainClassType(@ApiParam(value = "ID of the train class type to update",required=true) @PathVariable("classId") Integer classId,@ApiParam(value = "Updated train class type object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        log.debug("Received request to /trainClass/trainClass/{classId} PUT (updateTrainClassType) with classId=" + classId + " AND trainClassType=" + trainClassType);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

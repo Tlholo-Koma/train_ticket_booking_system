@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
-import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 @Validated
@@ -30,7 +29,7 @@ public interface TrainApi {
     @RequestMapping(value = "/train/trains",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Train>> getTrains();
+    ResponseEntity<ApiResponseMessage> getTrains();
 
 
     @ApiOperation(value = "Get trains based on station", nickname = "getTrainsBasedOnStation", notes = "", response = Train.class, responseContainer = "List", tags={ "train", })
@@ -39,6 +38,6 @@ public interface TrainApi {
     @RequestMapping(value = "/train/getTrainsBasedOnStation",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Train>> getTrainsBasedOnStation(@NotNull @ApiParam(value = "The source station", required = true) @Valid @RequestParam(value = "from", required = true) String from,@NotNull @ApiParam(value = "The destination station", required = true) @Valid @RequestParam(value = "to", required = true) String to,@NotNull @ApiParam(value = "The travel date", required = true) @Valid @RequestParam(value = "date", required = true) Date date);
+    ResponseEntity<ApiResponseMessage> getTrainsBasedOnStation(@NotNull @ApiParam(value = "The source station", required = true) @Valid @RequestParam(value = "from", required = true) String from,@NotNull @ApiParam(value = "The destination station", required = true) @Valid @RequestParam(value = "to", required = true) String to,@NotNull @ApiParam(value = "The travel date", required = true) @Valid @RequestParam(value = "date", required = true) Date date);
 
 }
