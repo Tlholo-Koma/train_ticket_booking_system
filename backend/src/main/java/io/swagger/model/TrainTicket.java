@@ -15,7 +15,7 @@ import java.util.Objects;
  * TrainTicket
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-21T17:12:22.488+02:00")
 
 
 public class TrainTicket   {
@@ -235,14 +235,14 @@ public class TrainTicket   {
     this.trainClass = trainClass;
   }
 
-  public TrainTicket userId(String userEmail) {
+  public TrainTicket userEmail(String userEmail) {
     this.userEmail = userEmail;
     return this;
   }
 
   /**
-   * Get userId
-   * @return userId
+   * Get userEmail
+   * @return userEmail
   **/
   @ApiModelProperty(value = "")
 
