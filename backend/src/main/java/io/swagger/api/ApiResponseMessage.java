@@ -3,7 +3,6 @@ package io.swagger.api;
 import org.springframework.http.HttpStatus;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.sql.Timestamp;
 import java.time.Instant;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
