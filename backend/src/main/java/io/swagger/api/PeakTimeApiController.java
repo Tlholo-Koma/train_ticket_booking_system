@@ -32,28 +32,40 @@ public class PeakTimeApiController implements PeakTimeApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addPeakTime(@ApiParam(value = "Peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime) {
+    public ResponseEntity<ApiResponseMessage> addPeakTime(@ApiParam(value = "Peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /peakTime/peakTime POST (addPeakTime) with peakTime=" + peakTime);
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> deletePeakTime(@ApiParam(value = "ID of the peak time to delete",required=true) @PathVariable("peakTimeId") Integer peakTimeId) {
+    public ResponseEntity<ApiResponseMessage> deletePeakTime(@ApiParam(value = "ID of the peak time to delete",required=true) @PathVariable("peakTimeId") Integer peakTimeId) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /peakTime/peakTime/{peakTimeId} DELETE (deletePeakTime) with peakTimeId=" + peakTimeId);
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<List<PeakTime>> getpeakTimes() {
+    public ResponseEntity<ApiResponseMessage> getpeakTimes() {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /peakTime/peakTimes GET (getpeakTimes)");
-        return new ResponseEntity<List<PeakTime>>(HttpStatus.NOT_IMPLEMENTED);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> updatePeakTime(@ApiParam(value = "ID of the peak time to update",required=true) @PathVariable("peakTimeId") Integer peakTimeId,@ApiParam(value = "Updated peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime) {
+    public ResponseEntity<ApiResponseMessage> updatePeakTime(@ApiParam(value = "ID of the peak time to update",required=true) @PathVariable("peakTimeId") Integer peakTimeId,@ApiParam(value = "Updated peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /peakTime/peakTime/{peakTimeId} PUT (updatePeakTime) with peakTimeId=" + peakTimeId + " and peakTime=" + peakTime);
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

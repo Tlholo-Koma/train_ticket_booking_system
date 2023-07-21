@@ -35,7 +35,7 @@ public interface StationApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addStation(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody Station station);
+    ResponseEntity<ApiResponseMessage> addStation(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody Station station);
 
 
     @ApiOperation(value = "Delete a station", nickname = "deleteStation", notes = "", tags={ "station", })
@@ -45,7 +45,7 @@ public interface StationApi {
         @ApiResponse(code = 404, message = "Station not found") })
     @RequestMapping(value = "/station/station/{stationId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteStation(@ApiParam(value = "ID of the station to delete",required=true) @PathVariable("stationId") Integer stationId);
+    ResponseEntity<ApiResponseMessage> deleteStation(@ApiParam(value = "ID of the station to delete",required=true) @PathVariable("stationId") Integer stationId);
 
 
     @ApiOperation(value = "Get all stations", nickname = "getStations", notes = "", response = Station.class, responseContainer = "List", tags={ "station", })
@@ -54,7 +54,7 @@ public interface StationApi {
     @RequestMapping(value = "/station/stations",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Station>> getStations();
+    ResponseEntity<ApiResponseMessage> getStations();
 
 
     @ApiOperation(value = "Update a station", nickname = "updateStation", notes = "", tags={ "station", })
@@ -64,6 +64,6 @@ public interface StationApi {
         @ApiResponse(code = 404, message = "Station not found") })
     @RequestMapping(value = "/station/station/{stationId}",
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateStation(@ApiParam(value = "ID of the station to update",required=true) @PathVariable("stationId") Integer stationId,@ApiParam(value = "Updated station object" ,required=true )  @Valid @RequestBody Station station);
+    ResponseEntity<ApiResponseMessage> updateStation(@ApiParam(value = "ID of the station to update",required=true) @PathVariable("stationId") Integer stationId,@ApiParam(value = "Updated station object" ,required=true )  @Valid @RequestBody Station station);
 
 }

@@ -30,7 +30,7 @@ public interface AdminApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addAdmin(@ApiParam(value = "Admin object" ,required=true )  @Valid @RequestBody Admin admin);
+    ResponseEntity<ApiResponseMessage> addAdmin(@ApiParam(value = "Admin object" ,required=true )  @Valid @RequestBody Admin admin);
 
 
     @ApiOperation(value = "Delete an admin", nickname = "deleteAdmin", notes = "", tags={ "admin", })
@@ -40,7 +40,7 @@ public interface AdminApi {
         @ApiResponse(code = 404, message = "Admin not found") })
     @RequestMapping(value = "/admin/admin/{adminId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteAdmin(@ApiParam(value = "ID of the admin to delete",required=true) @PathVariable("adminId") Integer adminId);
+    ResponseEntity<ApiResponseMessage> deleteAdmin(@ApiParam(value = "ID of the admin to delete",required=true) @PathVariable("adminId") Integer adminId);
 
 
     @ApiOperation(value = "Get all admins", nickname = "getAdmins", notes = "", response = Admin.class, responseContainer = "List", tags={ "admin", })
@@ -49,7 +49,7 @@ public interface AdminApi {
     @RequestMapping(value = "/admin/admins",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Admin>> getAdmins();
+    ResponseEntity<ApiResponseMessage> getAdmins();
 
 
     @ApiOperation(value = "Update an admin", nickname = "updateAdmin", notes = "", tags={ "admin", })
@@ -59,6 +59,6 @@ public interface AdminApi {
         @ApiResponse(code = 404, message = "Admin not found") })
     @RequestMapping(value = "/admin/admin/{adminId}",
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateAdmin(@ApiParam(value = "ID of the admin to update",required=true) @PathVariable("adminId") Integer adminId,@ApiParam(value = "Updated admin object" ,required=true )  @Valid @RequestBody Admin admin);
+    ResponseEntity<ApiResponseMessage> updateAdmin(@ApiParam(value = "ID of the admin to update",required=true) @PathVariable("adminId") Integer adminId,@ApiParam(value = "Updated admin object" ,required=true )  @Valid @RequestBody Admin admin);
 
 }

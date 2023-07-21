@@ -30,7 +30,7 @@ public interface SeatTypeApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addSeatType(@ApiParam(value = "Seat type object" ,required=true )  @Valid @RequestBody SeatType seatType);
+    ResponseEntity<ApiResponseMessage> addSeatType(@ApiParam(value = "Seat type object" ,required=true )  @Valid @RequestBody SeatType seatType);
 
 
     @ApiOperation(value = "Delete a seat type", nickname = "deleteSeatType", notes = "", tags={ "seatType", })
@@ -40,7 +40,7 @@ public interface SeatTypeApi {
         @ApiResponse(code = 404, message = "Seat type not found") })
     @RequestMapping(value = "/seatType/seatType/{seatTypeId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteSeatType(@ApiParam(value = "ID of the seat type to delete",required=true) @PathVariable("seatTypeId") Integer seatTypeId);
+    ResponseEntity<ApiResponseMessage> deleteSeatType(@ApiParam(value = "ID of the seat type to delete",required=true) @PathVariable("seatTypeId") Integer seatTypeId);
 
 
     @ApiOperation(value = "Get all seat types", nickname = "getSeatTypes", notes = "", response = SeatType.class, responseContainer = "List", tags={ "seatType", })
@@ -49,7 +49,7 @@ public interface SeatTypeApi {
     @RequestMapping(value = "/seatType/seatTypes",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<SeatType>> getSeatTypes();
+    ResponseEntity<ApiResponseMessage> getSeatTypes();
 
 
     @ApiOperation(value = "Update a seat type", nickname = "updateSeatType", notes = "", tags={ "seatType", })
@@ -59,6 +59,6 @@ public interface SeatTypeApi {
         @ApiResponse(code = 404, message = "Seat type not found") })
     @RequestMapping(value = "/seatType/seatType/{seatTypeId}",
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateSeatType(@ApiParam(value = "ID of the seat type to update",required=true) @PathVariable("seatTypeId") Integer seatTypeId,@ApiParam(value = "Updated seat type object" ,required=true )  @Valid @RequestBody SeatType seatType);
+    ResponseEntity<ApiResponseMessage> updateSeatType(@ApiParam(value = "ID of the seat type to update",required=true) @PathVariable("seatTypeId") Integer seatTypeId,@ApiParam(value = "Updated seat type object" ,required=true )  @Valid @RequestBody SeatType seatType);
 
 }

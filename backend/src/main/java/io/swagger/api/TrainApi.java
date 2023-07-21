@@ -30,7 +30,7 @@ public interface TrainApi {
     @RequestMapping(value = "/train/trains",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Train>> getTrains();
+    ResponseEntity<ApiResponseMessage> getTrains();
 
 
     @ApiOperation(value = "Get trains based on station", nickname = "getTrainsBasedOnStation", notes = "", response = Train.class, responseContainer = "List", tags={ "train", })
@@ -39,6 +39,6 @@ public interface TrainApi {
     @RequestMapping(value = "/train/getTrainsBasedOnStation",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Train>> getTrainsBasedOnStation(@NotNull @ApiParam(value = "The source station", required = true) @Valid @RequestParam(value = "from", required = true) String from,@NotNull @ApiParam(value = "The destination station", required = true) @Valid @RequestParam(value = "to", required = true) String to,@NotNull @ApiParam(value = "The travel date", required = true) @Valid @RequestParam(value = "date", required = true) Date date);
+    ResponseEntity<ApiResponseMessage> getTrainsBasedOnStation(@NotNull @ApiParam(value = "The source station", required = true) @Valid @RequestParam(value = "from", required = true) String from,@NotNull @ApiParam(value = "The destination station", required = true) @Valid @RequestParam(value = "to", required = true) String to,@NotNull @ApiParam(value = "The travel date", required = true) @Valid @RequestParam(value = "date", required = true) Date date);
 
 }

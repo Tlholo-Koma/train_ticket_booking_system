@@ -32,28 +32,40 @@ public class AdminApiController implements AdminApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addAdmin(@ApiParam(value = "Admin object" ,required=true )  @Valid @RequestBody Admin admin) {
+    public ResponseEntity<ApiResponseMessage> addAdmin(@ApiParam(value = "Admin object" ,required=true )  @Valid @RequestBody Admin admin) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /admin/admin POST (addAdmin) with admin=" + admin);
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> deleteAdmin(@ApiParam(value = "ID of the admin to delete",required=true) @PathVariable("adminId") Integer adminId) {
+    public ResponseEntity<ApiResponseMessage> deleteAdmin(@ApiParam(value = "ID of the admin to delete",required=true) @PathVariable("adminId") Integer adminId) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /admin/admin/{adminId} DELETE (deleteAdmin) with adminId=" + adminId);
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<List<Admin>> getAdmins() {
+    public ResponseEntity<ApiResponseMessage> getAdmins() {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /admin/admins GET (getAdmins)");
-        return new ResponseEntity<List<Admin>>(HttpStatus.NOT_IMPLEMENTED);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> updateAdmin(@ApiParam(value = "ID of the admin to update",required=true) @PathVariable("adminId") Integer adminId,@ApiParam(value = "Updated admin object" ,required=true )  @Valid @RequestBody Admin admin) {
+    public ResponseEntity<ApiResponseMessage> updateAdmin(@ApiParam(value = "ID of the admin to update",required=true) @PathVariable("adminId") Integer adminId,@ApiParam(value = "Updated admin object" ,required=true )  @Valid @RequestBody Admin admin) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /admin/admin/{adminId} PUT (updateAdmin) with adminId=" + adminId + " AND admin=" + admin);
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
 }
