@@ -34,30 +34,25 @@ public class SeatTypeApiController implements SeatTypeApi {
 
     public ResponseEntity<Void> addSeatType(@ApiParam(value = "Seat type object" ,required=true )  @Valid @RequestBody SeatType seatType) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /seatType/seatType POST (addSeatType) with seatType=" + seatType);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> deleteSeatType(@ApiParam(value = "ID of the seat type to delete",required=true) @PathVariable("seatTypeId") Integer seatTypeId) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /seatType/seatType/{seatTypeId} DELETE (deleteSeatType) with seatTypeId=" + seatTypeId);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<SeatType>> getSeatTypes() {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<SeatType>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<SeatType>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
+        log.debug("Received request to /seatType/seatTypes GET (getSeatTypes)");
         return new ResponseEntity<List<SeatType>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> updateSeatType(@ApiParam(value = "ID of the seat type to update",required=true) @PathVariable("seatTypeId") Integer seatTypeId,@ApiParam(value = "Updated seat type object" ,required=true )  @Valid @RequestBody SeatType seatType) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /seatType/seatType/{seatTypeId} PUT (updateSeatType) with seatTypeId=" + seatTypeId + " and seatType=" + seatType);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 

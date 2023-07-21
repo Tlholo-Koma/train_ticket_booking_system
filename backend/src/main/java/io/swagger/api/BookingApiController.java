@@ -35,53 +35,31 @@ public class BookingApiController implements BookingApi {
 
     public ResponseEntity<Integer> bookTrain(@ApiParam(value = "User Booking" ,required=true )  @Valid @RequestBody UserBooking booking) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Integer>(objectMapper.readValue("{}", Integer.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
+        log.debug("Received request to /booking/booking POST (bookTrain) with booking=" + booking);
         return new ResponseEntity<Integer>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> deleteBooking(@ApiParam(value = "ID of the booking to delete",required=true) @PathVariable("bookingId") Integer bookingId) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /booking/booking/{bookingId} DELETE (deleteBooking) with bookingId=" + bookingId);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<TrainTicket> getBooking(@ApiParam(value = "ID of the booking to get",required=true) @PathVariable("bookingId") Integer bookingId) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<TrainTicket>(objectMapper.readValue("{\"empty\": false}", TrainTicket.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<TrainTicket>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
+        log.debug("Received request to /booking/booking/{bookingId} GET (getBooking) with bookingId=" + bookingId);
         return new ResponseEntity<TrainTicket>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<TrainTicket>> getBookings(@ApiParam(value = "User email of bookings to get",required=true) @PathVariable("userEmail") String userEmail) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<TrainTicket>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<TrainTicket>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
+        log.debug("Received request to /booking/getBooking/{userEmail} GET (getBookings) with userEmail=" + userEmail);
         return new ResponseEntity<List<TrainTicket>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> updateBooking(@ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,@ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody TrainTicket booking) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /booking/booking/{bookingId} PUT (updateBooking) with bookingId=" + bookingId + " and booking=" + booking);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 

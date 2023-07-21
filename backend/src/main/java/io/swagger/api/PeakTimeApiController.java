@@ -34,30 +34,25 @@ public class PeakTimeApiController implements PeakTimeApi {
 
     public ResponseEntity<Void> addPeakTime(@ApiParam(value = "Peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /peakTime/peakTime POST (addPeakTime) with peakTime=" + peakTime);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> deletePeakTime(@ApiParam(value = "ID of the peak time to delete",required=true) @PathVariable("peakTimeId") Integer peakTimeId) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /peakTime/peakTime/{peakTimeId} DELETE (deletePeakTime) with peakTimeId=" + peakTimeId);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<PeakTime>> getpeakTimes() {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<PeakTime>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<PeakTime>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
+        log.debug("Received request to /peakTime/peakTimes GET (getpeakTimes)");
         return new ResponseEntity<List<PeakTime>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> updatePeakTime(@ApiParam(value = "ID of the peak time to update",required=true) @PathVariable("peakTimeId") Integer peakTimeId,@ApiParam(value = "Updated peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /peakTime/peakTime/{peakTimeId} PUT (updatePeakTime) with peakTimeId=" + peakTimeId + " and peakTime=" + peakTime);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 

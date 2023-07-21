@@ -35,29 +35,13 @@ public class TrainApiController implements TrainApi {
 
     public ResponseEntity<List<Train>> getTrains() {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Train>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Train>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
+        log.debug("Received request to /train/trains GET (getTrains)");
         return new ResponseEntity<List<Train>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<Train>> getTrainsBasedOnStation(@NotNull @ApiParam(value = "The source station", required = true) @Valid @RequestParam(value = "from", required = true) String from,@NotNull @ApiParam(value = "The destination station", required = true) @Valid @RequestParam(value = "to", required = true) String to,@NotNull @ApiParam(value = "The travel date", required = true) @Valid @RequestParam(value = "date", required = true) Date date) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Train>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Train>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
+        log.debug("Received request to /train/getTrainsBasedOnStation GET (getTrainsBasedOnStation) with from=" + from + " AND to=" + to + " AND date=" + date);
         return new ResponseEntity<List<Train>>(HttpStatus.NOT_IMPLEMENTED);
     }
 

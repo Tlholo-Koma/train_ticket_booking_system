@@ -34,30 +34,25 @@ public class TrainClassApiController implements TrainClassApi {
 
     public ResponseEntity<Void> addTrainClassType(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /trainClass/trainClass POST (addTrainClassType) with trainClassType=" + trainClassType);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> deleteTrainClassType(@ApiParam(value = "ID of the train class type to delete",required=true) @PathVariable("classId") Integer classId) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /trainClass/trainClass/{classId} DELETE (deleteTrainClassType) with classId=" + classId);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<TrainClassType>> getClasses() {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<TrainClassType>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<TrainClassType>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
+        log.debug("Received request to /trainClass/trainClasses GET (getClasses)");
         return new ResponseEntity<List<TrainClassType>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Void> updateTrainClassType(@ApiParam(value = "ID of the train class type to update",required=true) @PathVariable("classId") Integer classId,@ApiParam(value = "Updated train class type object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
         String accept = request.getHeader("Accept");
+        log.debug("Received request to /trainClass/trainClass/{classId} PUT (updateTrainClassType) with classId=" + classId + " AND trainClassType=" + trainClassType);
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
