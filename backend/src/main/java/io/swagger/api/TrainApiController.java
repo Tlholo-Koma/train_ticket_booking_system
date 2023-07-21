@@ -50,6 +50,7 @@ public class TrainApiController implements TrainApi {
             List<Train> trains = trainService.getAllTrains();
 
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Trains retrieved successfully", trains);
+            log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
         catch (Exception e) {
