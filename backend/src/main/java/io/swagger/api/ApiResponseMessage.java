@@ -1,55 +1,50 @@
 package io.swagger.api;
 
+import org.springframework.http.HttpStatus;
+
 import javax.xml.bind.annotation.XmlTransient;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 @javax.xml.bind.annotation.XmlRootElement
 public class ApiResponseMessage {
-    public static final int ERROR = 1;
-    public static final int WARNING = 2;
-    public static final int INFO = 3;
-    public static final int OK = 4;
-    public static final int TOO_BUSY = 5;
-
-    int code;
+    int status;
     String type;
     String message;
+    Instant timestamp;
+    Object data = null;
 
     public ApiResponseMessage(){}
 
-    public ApiResponseMessage(int code, String message){
-        this.code = code;
-        switch(code){
-        case ERROR:
-            setType("error");
-            break;
-        case WARNING:
-            setType("warning");
-            break;
-        case INFO:
-            setType("info");
-            break;
-        case OK:
-            setType("ok");
-            break;
-        case TOO_BUSY:
-            setType("too busy");
-            break;
-        default:
-            setType("unknown");
-            break;
-        }
+    public ApiResponseMessage(int status, String message){
+        this.timestamp = Instant.now();
+        this.status = status;
+        this.type = getMessageFromHttpStatus(status);
         this.message = message;
     }
 
-    @XmlTransient
-    public int getCode() {
-        return code;
+    public ApiResponseMessage(int status, String message, Object data){
+        this.timestamp = Instant.now();
+        this.status = status;
+        this.type = getMessageFromHttpStatus(status);
+        this.message = message;
+        this.data = data;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    private String getMessageFromHttpStatus(int status) {
+        HttpStatus httpStatus = HttpStatus.valueOf(status);
+        return httpStatus.getReasonPhrase();
+    }
+
+    @XmlTransient
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getType() {
@@ -66,5 +61,21 @@ public class ApiResponseMessage {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
     }
 }
