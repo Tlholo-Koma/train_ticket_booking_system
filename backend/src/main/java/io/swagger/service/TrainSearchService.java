@@ -17,6 +17,7 @@ public class TrainSearchService {
 
     private final List<TrainSearchObserver> observers = new ArrayList<>();
 
+    @org.springframework.beans.factory.annotation.Autowired
     public TrainSearchService(TrainService trainService) {
         this.trainService = trainService;
     }
