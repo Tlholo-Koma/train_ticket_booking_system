@@ -71,7 +71,12 @@ public class TrainTicket {
     @Column(name = "user_email")
     private String userEmail;
 
-    @OneToMany(mappedBy = "trainTicket", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "ticket_passenger",
+        joinColumns = @JoinColumn(name = "ticket_id"),
+        inverseJoinColumns = @JoinColumn(name = "passenger_id")
+    )
     private List<Passenger> passengers = new ArrayList<>();
 
     @Column(name = "created_by")
