@@ -1,104 +1,43 @@
 package io.swagger.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import javax.persistence.*;
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- * SeatType
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
+@Entity
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+@Table(name = "SeatType")
+public class SeatType {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @ToString.Include
+    @JsonProperty("seat_type_id")
+    private Integer seatTypeId;
 
+    @JsonProperty("seat_type_name")
+    @Column(name = "seat_type_name", nullable = false)
+    private String seatTypeName;
 
-public class SeatType   {
-  @JsonProperty("seat_type_id")
-  private Integer seatTypeId = null;
+    @JsonProperty("created_by")
+    @Column(name = "created_by", nullable = false)
+    private String createdBy = "SYSTEM";
 
-  @JsonProperty("seat_type_name")
-  private String seatTypeName = null;
+    @Column(name = "date_created", nullable = false)
+    private LocalDate dateCreated;
 
-  public SeatType seatTypeId(Integer seatTypeId) {
-    this.seatTypeId = seatTypeId;
-    return this;
-  }
-
-  /**
-   * Get seatTypeId
-   * @return seatTypeId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getSeatTypeId() {
-    return seatTypeId;
-  }
-
-  public void setSeatTypeId(Integer seatTypeId) {
-    this.seatTypeId = seatTypeId;
-  }
-
-  public SeatType seatTypeName(String seatTypeName) {
-    this.seatTypeName = seatTypeName;
-    return this;
-  }
-
-  /**
-   * Get seatTypeName
-   * @return seatTypeName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getSeatTypeName() {
-    return seatTypeName;
-  }
-
-  public void setSeatTypeName(String seatTypeName) {
-    this.seatTypeName = seatTypeName;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    SeatType seatType = (SeatType) o;
-    return Objects.equals(this.seatTypeId, seatType.seatTypeId) &&
-        Objects.equals(this.seatTypeName, seatType.seatTypeName);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(seatTypeId, seatTypeName);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class SeatType {\n");
-    
-    sb.append("    seatTypeId: ").append(toIndentedString(seatTypeId)).append("\n");
-    sb.append("    seatTypeName: ").append(toIndentedString(seatTypeName)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+    @Column(name = "date_updated", nullable = false)
+    private LocalDate dateUpdated;
 }
-
