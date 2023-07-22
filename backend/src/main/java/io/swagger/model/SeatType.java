@@ -27,6 +27,7 @@ public class SeatType {
     @JsonProperty("seat_type_id")
     private Integer seatTypeId;
 
+    @ToString.Include
     @JsonProperty("seat_type_name")
     @Column(name = "seat_type_name", nullable = false)
     private String seatTypeName;
