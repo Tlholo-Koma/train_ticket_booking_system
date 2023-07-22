@@ -46,7 +46,7 @@ CREATE TABLE [PeakTimes] (
   [end_time]					TIME NOT NULL,
   [price_increase_percentage]	FLOAT NOT NULL,
   [created_by]					VARCHAR(255) DEFAULT 'SYSTEM',
-  [date_crated]					DATETIME NOT NULL,
+  [date_created]					DATETIME NOT NULL,
   [date_updated]				DATETIME NOT NULL
 )
 
