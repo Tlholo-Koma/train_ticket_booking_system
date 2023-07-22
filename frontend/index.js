@@ -17,4 +17,12 @@ async function signIn() {
 
     let tokenResponse = await client.acquireTokenSilent(request); //This gets the token
     console.log('Token', tokenResponse);
+
+    let payload = await fetch("https://graph.microsoft.com/v1.0/me", { //the email is included in the payload
+        headers: {
+            'Authorization': 'Bearer ' + tokenResponse.accessToken
+        }
+    });
+    let json = await payload.json();
+    console.log('Graph Response', json);
 }
