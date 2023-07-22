@@ -1,8 +1,7 @@
 package io.swagger.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
-import io.swagger.api.StationApi;
-import io.swagger.api.ApiResponseMessage;
 import io.swagger.model.Station;
 import io.swagger.service.StationService;
 import org.slf4j.Logger;
@@ -13,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
@@ -40,28 +39,54 @@ public class StationApiController implements StationApi {
     public ResponseEntity<ApiResponseMessage> addStation(
             @ApiParam(value = "Station object", required = true) @Valid @RequestBody Station station) {
         log.debug("Received request to /station/station POST (addStation) with station=" + station);
-        Station addedStation = stationService.createOrUpdateStation(station);
-        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                "Station created successfully");
-        log.debug("Response: " + responseMessage);
-        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+
+        try {
+            Station addedStation = stationService.createOrUpdateStation(station);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
+                    "Station created successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to add station.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<ApiResponseMessage> deleteStation(
             @ApiParam(value = "ID of the station to delete", required = true) @PathVariable("stationId") Integer stationId) {
         log.debug("Received request to /station/station/{stationId} DELETE (deleteStation) with stationId="
                 + stationId);
-        stationService.deleteStation(stationId);
-        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                "Station deleted successfully");
-        log.debug("Response: " + responseMessage);
-        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+
+        try {
+            stationService.deleteStation(stationId);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
+                    "Station deleted successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete station.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public ResponseEntity<List<Station>> getStations() {
+    public ResponseEntity<ApiResponseMessage> getStations() {
         log.debug("Received request to /station/stations GET (getStations)");
-        List<Station> stations = stationService.getAllStations();
-        return new ResponseEntity<>(stations, HttpStatus.OK);
+
+        try {
+            List<Station> stations = stationService.getAllStations();
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Stations retrieved successfully.", stations);
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to retrieve stations.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<ApiResponseMessage> updateStation(
@@ -69,12 +94,19 @@ public class StationApiController implements StationApi {
             @ApiParam(value = "Updated station object", required = true) @Valid @RequestBody Station station) {
         log.debug("Received request to /station/station/{stationId} PUT (updateStation) with stationId=" + stationId
                 + " AND station=" + station);
-        station.setStationId(stationId);
-        Station updatedStation = stationService.createOrUpdateStation(station);
-        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                "Station updated successfully");
-        log.debug("Response: " + responseMessage);
-        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+
+        try {
+            station.setStationId(stationId);
+            Station updatedStation = stationService.createOrUpdateStation(station);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
+                    "Station updated successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to update station.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 

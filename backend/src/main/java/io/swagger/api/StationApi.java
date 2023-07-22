@@ -1,18 +1,15 @@
 package io.swagger.api;
 
-import javax.validation.Valid;
+import io.swagger.annotations.*;
+import io.swagger.model.Station;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.model.Station;
+
+import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 @Validated
@@ -38,7 +35,7 @@ public interface StationApi {
             "station", })
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successful operation", response = Station.class, responseContainer = "List") })
     @RequestMapping(value = "/station/stations", produces = { "application/json" }, method = RequestMethod.GET)
-    ResponseEntity<List<Station>> getStations(); // Corrected return type
+    ResponseEntity<ApiResponseMessage> getStations();
 
     @ApiOperation(value = "Update a station", nickname = "updateStation", notes = "", tags = { "station", })
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Station updated successfully"),
