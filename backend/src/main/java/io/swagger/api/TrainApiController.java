@@ -3,8 +3,10 @@ package io.swagger.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Train;
+import io.swagger.service.TrainService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,13 +29,15 @@ public class TrainApiController implements TrainApi {
     private static final Logger log = LoggerFactory.getLogger(TrainApiController.class);
 
     private final ObjectMapper objectMapper;
-
     private final HttpServletRequest request;
+    private final TrainService trainService;
 
-    @org.springframework.beans.factory.annotation.Autowired
-    public TrainApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    @Autowired
+    public TrainApiController(ObjectMapper objectMapper, HttpServletRequest request,
+            TrainService trainService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.trainService = trainService;
     }
 
     public ResponseEntity<ApiResponseMessage> addTrain(@ApiParam(value = "Train object" ,required=true )  @Valid @RequestBody Train train) {
@@ -59,7 +63,7 @@ public class TrainApiController implements TrainApi {
         log.debug("Received request to /train/trains GET (getTrains)");
 
         try {
-            List<Train> trains = new ArrayList<>();
+            List<Train> trains = trainService.getAllTrains();
 
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Trains retrieved successfully", trains);
             log.debug("Response: " + responseMessage);
