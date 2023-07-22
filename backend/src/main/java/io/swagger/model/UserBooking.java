@@ -1,167 +1,59 @@
 package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import javax.persistence.*;
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * UserBooking
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+@Table(name = "Booking")
+public class UserBooking {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @ToString.Include
+    @JsonProperty("booking_id")
+    private Integer bookingId;
 
+    @JsonProperty("train_id")
+    @Column(name = "train_id", nullable = false)
+    private Integer trainId;
 
-public class UserBooking   {
-  @JsonProperty("train_id")
-  private Integer trainId = null;
+    @JsonProperty("user_email")
+    @Column(name = "user_email", nullable = false)
+    private String userEmail;
 
-  @JsonProperty("train_class")
-  private String trainClass = null;
+    @JsonProperty("booking_date")
+    @Column(name = "booking_date", nullable = false)
+    private LocalDateTime bookingDate;
 
-  @JsonProperty("user_email")
-  private String userEmail = null;
+    @JsonProperty("ticket_price")
+    @Column(name = "ticket_price", nullable = false)
+    private BigDecimal ticketPrice;
 
-  @JsonProperty("passengers")
-  @Valid
-  private List<Passenger> passengers = null;
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<Passenger> passengers = new ArrayList<>();
 
-  public UserBooking trainId(Integer trainId) {
-    this.trainId = trainId;
-    return this;
-  }
+    @JsonProperty("date_created")
+    @Column(name = "date_created", nullable = false)
+    private LocalDateTime dateCreated;
 
-  /**
-   * Get trainId
-   * @return trainId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getTrainId() {
-    return trainId;
-  }
-
-  public void setTrainId(Integer trainId) {
-    this.trainId = trainId;
-  }
-
-  public UserBooking trainClass(String trainClass) {
-    this.trainClass = trainClass;
-    return this;
-  }
-
-  /**
-   * Get trainClass
-   * @return trainClass
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getTrainClass() {
-    return trainClass;
-  }
-
-  public void setTrainClass(String trainClass) {
-    this.trainClass = trainClass;
-  }
-
-  public UserBooking userEmail(String userEmail) {
-    this.userEmail = userEmail;
-    return this;
-  }
-
-  /**
-   * Get userEmail
-   * @return userEmail
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getUserEmail() {
-    return userEmail;
-  }
-
-  public void setUserEmail(String userEmail) {
-    this.userEmail = userEmail;
-  }
-
-  public UserBooking passengers(List<Passenger> passengers) {
-    this.passengers = passengers;
-    return this;
-  }
-
-  public UserBooking addPassengersItem(Passenger passengersItem) {
-    if (this.passengers == null) {
-      this.passengers = new ArrayList<Passenger>();
-    }
-    this.passengers.add(passengersItem);
-    return this;
-  }
-
-  /**
-   * Get passengers
-   * @return passengers
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public List<Passenger> getPassengers() {
-    return passengers;
-  }
-
-  public void setPassengers(List<Passenger> passengers) {
-    this.passengers = passengers;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    UserBooking userBooking = (UserBooking) o;
-    return Objects.equals(this.trainId, userBooking.trainId) &&
-        Objects.equals(this.trainClass, userBooking.trainClass) &&
-        Objects.equals(this.userEmail, userBooking.userEmail) &&
-        Objects.equals(this.passengers, userBooking.passengers);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(trainId, trainClass, userEmail, passengers);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class UserBooking {\n");
-    
-    sb.append("    trainId: ").append(toIndentedString(trainId)).append("\n");
-    sb.append("    trainClass: ").append(toIndentedString(trainClass)).append("\n");
-    sb.append("    userEmail: ").append(toIndentedString(userEmail)).append("\n");
-    sb.append("    passengers: ").append(toIndentedString(passengers)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+    @JsonProperty("date_updated")
+    @Column(name = "date_updated", nullable = false)
+    private LocalDateTime dateUpdated;
 }
-
