@@ -8,8 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Data
@@ -29,12 +29,12 @@ public class PeakTime {
     @Column(name = "start_time", nullable = false)
     @JsonProperty("start_time")
     @ApiModelProperty(value = "")
-    private Date startTime;
+    private LocalTime startTime;
 
     @Column(name = "end_time", nullable = false)
     @JsonProperty("end_time")
     @ApiModelProperty(value = "")
-    private Date endTime;
+    private LocalTime endTime;
 
     @Column(name = "price_increase_percentage", nullable = false)
     @JsonProperty("price_increase_percentage")
