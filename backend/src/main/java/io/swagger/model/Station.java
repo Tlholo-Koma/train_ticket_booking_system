@@ -63,4 +63,22 @@ public class Station implements Serializable{
   protected void onUpdate() {
     dateUpdated = new Date();
   }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class Station {\n");
+
+    sb.append("    stationId: ").append(toIndentedString(stationId)).append("\n");
+    sb.append("    stationName: ").append(toIndentedString(stationName)).append("\n");
+    sb.append("}");
+    return sb.toString();
+  }
+
+  private String toIndentedString(java.lang.Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
+  }
 }

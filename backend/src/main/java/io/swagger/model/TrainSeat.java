@@ -60,4 +60,25 @@ public class TrainSeat {
     @Column(name = "date_updated", nullable = false)
     @ApiModelProperty(value = "")
     private LocalDateTime dateUpdated;
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class TrainSeat {\n");
+
+        sb.append("    seatId: ").append(toIndentedString(seatId)).append("\n");
+        sb.append("    classId: ").append(toIndentedString(classId)).append("\n");
+        sb.append("    seatNumber: ").append(toIndentedString(seatNumber)).append("\n");
+        sb.append("    isBooked: ").append(toIndentedString(isBooked)).append("\n");
+        //sb.append("    seatPrice: ").append(toIndentedString(seatPrice)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    private String toIndentedString(java.lang.Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 }

@@ -57,4 +57,22 @@ public class TrainClassType {
     protected void onUpdate() {
       dateUpdated = new Date();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class TrainClassType {\n");
+
+        sb.append("    classTypeId: ").append(toIndentedString(classTypeId)).append("\n");
+        sb.append("    classTypeName: ").append(toIndentedString(classTypeName)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    private String toIndentedString(java.lang.Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 }

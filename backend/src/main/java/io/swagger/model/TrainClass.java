@@ -28,10 +28,10 @@ public class TrainClass {
     @ApiModelProperty(value = "")
     private Integer classId;
 
-    @ManyToOne
-    @JoinColumn(name = "train_id", nullable = false)
+    @Column(name = "train_id", nullable = false)
+    @JsonProperty("train_id")
     @ApiModelProperty(value = "")
-    private Train train;
+    private Integer trainId;
 
     @ManyToOne
     @JoinColumn(name = "class_type_id", nullable = false)
@@ -61,5 +61,24 @@ public class TrainClass {
     @PreUpdate
     protected void onUpdate() {
       dateUpdated = new Date();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class TrainClass {\n");
+
+        sb.append("    classType: ").append(toIndentedString(classType)).append("\n");
+        sb.append("    capacity: ").append(toIndentedString(capacity)).append("\n");
+        sb.append("    basePrice: ").append(toIndentedString(basePrice)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    private String toIndentedString(java.lang.Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
     }
 }

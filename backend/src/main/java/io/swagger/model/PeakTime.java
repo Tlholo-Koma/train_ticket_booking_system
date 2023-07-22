@@ -59,4 +59,24 @@ public class PeakTime {
     protected void onUpdate() {
       dateUpdated = new Date();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class PeakTime {\n");
+
+        sb.append("    peakTimeId: ").append(toIndentedString(peakTimeId)).append("\n");
+        sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
+        sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
+        sb.append("    priceIncreasePercentage: ").append(toIndentedString(priceIncreasePercentage)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    private String toIndentedString(java.lang.Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 }

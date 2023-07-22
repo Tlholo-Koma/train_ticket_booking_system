@@ -64,4 +64,28 @@ public class Train {
     @JoinColumn(name = "train_id", referencedColumnName = "train_id")
     @JsonProperty("train_seats")
     private List<TrainSeat> trainSeats = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class Train {\n");
+
+        sb.append("    trainId: ").append(toIndentedString(trainId)).append("\n");
+        sb.append("    trainName: ").append(toIndentedString(trainName)).append("\n");
+        sb.append("    sourceStation: ").append(toIndentedString(sourceStation)).append("\n");
+        sb.append("    destinationStation: ").append(toIndentedString(destinationStation)).append("\n");
+        sb.append("    travelDate: ").append(toIndentedString(travelDate)).append("\n");
+        sb.append("    departureTime: ").append(toIndentedString(departureTime)).append("\n");
+        sb.append("    trainClasses: ").append(toIndentedString(trainClasses)).append("\n");
+        sb.append("    trainSeats: ").append(toIndentedString(trainSeats)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    private String toIndentedString(java.lang.Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 }

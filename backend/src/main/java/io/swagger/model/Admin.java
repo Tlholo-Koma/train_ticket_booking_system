@@ -49,4 +49,22 @@ public class Admin {
     protected void onUpdate() {
       dateUpdated = new Date();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class Admin {\n");
+
+        sb.append("    adminId: ").append(toIndentedString(adminId)).append("\n");
+        sb.append("    adminEmail: ").append(toIndentedString(adminEmail)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    private String toIndentedString(java.lang.Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 }
