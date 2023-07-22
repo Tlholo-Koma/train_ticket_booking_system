@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,8 @@ import java.util.Objects;
 @Table(name = "Train")
 @Validated
 @ToString(onlyExplicitlyIncluded = true)
-public class Train {
+public class Train implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @ToString.Include
@@ -32,14 +34,16 @@ public class Train {
     private String trainName;
 
     @ToString.Include
-    @Column(name = "source_station")
+    @ManyToOne
+    @JoinColumn(name = "source_station", referencedColumnName = "station_id")
     @JsonProperty("source_station")
-    private String sourceStation;
+    private Station sourceStation;
 
     @ToString.Include
-    @Column(name = "destination_station")
+    @ManyToOne
+    @JoinColumn(name = "destination_station", referencedColumnName = "station_id")
     @JsonProperty("destination_station")
-    private String destinationStation;
+    private Station destinationStation;
 
     @ToString.Include
     @Column(name = "travel_date")

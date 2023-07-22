@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -29,21 +30,22 @@ public class TrainSeat {
 
     @ToString.Include
     @Column(name = "train_id", nullable = false)
-    @JsonProperty("train_id")
-    @ApiModelProperty(value = "")
+    @JsonIgnore
     private Integer trainId;
 
     @ToString.Include
-    @Column(name = "class_id", nullable = false)
-    @JsonProperty("class_id")
-    @ApiModelProperty(value = "")
-    private Integer classId;
+    @ManyToOne
+    @JoinColumn(name = "class_id", referencedColumnName = "class_id")
+    @JsonProperty("class_type")
+    private TrainClass classType;
 
     @ToString.Include
+//    @ManyToOne
+//    @JoinColumn(name = "seat_type_id", referencedColumnName = "seat_type_id")
     @Column(name = "seat_type_id", nullable = false)
-    @JsonProperty("seat_type_id")
-    @ApiModelProperty(value = "")
-    private Integer seatTypeId;
+    @JsonProperty("seat_type")
+    private Integer seatType;
+//    private SeatType seatType;
 
     @ToString.Include
     @Column(name = "seat_number", nullable = false)
@@ -58,10 +60,10 @@ public class TrainSeat {
     private boolean isBooked;
 
     @Column(name = "date_created", nullable = false)
-    @ApiModelProperty(value = "")
+    @JsonIgnore
     private LocalDateTime dateCreated;
 
     @Column(name = "date_updated", nullable = false)
-    @ApiModelProperty(value = "")
+    @JsonIgnore
     private LocalDateTime dateUpdated;
 }

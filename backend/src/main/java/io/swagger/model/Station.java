@@ -12,6 +12,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,23 +36,25 @@ public class Station implements Serializable{
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @EqualsAndHashCode.Include
   @ToString.Include
-  @JsonProperty("stationId")
+  @JsonProperty("station_id")
   @Column(name="station_id")
   private Integer stationId;
 
   @ToString.Include
-  @JsonProperty("stationName")
+  @JsonProperty("station_name")
   @Column(name="station_name",nullable = false)
   private String stationName;
 
-  @JsonProperty("createdBy")
   @Column(name="created_by",nullable = false)
+  @JsonIgnore
   private String createdBy;
 
   @Column(name="date_created",nullable = false)
+  @JsonIgnore
   private Date dateCreated;
 
   @Column(name="date_updated",nullable = false)
+  @JsonIgnore
   private Date dateUpdated;
 
   @PrePersist

@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-@Table(name = "PeakTimes")
+@Table(name = "peaktimes")
 public class PeakTime {
 
     @Id

@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -7,14 +8,14 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "TrainClass")
+@ToString(onlyExplicitlyIncluded = true)
+@Table(name = "trainclass")
 public class TrainClass {
 
     @Id
@@ -26,11 +27,9 @@ public class TrainClass {
     @ApiModelProperty(value = "")
     private Integer classId;
 
-    @ManyToOne
-    @JoinColumn(name = "train_id", nullable = false)
-    @ApiModelProperty(value = "")
-    @ToString.Include
-    private Train train;
+    @Column(name = "train_id", nullable = false)
+    @JsonIgnore
+    private Integer trainId;
 
     @ManyToOne
     @JoinColumn(name = "class_type_id", nullable = false)
@@ -48,10 +47,12 @@ public class TrainClass {
     @ToString.Include
     private BigDecimal basePrice;
 
-    @Column(name = "date_created", nullable = false)
+    @Column(name = "date_created")
+    @JsonIgnore
     private Date dateCreated;
 
-    @Column(name = "date_updated", nullable = false)
+    @Column(name = "date_updated")
+    @JsonIgnore
     private Date dateUpdated;
     
     @PrePersist

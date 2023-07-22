@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-@Table(name = "SeatType")
+@Table(name = "seattype")
 public class SeatType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,13 +33,15 @@ public class SeatType {
     @Column(name = "seat_type_name", nullable = false)
     private String seatTypeName;
 
-    @JsonProperty("created_by")
     @Column(name = "created_by", nullable = false)
+    @JsonIgnore
     private String createdBy = "SYSTEM";
 
     @Column(name = "date_created", nullable = false)
+    @JsonIgnore
     private LocalDate dateCreated;
 
     @Column(name = "date_updated", nullable = false)
+    @JsonIgnore
     private LocalDate dateUpdated;
 }
