@@ -2,131 +2,64 @@ package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Objects;
 
-/**
- * TrainClass
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "TrainClass")
+public class TrainClass {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @Column(name = "class_id")
+    @JsonProperty("class_id")
+    @ApiModelProperty(value = "")
+    private Integer classId;
 
-public class TrainClass   {
-  @JsonProperty("train_class_type")
-  private String trainClassType = null;
+    @ManyToOne
+    @JoinColumn(name = "train_id", nullable = false)
+    @ApiModelProperty(value = "")
+    private Train train;
 
-  @JsonProperty("capacity")
-  private Integer capacity = null;
+    @ManyToOne
+    @JoinColumn(name = "class_type_id", nullable = false)
+    @ApiModelProperty(value = "")
+    private TrainClassType classType;
 
-  @JsonProperty("base_price")
-  private BigDecimal basePrice = null;
+    @Column(name = "capacity", nullable = false)
+    @ApiModelProperty(value = "")
+    private Integer capacity;
 
-  public TrainClass trainClassType(String trainClassType) {
-    this.trainClassType = trainClassType;
-    return this;
-  }
+    @Column(name = "base_price", nullable = false)
+    @ApiModelProperty(value = "")
+    private BigDecimal basePrice;
 
-  /**
-   * Get trainClassType
-   * @return trainClassType
-  **/
-  @ApiModelProperty(value = "")
+    @Column(name = "date_created", nullable = false)
+    private Date dateCreated;
 
-
-  public String getTrainClassType() {
-    return trainClassType;
-  }
-
-  public void setTrainClassType(String trainClassType) {
-    this.trainClassType = trainClassType;
-  }
-
-  public TrainClass capacity(Integer capacity) {
-    this.capacity = capacity;
-    return this;
-  }
-
-  /**
-   * Get capacity
-   * @return capacity
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getCapacity() {
-    return capacity;
-  }
-
-  public void setCapacity(Integer capacity) {
-    this.capacity = capacity;
-  }
-
-  public TrainClass basePrice(BigDecimal basePrice) {
-    this.basePrice = basePrice;
-    return this;
-  }
-
-  /**
-   * Get basePrice
-   * @return basePrice
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public BigDecimal getBasePrice() {
-    return basePrice;
-  }
-
-  public void setBasePrice(BigDecimal basePrice) {
-    this.basePrice = basePrice;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    TrainClass trainClass = (TrainClass) o;
-    return Objects.equals(this.trainClassType, trainClass.trainClassType) &&
-        Objects.equals(this.capacity, trainClass.capacity) &&
-        Objects.equals(this.basePrice, trainClass.basePrice);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(trainClassType, capacity, basePrice);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class TrainClass {\n");
+    @Column(name = "date_updated", nullable = false)
+    private Date dateUpdated;
     
-    sb.append("    trainClassType: ").append(toIndentedString(trainClassType)).append("\n");
-    sb.append("    capacity: ").append(toIndentedString(capacity)).append("\n");
-    sb.append("    basePrice: ").append(toIndentedString(basePrice)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
+    @PrePersist
+    protected void onCreate() {
+      dateCreated = new Date();
+      dateUpdated = new Date();
     }
-    return o.toString().replace("\n", "\n    ");
-  }
-}
 
+    @PreUpdate
+    protected void onUpdate() {
+      dateUpdated = new Date();
+    }
+}

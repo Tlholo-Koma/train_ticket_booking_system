@@ -2,103 +2,51 @@ package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.Date;
 
-/**
- * Admin
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "Admin")
+public class Admin {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @JsonProperty("admin_id")
+    @ApiModelProperty(value = "")
+    private Integer adminId;
 
-public class Admin   {
-  @JsonProperty("admin_id")
-  private Integer adminId = null;
+    @Column(name = "email", nullable = false)
+    @JsonProperty("admin_email")
+    @ApiModelProperty(value = "")
+    private String adminEmail;
 
-  @JsonProperty("admin_email")
-  private String adminEmail = null;
+    @Column(name = "created_by", nullable = false)
+    private final String createdBy = "SYSTEM";
 
-  public Admin adminId(Integer adminId) {
-    this.adminId = adminId;
-    return this;
-  }
+    @Column(name = "date_created", nullable = false)
+    private Date dateCreated;
 
-  /**
-   * Get adminId
-   * @return adminId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getAdminId() {
-    return adminId;
-  }
-
-  public void setAdminId(Integer adminId) {
-    this.adminId = adminId;
-  }
-
-  public Admin adminEmail(String adminEmail) {
-    this.adminEmail = adminEmail;
-    return this;
-  }
-
-  /**
-   * Get adminEmail
-   * @return adminEmail
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getAdminEmail() {
-    return adminEmail;
-  }
-
-  public void setAdminEmail(String adminEmail) {
-    this.adminEmail = adminEmail;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Admin admin = (Admin) o;
-    return Objects.equals(this.adminId, admin.adminId) &&
-        Objects.equals(this.adminEmail, admin.adminEmail);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(adminId, adminEmail);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Admin {\n");
+    @Column(name = "date_updated", nullable = false)
+    private Date dateUpdated;
     
-    sb.append("    adminId: ").append(toIndentedString(adminId)).append("\n");
-    sb.append("    adminEmail: ").append(toIndentedString(adminEmail)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
+    @PrePersist
+    protected void onCreate() {
+      dateCreated = new Date();
+      dateUpdated = new Date();
     }
-    return o.toString().replace("\n", "\n    ");
-  }
-}
 
+    @PreUpdate
+    protected void onUpdate() {
+      dateUpdated = new Date();
+    }
+}

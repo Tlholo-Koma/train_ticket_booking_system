@@ -2,181 +2,62 @@ package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- * TrainSeat
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "Seat")
+public class TrainSeat {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @Column(name = "seat_id")
+    @JsonProperty("seat_id")
+    @ApiModelProperty(value = "")
+    private Integer seatId;
 
-public class TrainSeat   {
-  @JsonProperty("seat_type")
-  private String seatType = null;
+    @Column(name = "train_id", nullable = false)
+    @JsonProperty("train_id")
+    @ApiModelProperty(value = "")
+    private Integer trainId;
 
-  @JsonProperty("class_type")
-  private String classType = null;
+    @Column(name = "class_id", nullable = false)
+    @JsonProperty("class_id")
+    @ApiModelProperty(value = "")
+    private Integer classId;
 
-  @JsonProperty("seat_number")
-  private String seatNumber = null;
+    @Column(name = "seat_type_id", nullable = false)
+    @JsonProperty("seat_type_id")
+    @ApiModelProperty(value = "")
+    private Integer seatTypeId;
 
-  @JsonProperty("is_booked")
-  private Boolean isBooked = null;
+    @Column(name = "seat_number", nullable = false)
+    @JsonProperty("seat_number")
+    @ApiModelProperty(value = "")
+    private String seatNumber;
 
-  @JsonProperty("seat_price")
-  private BigDecimal seatPrice = null;
+    @Column(name = "is_booked", nullable = false)
+    @JsonProperty("is_booked")
+    @ApiModelProperty(value = "")
+    private boolean isBooked;
 
-  public TrainSeat seatType(String seatType) {
-    this.seatType = seatType;
-    return this;
-  }
+    @Column(name = "date_created", nullable = false)
+    @ApiModelProperty(value = "")
+    private LocalDateTime dateCreated;
 
-  /**
-   * Get seatType
-   * @return seatType
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getSeatType() {
-    return seatType;
-  }
-
-  public void setSeatType(String seatType) {
-    this.seatType = seatType;
-  }
-
-  public TrainSeat classType(String classType) {
-    this.classType = classType;
-    return this;
-  }
-
-  /**
-   * Get classType
-   * @return classType
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getClassType() {
-    return classType;
-  }
-
-  public void setClassType(String classType) {
-    this.classType = classType;
-  }
-
-  public TrainSeat seatNumber(String seatNumber) {
-    this.seatNumber = seatNumber;
-    return this;
-  }
-
-  /**
-   * Get seatNumber
-   * @return seatNumber
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getSeatNumber() {
-    return seatNumber;
-  }
-
-  public void setSeatNumber(String seatNumber) {
-    this.seatNumber = seatNumber;
-  }
-
-  public TrainSeat isBooked(Boolean isBooked) {
-    this.isBooked = isBooked;
-    return this;
-  }
-
-  /**
-   * Get isBooked
-   * @return isBooked
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Boolean isIsBooked() {
-    return isBooked;
-  }
-
-  public void setIsBooked(Boolean isBooked) {
-    this.isBooked = isBooked;
-  }
-
-  public TrainSeat seatPrice(BigDecimal seatPrice) {
-    this.seatPrice = seatPrice;
-    return this;
-  }
-
-  /**
-   * Get seatPrice
-   * @return seatPrice
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public BigDecimal getSeatPrice() {
-    return seatPrice;
-  }
-
-  public void setSeatPrice(BigDecimal seatPrice) {
-    this.seatPrice = seatPrice;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    TrainSeat trainSeat = (TrainSeat) o;
-    return Objects.equals(this.seatType, trainSeat.seatType) &&
-        Objects.equals(this.classType, trainSeat.classType) &&
-        Objects.equals(this.seatNumber, trainSeat.seatNumber) &&
-        Objects.equals(this.isBooked, trainSeat.isBooked) &&
-        Objects.equals(this.seatPrice, trainSeat.seatPrice);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(seatType, classType, seatNumber, isBooked, seatPrice);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class TrainSeat {\n");
-    
-    sb.append("    seatType: ").append(toIndentedString(seatType)).append("\n");
-    sb.append("    classType: ").append(toIndentedString(classType)).append("\n");
-    sb.append("    seatNumber: ").append(toIndentedString(seatNumber)).append("\n");
-    sb.append("    isBooked: ").append(toIndentedString(isBooked)).append("\n");
-    sb.append("    seatPrice: ").append(toIndentedString(seatPrice)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+    @Column(name = "date_updated", nullable = false)
+    @ApiModelProperty(value = "")
+    private LocalDateTime dateUpdated;
 }
-
