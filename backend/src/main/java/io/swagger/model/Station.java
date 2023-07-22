@@ -39,10 +39,11 @@ public class Station implements Serializable{
   @Column(name="station_id")
   private Integer stationId;
 
+  @ToString.Include
   @JsonProperty("stationName")
   @Column(name="station_name",nullable = false)
   private String stationName;
-  
+
   @JsonProperty("createdBy")
   @Column(name="created_by",nullable = false)
   private String createdBy;
@@ -62,23 +63,5 @@ public class Station implements Serializable{
   @PreUpdate
   protected void onUpdate() {
     dateUpdated = new Date();
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Station {\n");
-
-    sb.append("    stationId: ").append(toIndentedString(stationId)).append("\n");
-    sb.append("    stationName: ").append(toIndentedString(stationName)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
   }
 }

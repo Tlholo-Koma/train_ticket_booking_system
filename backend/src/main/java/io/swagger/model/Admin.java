@@ -2,10 +2,7 @@ package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,17 +12,20 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "Admin")
 public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @ToString.Include
     @JsonProperty("admin_id")
     @ApiModelProperty(value = "")
     private Integer adminId;
 
     @Column(name = "email", nullable = false)
+    @ToString.Include
     @JsonProperty("admin_email")
     @ApiModelProperty(value = "")
     private String adminEmail;
@@ -48,23 +48,5 @@ public class Admin {
     @PreUpdate
     protected void onUpdate() {
       dateUpdated = new Date();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Admin {\n");
-
-        sb.append("    adminId: ").append(toIndentedString(adminId)).append("\n");
-        sb.append("    adminEmail: ").append(toIndentedString(adminEmail)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    private String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }

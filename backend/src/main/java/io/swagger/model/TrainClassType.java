@@ -2,10 +2,7 @@ package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,11 +19,13 @@ public class TrainClassType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @ToString.Include
     @Column(name = "class_type_id")
     @JsonProperty("class_type_id")
     @ApiModelProperty(value = "")
     private Integer classTypeId;
 
+    @ToString.Include
     @Column(name = "class_type_name", nullable = false)
     @JsonProperty("class_type_name")
     @ApiModelProperty(value = "")
@@ -56,23 +55,5 @@ public class TrainClassType {
     @PreUpdate
     protected void onUpdate() {
       dateUpdated = new Date();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TrainClassType {\n");
-
-        sb.append("    classTypeId: ").append(toIndentedString(classTypeId)).append("\n");
-        sb.append("    classTypeName: ").append(toIndentedString(classTypeName)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    private String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }

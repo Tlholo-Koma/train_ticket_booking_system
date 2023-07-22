@@ -2,10 +2,7 @@ package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -16,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "PeakTimes")
 public class PeakTime {
 
@@ -24,20 +22,24 @@ public class PeakTime {
     @EqualsAndHashCode.Include
     @JsonProperty("peak_time_id")
     @ApiModelProperty(value = "")
+    @ToString.Include
     private Integer peakTimeId;
 
     @Column(name = "start_time", nullable = false)
     @JsonProperty("start_time")
     @ApiModelProperty(value = "")
+    @ToString.Include
     private LocalTime startTime;
 
     @Column(name = "end_time", nullable = false)
     @JsonProperty("end_time")
     @ApiModelProperty(value = "")
+    @ToString.Include
     private LocalTime endTime;
 
     @Column(name = "price_increase_percentage", nullable = false)
     @JsonProperty("price_increase_percentage")
+    @ToString.Include
     private Double priceIncreasePercentage;
 
     @Column(name = "created_by", nullable = false)
@@ -58,25 +60,5 @@ public class PeakTime {
     @PreUpdate
     protected void onUpdate() {
       dateUpdated = new Date();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class PeakTime {\n");
-
-        sb.append("    peakTimeId: ").append(toIndentedString(peakTimeId)).append("\n");
-        sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
-        sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
-        sb.append("    priceIncreasePercentage: ").append(toIndentedString(priceIncreasePercentage)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    private String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }
