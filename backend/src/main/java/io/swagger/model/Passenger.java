@@ -38,6 +38,10 @@ public class Passenger {
 	@JsonProperty("passenger_name")
 	@Column(name = "passenger_name", nullable = false)
 	private String passengerName;
+	
+	@ManyToOne
+	@JoinColumn(name = "booking_id", insertable = false, updatable = false)
+	private UserBooking booking;
 
 	@JsonProperty("age")
 	@Column(name = "age")
