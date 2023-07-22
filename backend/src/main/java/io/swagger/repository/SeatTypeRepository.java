@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SeatTypeRepository extends JpaRepository<SeatType, Integer> {
 
-    @Query("SELECT MAX(st.seatTypeId) FROM SeatType st")
+    @Query(value = "SELECT MAX(seat_type_id) FROM SeatType", nativeQuery = true)
     Integer findMaxSeatTypeId();
 }
