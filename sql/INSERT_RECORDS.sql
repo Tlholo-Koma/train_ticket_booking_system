@@ -153,3 +153,61 @@ SELECT * FROM [Seat]
 GO 
 
 
+-- insert admins 
+MERGE [Admin] AS TARGET 
+USING (VALUES
+	  ('raaga@bbd.co.za'),
+	  ('tlholo@bbd.co.za'),
+	  ('lehlohonolo@bbd.co.za'),
+	  ('noxolo@bbd.co.za'),
+	  ('joaquim@bbd.co.za')
+	)
+  AS SOURCE ([email])
+  ON (TARGET.email = SOURCE.email)
+  WHEN MATCHED THEN 
+	UPDATE SET email = SOURCE.email, [date_updated] = CURRENT_TIMESTAMP
+  WHEN NOT MATCHED BY TARGET THEN
+	INSERT ([email], [date_created], [date_updated])
+	VALUES (SOURCE.email, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+SELECT * FROM [Admin]
+GO
+
+
+-- insert peak times 
+MERGE [PeakTimes] AS TARGET 
+USING (VALUES
+	  ('06:00', '08:30', '0.2'),
+	  ('15:00', '18:00', '0.2')
+	)
+  AS SOURCE ([start_time], [end_time], [price_increase_percentage])
+  ON (TARGET.start_time = SOURCE.start_time AND TARGET.end_time = SOURCE.end_time AND TARGET.price_increase_percentage = SOURCE.price_increase_percentage)
+  WHEN MATCHED THEN 
+	UPDATE SET start_time = SOURCE.start_time, end_time = SOURCE.end_time, [price_increase_percentage] = SOURCE.price_increase_percentage, [date_updated] = CURRENT_TIMESTAMP
+  WHEN NOT MATCHED BY TARGET THEN
+	INSERT ([start_time], [end_time], [price_increase_percentage], [date_created], [date_updated])
+	VALUES (SOURCE.start_time, SOURCE.end_time, SOURCE.price_increase_percentage, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+SELECT * FROM [PeakTimes]
+GO
+
+
+-- insert Booking and Passengers 
+DECLARE @train_id INT = (SELECT [train_id] FROM [Train] WHERE [train_name] = 'Toon Express');
+
+DECLARE @booking_id INT;
+
+INSERT INTO Booking (booking_date, [train_id], ticket_price, [user_email], [date_created], [date_updated])
+VALUES (GETDATE(), @train_id, 100.00, 'peter_@gmail.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); 
+
+SET @booking_id = SCOPE_IDENTITY();
+
+-- Inserting passenger
+INSERT INTO Passenger (booking_id, seat_id, passenger_name, age, [date_created], [date_updated]) VALUES 
+	(@booking_id, (SELECT seat_id FROM Seat WHERE seat_number = 'B1' AND [train_id] = @train_id), 'John', 42, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+	(@booking_id, (SELECT seat_id FROM Seat WHERE seat_number = 'B2' AND [train_id] = @train_id), 'Mary', 30, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); 
+
+
+SELECT * FROM [Booking]
+SELECT * FROM [Passenger]
+GO
