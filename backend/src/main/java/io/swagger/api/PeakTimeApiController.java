@@ -61,6 +61,14 @@ public class PeakTimeApiController implements PeakTimeApi {
         log.debug("Received request to /peakTime/peakTime/{peakTimeId} DELETE (deletePeakTime) with peakTimeId=" + peakTimeId);
 
         try {
+            PeakTime foundPeakTime = peakTimeService.getPeakTimeById(peakTimeId).orElse(null);
+
+            if (foundPeakTime == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Peak time was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
             peakTimeService.deletePeakTime(peakTimeId);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Peak time deleted successfully");
@@ -98,8 +106,18 @@ public class PeakTimeApiController implements PeakTimeApi {
         log.debug("Received request to /peakTime/peakTime/{peakTimeId} PUT (updatePeakTime) with peakTimeId=" + peakTimeId + " and peakTime=" + peakTime);
 
         try {
-            peakTime.setPeakTimeId(peakTimeId);
-            PeakTime updatedPeakTime = peakTimeService.createOrUpdatePeakTime(peakTime);
+            PeakTime foundPeakTime = peakTimeService.getPeakTimeById(peakTimeId).orElse(null);
+
+            if (foundPeakTime == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Peak time was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            foundPeakTime.setStartTime(peakTime.getStartTime());
+            foundPeakTime.setEndTime(peakTime.getEndTime());
+            foundPeakTime.setPriceIncreasePercentage(peakTime.getPriceIncreasePercentage());
+            PeakTime updatedPeakTime = peakTimeService.createOrUpdatePeakTime(foundPeakTime);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Peak time updated successfully");
             log.debug("Response: " + responseMessage);

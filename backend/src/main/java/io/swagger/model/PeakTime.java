@@ -1,5 +1,6 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -20,35 +21,38 @@ public class PeakTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @ToString.Include
     @JsonProperty("peak_time_id")
     @ApiModelProperty(value = "")
-    @ToString.Include
     private Integer peakTimeId;
 
     @Column(name = "start_time", nullable = false)
+    @ToString.Include
     @JsonProperty("start_time")
     @ApiModelProperty(value = "")
-    @ToString.Include
     private LocalTime startTime;
 
     @Column(name = "end_time", nullable = false)
+    @ToString.Include
     @JsonProperty("end_time")
     @ApiModelProperty(value = "")
-    @ToString.Include
     private LocalTime endTime;
 
     @Column(name = "price_increase_percentage", nullable = false)
-    @JsonProperty("price_increase_percentage")
     @ToString.Include
+    @JsonProperty("price_increase_percentage")
     private Double priceIncreasePercentage;
 
     @Column(name = "created_by", nullable = false)
+    @JsonIgnore
     private final String createdBy = "SYSTEM";
 
     @Column(name = "date_created", nullable = false)
+    @JsonIgnore
     private Date dateCreated;
 
     @Column(name = "date_updated", nullable = false)
+    @JsonIgnore
     private Date dateUpdated;
     
     @PrePersist
