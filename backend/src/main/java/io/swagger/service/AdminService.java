@@ -5,6 +5,7 @@ import io.swagger.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,17 @@ public class AdminService {
 
         if (admin.getAdminId() == null) {
             admin.setAdminId(nextId);
+            admin.setDateCreated(new Date());
         }
+        else {
+            Admin existingAdmin = adminRepository.findById(admin.getAdminId()).orElse(null);
+            if (existingAdmin != null) {
+                admin.setDateCreated(existingAdmin.getDateCreated());
+            }
+        }
+
+        admin.setDateUpdated(new Date());
+
         return adminRepository.save(admin);
     }
 

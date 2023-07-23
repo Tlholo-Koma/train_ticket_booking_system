@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+
+import static java.util.Optional.*;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
@@ -61,6 +64,14 @@ public class AdminApiController implements AdminApi {
         log.debug("Received request to /admin/admin/{adminId} DELETE (deleteAdmin) with adminId=" + adminId);
 
         try {
+            Optional<Admin> admin = adminService.getAdminById(adminId);
+
+            if (admin.isEmpty()) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Admin was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
             adminService.deleteAdmin(adminId);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Admin deleted successfully");
