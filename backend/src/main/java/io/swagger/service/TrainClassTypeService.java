@@ -1,7 +1,6 @@
 package io.swagger.service;
 
 import io.swagger.model.TrainClassType;
-import io.swagger.repository.TrainClassRepository;
 import io.swagger.repository.TrainClassTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +12,10 @@ import java.util.Optional;
 public class TrainClassTypeService {
 
     private final TrainClassTypeRepository trainClassTypeRepository;
-    private final TrainClassTypeRepository trainClassRepository;
 
     @Autowired
-    public TrainClassTypeService(TrainClassTypeRepository trainClassTypeRepository, TrainClassRepository trainClassRepository) {
+    public TrainClassTypeService(TrainClassTypeRepository trainClassTypeRepository) {
         this.trainClassTypeRepository = trainClassTypeRepository;
-        this.trainClassRepository = trainClassTypeRepository;
     }
 
     public List<TrainClassType> getAllTrainClassTypes() {
@@ -27,6 +24,10 @@ public class TrainClassTypeService {
 
     public Optional<TrainClassType> getTrainClassTypeById(Integer classTypeId) {
         return trainClassTypeRepository.findById(classTypeId);
+    }
+
+    public TrainClassType getTrainClassTypeByName(String classTypeName) {
+        return trainClassTypeRepository.findByClassTypeName(classTypeName);
     }
 
     public TrainClassType createOrUpdateTrainClassType(TrainClassType trainClassType) {
@@ -52,7 +53,11 @@ public class TrainClassTypeService {
     }
 
     private boolean checkIfTrainClassUsedInTrain(Integer trainClassTypeId) {
-        return trainClassRepository.existsByClassTypeId(trainClassTypeId);
+        return trainClassTypeRepository.existsByClassTypeId(trainClassTypeId);
+    }
+
+    public TrainClassType saveTrainClassType(TrainClassType trainClassType) {
+        return trainClassTypeRepository.save(trainClassType);
     }
 }
 

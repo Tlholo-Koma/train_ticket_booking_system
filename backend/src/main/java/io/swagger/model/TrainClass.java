@@ -2,6 +2,8 @@ package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.utils.jackson.TrainClassDeserializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
@@ -16,6 +18,7 @@ import java.util.Date;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Table(name = "trainclass")
+@JsonDeserialize(using = TrainClassDeserializer.class)
 public class TrainClass {
 
     @Id
@@ -34,16 +37,19 @@ public class TrainClass {
     @ManyToOne
     @JoinColumn(name = "class_type_id", nullable = false)
     @ApiModelProperty(value = "")
+    @JsonProperty("class_type")
     @ToString.Include
     private TrainClassType classType;
 
     @Column(name = "capacity", nullable = false)
     @ApiModelProperty(value = "")
+    @JsonProperty("capacity")
     @ToString.Include
     private Integer capacity;
 
     @Column(name = "base_price", nullable = false)
     @ApiModelProperty(value = "")
+    @JsonProperty("base_price")
     @ToString.Include
     private BigDecimal basePrice;
 
@@ -64,5 +70,9 @@ public class TrainClass {
     @PreUpdate
     protected void onUpdate() {
       dateUpdated = new Date();
+    }
+
+    public void setClassType(TrainClassType classType) {
+        this.classType = classType;
     }
 }

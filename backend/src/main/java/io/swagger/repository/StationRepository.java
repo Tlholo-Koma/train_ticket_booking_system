@@ -10,4 +10,6 @@ public interface StationRepository extends JpaRepository<Station, Integer> {
 
 	@Query(value = "SELECT MAX(station_id) FROM Station", nativeQuery = true)
 	Integer findMaxStationId();
+
+	Station findByStationName(String stationName);
 }

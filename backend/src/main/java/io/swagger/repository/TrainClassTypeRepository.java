@@ -13,4 +13,6 @@ public interface TrainClassTypeRepository extends JpaRepository<TrainClassType, 
 
     boolean existsByClassTypeId(Integer classTypeId);
 
+    TrainClassType findByClassTypeName(String name);
+
 }

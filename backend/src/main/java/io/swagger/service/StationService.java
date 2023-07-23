@@ -54,4 +54,8 @@ public class StationService {
 	private boolean checkIfStationUsedInTrain(Integer stationId) {
 		return trainRepository.existsBySourceStationStationIdOrDestinationStationStationId(stationId, stationId);
 	}
+
+	public Station getStationByName(String stationName) {
+		return stationRepository.findByStationName(stationName);
+	}
 }

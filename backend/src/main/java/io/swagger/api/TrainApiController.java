@@ -2,6 +2,7 @@ package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
+import io.swagger.model.Station;
 import io.swagger.model.Train;
 import io.swagger.service.TrainService;
 import org.slf4j.Logger;
@@ -44,9 +45,17 @@ public class TrainApiController implements TrainApi {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /train/train POST (addTrain) with train=" + train);
 
-        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
-        log.debug("Response: " + responseMessage);
-        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
+        try {
+            Train addedTrain = trainService.createOrUpdateTrain(train);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Train created successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to add train.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<ApiResponseMessage> deleteTrain(@ApiParam(value = "ID of the train to delete",required=true) @PathVariable("trainId") Integer trainId) {
