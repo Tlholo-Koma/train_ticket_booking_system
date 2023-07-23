@@ -33,16 +33,7 @@ public class AdminService {
 
         if (admin.getAdminId() == null) {
             admin.setAdminId(nextId);
-            admin.setDateCreated(new Date());
         }
-        else {
-            Admin existingAdmin = adminRepository.findById(admin.getAdminId()).orElse(null);
-            if (existingAdmin != null) {
-                admin.setDateCreated(existingAdmin.getDateCreated());
-            }
-        }
-
-        admin.setDateUpdated(new Date());
 
         return adminRepository.save(admin);
     }

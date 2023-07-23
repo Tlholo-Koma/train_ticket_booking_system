@@ -64,9 +64,9 @@ public class AdminApiController implements AdminApi {
         log.debug("Received request to /admin/admin/{adminId} DELETE (deleteAdmin) with adminId=" + adminId);
 
         try {
-            Optional<Admin> admin = adminService.getAdminById(adminId);
+            Admin foundAdmin = adminService.getAdminById(adminId).orElse(null);
 
-            if (admin.isEmpty()) {
+            if (foundAdmin == null) {
                 ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Admin was not found.");
                 log.debug("Response: " + responseMessage);
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
@@ -109,8 +109,16 @@ public class AdminApiController implements AdminApi {
         log.debug("Received request to /admin/admin/{adminId} PUT (updateAdmin) with adminId=" + adminId + " AND admin=" + admin);
 
         try {
-            admin.setAdminId(adminId);
-            Admin updatedAdmin = adminService.createOrUpdateAdmin(admin);
+            Admin foundAdmin = adminService.getAdminById(adminId).orElse(null);
+
+            if (foundAdmin == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Admin was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            foundAdmin.setAdminEmail(admin.getAdminEmail());
+            Admin updatedAdmin = adminService.createOrUpdateAdmin(foundAdmin);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Admin updated successfully");
             log.debug("Response: " + responseMessage);
