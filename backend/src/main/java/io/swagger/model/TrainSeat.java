@@ -6,9 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
+
 
 @Entity
 @Data
@@ -21,11 +20,9 @@ public class TrainSeat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     @ToString.Include
     @Column(name = "seat_id")
     @JsonProperty("seat_id")
-    @ApiModelProperty(value = "")
     private Integer seatId;
 
     @ToString.Include
@@ -40,12 +37,10 @@ public class TrainSeat {
     private TrainClass classType;
 
     @ToString.Include
-//    @ManyToOne
-//    @JoinColumn(name = "seat_type_id", referencedColumnName = "seat_type_id")
-    @Column(name = "seat_type_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "seat_type_id", nullable = false)
     @JsonProperty("seat_type")
-    private Integer seatType;
-//    private SeatType seatType;
+    private SeatType seatType;
 
     @ToString.Include
     @Column(name = "seat_number", nullable = false)
