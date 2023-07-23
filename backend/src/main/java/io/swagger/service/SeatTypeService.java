@@ -36,7 +36,19 @@ public class SeatTypeService {
         return seatTypeRepository.save(seatType);
     }
 
-    public void deleteSeatType(Integer seatTypeId) {
-        seatTypeRepository.deleteById(seatTypeId);
+    public boolean deleteSeatType(Integer seatTypeId) {
+        boolean isSeatTypeUsedInTrain = checkIfSeatTypeInTrain(seatTypeId);
+
+        if (isSeatTypeUsedInTrain) {
+            return false;
+        }
+        else {
+            seatTypeRepository.deleteById(seatTypeId);
+            return true;
+        }
+    }
+
+    private boolean checkIfSeatTypeInTrain(Integer seatTypeId) {
+        return seatTypeRepository.existsBySeatTypeId(seatTypeId);
     }
 }

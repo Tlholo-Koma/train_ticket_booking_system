@@ -69,7 +69,14 @@ public class SeatTypeApiController implements SeatTypeApi {
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
             }
 
-            seatTypeService.deleteSeatType(seatTypeId);
+            boolean deleted = seatTypeService.deleteSeatType(seatTypeId);
+
+            if (!deleted) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.CONFLICT.value(), "The Seat type is still in use and cannot be deleted.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+            }
+
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Seat type deleted successfully");
             log.debug("Response: " + responseMessage);
