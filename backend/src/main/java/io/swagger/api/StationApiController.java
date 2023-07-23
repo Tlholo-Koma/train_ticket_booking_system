@@ -60,7 +60,22 @@ public class StationApiController implements StationApi {
                 + stationId);
 
         try {
-            stationService.deleteStation(stationId);
+            Station foundStation = stationService.getStationById(stationId).orElse(null);
+
+            if (foundStation == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Station was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            boolean deleted = stationService.deleteStation(stationId);
+
+            if (!deleted) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.CONFLICT.value(), "The Station is still in use and cannot be deleted.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+            }
+
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Station deleted successfully");
             log.debug("Response: " + responseMessage);
@@ -96,8 +111,16 @@ public class StationApiController implements StationApi {
                 + " AND station=" + station);
 
         try {
-            station.setStationId(stationId);
-            Station updatedStation = stationService.createOrUpdateStation(station);
+            Station foundStation = stationService.getStationById(stationId).orElse(null);
+
+            if (foundStation == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Station was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            foundStation.setStationName(station.getStationName());
+            Station updatedStation = stationService.createOrUpdateStation(foundStation);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Station updated successfully");
             log.debug("Response: " + responseMessage);

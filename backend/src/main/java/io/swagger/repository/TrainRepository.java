@@ -10,4 +10,6 @@ public interface TrainRepository extends JpaRepository<Train, Integer> {
 
     @Query(value = "SELECT MAX(train_id) FROM Train", nativeQuery = true)
     Integer findMaxTrainId();
+
+    boolean existsBySourceStationStationIdOrDestinationStationStationId(Integer sourceStationId, Integer destinationStationId);
 }

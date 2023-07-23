@@ -1,36 +1,23 @@
 package io.swagger.model;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Validated
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Table(name="Station")
-public class Station implements Serializable{
-  private static final long serialVersionUID = 1L;
+public class Station {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,16 +25,18 @@ public class Station implements Serializable{
   @ToString.Include
   @JsonProperty("station_id")
   @Column(name="station_id")
+  @ApiModelProperty(value = "")
   private Integer stationId;
 
+  @Column(name="station_name",nullable = false)
   @ToString.Include
   @JsonProperty("station_name")
-  @Column(name="station_name",nullable = false)
+  @ApiModelProperty(value = "")
   private String stationName;
 
   @Column(name="created_by",nullable = false)
   @JsonIgnore
-  private String createdBy;
+  private String createdBy = "SYSTEM";
 
   @Column(name="date_created",nullable = false)
   @JsonIgnore
