@@ -203,10 +203,15 @@ VALUES (GETDATE(), @train_id, 100.00, 'peter_@gmail.com', CURRENT_TIMESTAMP, CUR
 SET @booking_id = SCOPE_IDENTITY();
 
 -- Inserting passenger
-INSERT INTO Passenger (booking_id, seat_id, passenger_name, age, [date_created], [date_updated]) VALUES 
-	(@booking_id, (SELECT seat_id FROM Seat WHERE seat_number = 'B1' AND [train_id] = @train_id), 'John', 42, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-	(@booking_id, (SELECT seat_id FROM Seat WHERE seat_number = 'B2' AND [train_id] = @train_id), 'Mary', 30, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); 
+DECLARE @seat_id_1 INT = (SELECT seat_id FROM Seat WHERE seat_number = 'B1' AND [train_id] = @train_id); 
+DECLARE @seat_id_2 INT = (SELECT seat_id FROM Seat WHERE seat_number = 'B2' AND [train_id] = @train_id); 
 
+INSERT INTO Passenger (booking_id, seat_id, passenger_name, age, [date_created], [date_updated]) VALUES 
+	(@booking_id, @seat_id_1, 'John', 42, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+	(@booking_id, @seat_id_2, 'Mary', 30, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); 
+
+UPDATE Seat SET is_booked = 1 WHERE seat_id = @seat_id_1;
+UPDATE Seat SET is_booked = 1 WHERE seat_id = @seat_id_2;
 
 SELECT * FROM [Booking]
 SELECT * FROM [Passenger]
