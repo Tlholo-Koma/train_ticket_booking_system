@@ -10,4 +10,7 @@ public interface TrainClassTypeRepository extends JpaRepository<TrainClassType, 
 
     @Query(value = "SELECT MAX(class_type_id) FROM TrainClassType", nativeQuery = true)
     Integer findMaxClassTypeId();
+
+    boolean existsByClassTypeId(Integer classTypeId);
+
 }

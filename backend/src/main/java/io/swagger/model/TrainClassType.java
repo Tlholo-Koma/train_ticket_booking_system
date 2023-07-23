@@ -21,20 +21,20 @@ public class TrainClassType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     @ToString.Include
-    @Column(name = "class_type_id")
     @JsonProperty("class_type_id")
+    @Column(name = "class_type_id")
     @ApiModelProperty(value = "")
     private Integer classTypeId;
 
-    @ToString.Include
     @Column(name = "class_type_name", nullable = false)
+    @ToString.Include
     @JsonProperty("class_type_name")
     @ApiModelProperty(value = "")
     private String classTypeName;
 
     @Column(name = "created_by", nullable = false)
     @JsonIgnore
-    private final String createdBy ="SYSTEM";
+    private String createdBy ="SYSTEM";
 
     @Column(name = "date_created", nullable = false)
     @JsonIgnore

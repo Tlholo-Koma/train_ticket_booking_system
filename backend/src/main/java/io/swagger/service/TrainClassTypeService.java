@@ -1,6 +1,7 @@
 package io.swagger.service;
 
 import io.swagger.model.TrainClassType;
+import io.swagger.repository.TrainClassRepository;
 import io.swagger.repository.TrainClassTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,12 @@ import java.util.Optional;
 public class TrainClassTypeService {
 
     private final TrainClassTypeRepository trainClassTypeRepository;
+    private final TrainClassTypeRepository trainClassRepository;
 
     @Autowired
-    public TrainClassTypeService(TrainClassTypeRepository trainClassTypeRepository) {
+    public TrainClassTypeService(TrainClassTypeRepository trainClassTypeRepository, TrainClassRepository trainClassRepository) {
         this.trainClassTypeRepository = trainClassTypeRepository;
+        this.trainClassRepository = trainClassTypeRepository;
     }
 
     public List<TrainClassType> getAllTrainClassTypes() {
@@ -36,8 +39,20 @@ public class TrainClassTypeService {
         return trainClassTypeRepository.save(trainClassType);
     }
 
-    public void deleteTrainClassType(Integer classTypeId) {
-        trainClassTypeRepository.deleteById(classTypeId);
+    public boolean deleteTrainClassType(Integer classTypeId) {
+        boolean isTrainClassUsedInTrain = checkIfTrainClassUsedInTrain(classTypeId);
+
+        if (isTrainClassUsedInTrain) {
+            return false;
+        }
+        else {
+            trainClassTypeRepository.deleteById(classTypeId);
+            return true;
+        }
+    }
+
+    private boolean checkIfTrainClassUsedInTrain(Integer trainClassTypeId) {
+        return trainClassRepository.existsByClassTypeId(trainClassTypeId);
     }
 }
 

@@ -59,7 +59,22 @@ public class TrainClassApiController implements TrainClassApi {
         log.debug("Received request to /trainClass/trainClass/{classId} DELETE (deleteTrainClassType) with classId=" + classId);
 
         try {
-            trainClassTypeService.deleteTrainClassType(classId);
+            TrainClassType foundTrainClassType = trainClassTypeService.getTrainClassTypeById(classId).orElse(null);
+
+            if (foundTrainClassType == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Train class type was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            boolean deleted = trainClassTypeService.deleteTrainClassType(classId);
+
+            if (!deleted) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.CONFLICT.value(), "The Train class type is still in use and cannot be deleted.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+            }
+
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Train class type deleted successfully");
             log.debug("Response: " + responseMessage);
@@ -94,8 +109,16 @@ public class TrainClassApiController implements TrainClassApi {
         log.debug("Received request to /trainClass/trainClass/{classId} PUT (updateTrainClassType) with classId=" + classId + " AND trainClassType=" + trainClassType);
 
         try {
-            trainClassType.setClassTypeId(classId);
-            TrainClassType updatedTrainClassType = trainClassTypeService.createOrUpdateTrainClassType(trainClassType);
+            TrainClassType foundTrainClassType = trainClassTypeService.getTrainClassTypeById(classId).orElse(null);
+
+            if (foundTrainClassType == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Train class type was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            foundTrainClassType.setClassTypeName(trainClassType.getClassTypeName());
+            TrainClassType updatedTrainClassType = trainClassTypeService.createOrUpdateTrainClassType(foundTrainClassType);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Train class type updated successfully");
             log.debug("Response: " + responseMessage);
