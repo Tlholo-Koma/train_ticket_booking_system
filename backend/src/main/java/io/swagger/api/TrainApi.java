@@ -28,7 +28,8 @@ public interface TrainApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ApiResponseMessage> addTrain(@ApiParam(value = "Train object" ,required=true )  @Valid @RequestBody Train train);
+    ResponseEntity<ApiResponseMessage> addTrain(
+            @ApiParam(value = "Train object" ,required=true )  @Valid @RequestBody Train train);
 
 
     @ApiOperation(value = "Delete a train", nickname = "deleteTrain", notes = "", tags={ "train", })
@@ -38,7 +39,8 @@ public interface TrainApi {
         @ApiResponse(code = 404, message = "Train not found") })
     @RequestMapping(value = "/train/train/{trainId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<ApiResponseMessage> deleteTrain(@ApiParam(value = "ID of the train to delete",required=true) @PathVariable("trainId") Integer trainId);
+    ResponseEntity<ApiResponseMessage> deleteTrain(
+            @ApiParam(value = "ID of the train to delete",required=true) @PathVariable("trainId") Integer trainId);
 
 
     @ApiOperation(value = "Get all trains", nickname = "getTrains", notes = "", response = Train.class, responseContainer = "List", tags={ "train", })
@@ -56,7 +58,10 @@ public interface TrainApi {
     @RequestMapping(value = "/train/getTrainsBasedOnStation",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ApiResponseMessage> getTrainsBasedOnStation(@NotNull @ApiParam(value = "The source station", required = true) @Valid @RequestParam(value = "from", required = true) String from,@NotNull @ApiParam(value = "The destination station", required = true) @Valid @RequestParam(value = "to", required = true) String to,@NotNull @ApiParam(value = "The travel date", required = true) @Valid @RequestParam(value = "date", required = true) Date date);
+    ResponseEntity<ApiResponseMessage> getTrainsBasedOnStation(
+            @ApiParam(value = "The source station") @Valid @RequestParam(value = "from", required = false) String from,
+            @ApiParam(value = "The destination station") @Valid @RequestParam(value = "to", required = false) String to,
+            @ApiParam(value = "The travel date") @Valid @RequestParam(value = "date", required = false) Date date);
 
 
     @ApiOperation(value = "Update a train", nickname = "updateTrain", notes = "", tags={ "train", })
@@ -66,6 +71,8 @@ public interface TrainApi {
         @ApiResponse(code = 404, message = "Train not found") })
     @RequestMapping(value = "/train/train/{trainId}",
         method = RequestMethod.PUT)
-    ResponseEntity<ApiResponseMessage> updateTrain(@ApiParam(value = "ID of the train to update",required=true) @PathVariable("trainId") Integer trainId,@ApiParam(value = "Updated train" ,required=true )  @Valid @RequestBody Train train);
+    ResponseEntity<ApiResponseMessage> updateTrain(
+            @ApiParam(value = "ID of the train to update",required=true) @PathVariable("trainId") Integer trainId,
+            @ApiParam(value = "Updated train" ,required=true )  @Valid @RequestBody Train train);
 
 }

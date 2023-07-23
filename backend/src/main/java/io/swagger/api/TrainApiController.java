@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Station;
 import io.swagger.model.Train;
+import io.swagger.service.TrainSearchService;
 import io.swagger.service.TrainService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,16 +33,19 @@ public class TrainApiController implements TrainApi {
     private final ObjectMapper objectMapper;
     private final HttpServletRequest request;
     private final TrainService trainService;
+    private final TrainSearchService trainSearchService;
 
     @Autowired
     public TrainApiController(ObjectMapper objectMapper, HttpServletRequest request,
-            TrainService trainService) {
+            TrainService trainService, TrainSearchService trainSearchService) {
         this.objectMapper = objectMapper;
         this.request = request;
         this.trainService = trainService;
+        this.trainSearchService = trainSearchService;
     }
 
-    public ResponseEntity<ApiResponseMessage> addTrain(@ApiParam(value = "Train object" ,required=true )  @Valid @RequestBody Train train) {
+    public ResponseEntity<ApiResponseMessage> addTrain(
+            @ApiParam(value = "Train object" ,required=true )  @Valid @RequestBody Train train) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /train/train POST (addTrain) with train=" + train);
 
@@ -58,7 +62,8 @@ public class TrainApiController implements TrainApi {
         }
     }
 
-    public ResponseEntity<ApiResponseMessage> deleteTrain(@ApiParam(value = "ID of the train to delete",required=true) @PathVariable("trainId") Integer trainId) {
+    public ResponseEntity<ApiResponseMessage> deleteTrain(
+            @ApiParam(value = "ID of the train to delete",required=true) @PathVariable("trainId") Integer trainId) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /train/train/{trainId} DELETE (deleteTrain) with trainId=" + trainId);
 
@@ -85,16 +90,30 @@ public class TrainApiController implements TrainApi {
         }
     }
 
-    public ResponseEntity<ApiResponseMessage> getTrainsBasedOnStation(@NotNull @ApiParam(value = "The source station", required = true) @Valid @RequestParam(value = "from", required = true) String from,@NotNull @ApiParam(value = "The destination station", required = true) @Valid @RequestParam(value = "to", required = true) String to,@NotNull @ApiParam(value = "The travel date", required = true) @Valid @RequestParam(value = "date", required = true) Date date) {
+    public ResponseEntity<ApiResponseMessage> getTrainsBasedOnStation(
+            @ApiParam(value = "The source station") @Valid @RequestParam(value = "from", required = false) String from,
+            @ApiParam(value = "The destination station") @Valid @RequestParam(value = "to", required = false) String to,
+            @ApiParam(value = "The travel date") @Valid @RequestParam(value = "date", required = false) Date date) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /train/getTrainsBasedOnStation GET (getTrainsBasedOnStation) with from=" + from + " AND to=" + to + " AND date=" + date);
 
-        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
-        log.debug("Response: " + responseMessage);
-        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
+        try {
+            List<Train> searchResults = trainSearchService.search(from, to, date);
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Results retrieved successfully.", searchResults);
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error in searching for trains.");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public ResponseEntity<ApiResponseMessage> updateTrain(@ApiParam(value = "ID of the train to update",required=true) @PathVariable("trainId") Integer trainId,@ApiParam(value = "Updated train" ,required=true )  @Valid @RequestBody Train train) {
+    public ResponseEntity<ApiResponseMessage> updateTrain(
+            @ApiParam(value = "ID of the train to update",required=true) @PathVariable("trainId") Integer trainId,
+            @ApiParam(value = "Updated train" ,required=true )  @Valid @RequestBody Train train) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /train/train/{trainId} PUT (updateTrain) with =" + trainId + " AND train=" + train);
 
