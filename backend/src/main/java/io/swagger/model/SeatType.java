@@ -1,22 +1,17 @@
 package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.time.LocalDate;
-import java.util.Objects;
+import java.util.Date;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Table(name = "seattype")
@@ -26,11 +21,13 @@ public class SeatType {
     @EqualsAndHashCode.Include
     @ToString.Include
     @JsonProperty("seat_type_id")
+    @ApiModelProperty(value = "")
     private Integer seatTypeId;
 
+    @Column(name = "seat_type_name", nullable = false)
     @ToString.Include
     @JsonProperty("seat_type_name")
-    @Column(name = "seat_type_name", nullable = false)
+    @ApiModelProperty(value = "")
     private String seatTypeName;
 
     @Column(name = "created_by", nullable = false)
@@ -39,9 +36,20 @@ public class SeatType {
 
     @Column(name = "date_created", nullable = false)
     @JsonIgnore
-    private LocalDate dateCreated;
+    private Date dateCreated;
 
     @Column(name = "date_updated", nullable = false)
     @JsonIgnore
-    private LocalDate dateUpdated;
+    private Date dateUpdated;
+
+    @PrePersist
+    protected void onCreate() {
+        dateCreated = new Date();
+        dateUpdated = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        dateUpdated = new Date();
+    }
 }

@@ -61,6 +61,14 @@ public class SeatTypeApiController implements SeatTypeApi {
         log.debug("Received request to /seatType/seatType/{seatTypeId} DELETE (deleteSeatType) with seatTypeId=" + seatTypeId);
 
         try {
+            SeatType foundSeatType = seatTypeService.getSeatTypeById(seatTypeId).orElse(null);
+
+            if (foundSeatType == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Seat type was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
             seatTypeService.deleteSeatType(seatTypeId);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Seat type deleted successfully");
@@ -98,8 +106,16 @@ public class SeatTypeApiController implements SeatTypeApi {
         log.debug("Received request to /seatType/seatType/{seatTypeId} PUT (updateSeatType) with seatTypeId=" + seatTypeId + " and seatType=" + seatType);
 
         try {
-            seatType.setSeatTypeId(seatTypeId);
-            SeatType updatedSeatType = seatTypeService.createOrUpdateSeatType(seatType);
+            SeatType foundSeatType = seatTypeService.getSeatTypeById(seatTypeId).orElse(null);
+
+            if (foundSeatType == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Seat type was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            foundSeatType.setSeatTypeName(seatType.getSeatTypeName());
+            SeatType updatedSeatType = seatTypeService.createOrUpdateSeatType(foundSeatType);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Seat type updated successfully");
             log.debug("Response: " + responseMessage);
