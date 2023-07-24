@@ -210,9 +210,10 @@ INSERT INTO Passenger (booking_id, seat_id, passenger_name, age, [date_created],
 	(@booking_id, @seat_id_1, 'John', 42, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 	(@booking_id, @seat_id_2, 'Mary', 30, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); 
 
-UPDATE Seat SET is_booked = 1 WHERE seat_id = @seat_id_1;
-UPDATE Seat SET is_booked = 1 WHERE seat_id = @seat_id_2;
+UPDATE Seat SET is_booked = 1, seat_price = 50.50 WHERE seat_id = @seat_id_1;
+UPDATE Seat SET is_booked = 1, seat_price = 49.50 WHERE seat_id = @seat_id_2;
 
 SELECT * FROM [Booking]
 SELECT * FROM [Passenger]
+SELECT * FROM [Seat]
 GO

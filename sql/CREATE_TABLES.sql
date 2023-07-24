@@ -85,6 +85,7 @@ CREATE TABLE [Seat] (
   [seat_type_id]	INT NOT NULL,
   [seat_number]		VARCHAR(255) NOT NULL,
   [is_booked]		BIT DEFAULT 0 NOT NULL,
+  [seat_price]		DECIMAL(19,2) NULL,
   [date_created]	DATETIME NOT NULL,
   [date_updated]	DATETIME NOT NULL,
   FOREIGN KEY ([train_id]) REFERENCES Train([train_id]),
