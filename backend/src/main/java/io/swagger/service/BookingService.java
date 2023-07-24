@@ -5,6 +5,7 @@ import io.swagger.model.Passenger;
 import io.swagger.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class BookingService {
@@ -38,9 +39,13 @@ public class BookingService {
 
     public void deleteBooking(Integer bookingId, Booking booking) {
         for (Passenger passenger : booking.getPassengers()) {
-            // TODO: set is_booked is false, set seat_price to null 
+            // TODO: set is_booked is false, set seat_price to null
             passengerService.deletePassenger(passenger.getPassengerId());
         }
         bookingRepository.deleteById(bookingId);
+    }
+
+    public List<Booking> getBookingByUserEmail(String userEmail) {
+        return bookingRepository.findByUserEmail(userEmail).orElse(null);
     }
 }

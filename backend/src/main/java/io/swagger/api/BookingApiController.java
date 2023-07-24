@@ -3,10 +3,10 @@ package io.swagger.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Booking;
-import io.swagger.model.Station;
 import io.swagger.model.Train;
 import io.swagger.service.BookingService;
 import io.swagger.service.TrainService;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,9 +118,24 @@ public class BookingApiController implements BookingApi {
             @ApiParam(value = "User email of bookings to get",required=true) @PathVariable("userEmail") String userEmail) {
         log.debug("Received request to /booking/getBooking/{userEmail} GET (getBookings) with userEmail=" + userEmail);
 
-        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
-        log.debug("Response: " + responseMessage);
-        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
+        try {
+            List<Booking> foundBooking = bookingService.getBookingByUserEmail(userEmail);
+            System.out.println(foundBooking);
+
+            if (foundBooking == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Bookings was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Bookings found successfully", foundBooking);
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get bookings.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<ApiResponseMessage> updateBooking(
