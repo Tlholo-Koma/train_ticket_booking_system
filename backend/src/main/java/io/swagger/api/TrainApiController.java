@@ -43,7 +43,6 @@ public class TrainApiController implements TrainApi {
 
     public ResponseEntity<ApiResponseMessage> addTrain(
             @ApiParam(value = "Train object" ,required=true )  @Valid @RequestBody Train train) {
-        String accept = request.getHeader("Accept");
         log.debug("Received request to /train/train POST (addTrain) with train=" + train);
 
         try {
@@ -62,12 +61,25 @@ public class TrainApiController implements TrainApi {
 
     public ResponseEntity<ApiResponseMessage> deleteTrain(
             @ApiParam(value = "ID of the train to delete",required=true) @PathVariable("trainId") Integer trainId) {
-         String accept = request.getHeader("Accept");
         log.debug("Received request to /train/train/{trainId} DELETE (deleteTrain) with trainId=" + trainId);
 
-
         try {
-             trainService.deleteTrain(trainId);
+            Train foundTrain = trainService.getTrainById(trainId).orElse(null);
+
+            if (foundTrain == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Train was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            boolean deleted = trainService.deleteTrain(foundTrain, trainId);
+
+            if (!deleted) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.CONFLICT.value(), "The Train is still in use and cannot be deleted.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+            }
+
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Train deleted successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
@@ -101,7 +113,6 @@ public class TrainApiController implements TrainApi {
             @ApiParam(value = "The source station") @Valid @RequestParam(value = "from", required = false) String from,
             @ApiParam(value = "The destination station") @Valid @RequestParam(value = "to", required = false) String to,
             @ApiParam(value = "The travel date") @Valid @RequestParam(value = "date", required = false) Date date) {
-        String accept = request.getHeader("Accept");
         log.debug("Received request to /train/getTrainsBasedOnStation GET (getTrainsBasedOnStation) with from=" + from + " AND to=" + to + " AND date=" + date);
 
         try {
@@ -121,7 +132,6 @@ public class TrainApiController implements TrainApi {
     public ResponseEntity<ApiResponseMessage> updateTrain(
             @ApiParam(value = "ID of the train to update",required=true) @PathVariable("trainId") Integer trainId,
             @ApiParam(value = "Updated train" ,required=true )  @Valid @RequestBody Train train) {
-        String accept = request.getHeader("Accept");
         log.debug("Received request to /train/train/{trainId} PUT (updateTrain) with =" + trainId + " AND train=" + train);
 
         ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
