@@ -33,6 +33,7 @@ CREATE TABLE [Train] (
   [destination_station] INT NOT NULL,
   [travel_date]			DATE NOT NULL,
   [departure_time]		TIME NOT NULL,
+  [peak_time]			INT DEFAULT NULL NULL,
   [created_by]			VARCHAR(255) DEFAULT 'SYSTEM',
   [date_created]		DATETIME NOT NULL,
   [date_updated]		DATETIME NOT NULL,

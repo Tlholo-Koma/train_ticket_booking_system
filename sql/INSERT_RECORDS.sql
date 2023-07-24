@@ -4,6 +4,24 @@ GO
 USE [AllAboard]
 GO
 
+-- insert peak times 
+MERGE [PeakTimes] AS TARGET 
+USING (VALUES
+	  ('06:00', '08:30', '0.2'),
+	  ('15:00', '18:00', '0.2')
+	)
+  AS SOURCE ([start_time], [end_time], [price_increase_percentage])
+  ON (TARGET.start_time = SOURCE.start_time AND TARGET.end_time = SOURCE.end_time AND TARGET.price_increase_percentage = SOURCE.price_increase_percentage)
+  WHEN MATCHED THEN 
+	UPDATE SET start_time = SOURCE.start_time, end_time = SOURCE.end_time, [price_increase_percentage] = SOURCE.price_increase_percentage, [date_updated] = CURRENT_TIMESTAMP
+  WHEN NOT MATCHED BY TARGET THEN
+	INSERT ([start_time], [end_time], [price_increase_percentage], [date_created], [date_updated])
+	VALUES (SOURCE.start_time, SOURCE.end_time, SOURCE.price_increase_percentage, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+SELECT * FROM [PeakTimes]
+GO
+
+
 -- Inserting stations
 MERGE [Station] AS TARGET 
 USING (VALUES
@@ -33,17 +51,17 @@ GO
 -- Inserting trains
 MERGE [Train] AS TARGET 
 USING (VALUES
-	  ('Toon Express', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Centurion'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Park'), '2023-07-17', '09:00:00'),
-	  ('Cartoonville Chugger', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Pretoria'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Rhodesfield'), '2023-07-16', '10:30:00'),
-	  ('Looney Line Express', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Centurion'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Park'), '2023-07-17', '12:00:00')
+	  ('Toon Express', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Centurion'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Park'), '2023-07-17', '09:00:00', NULL),
+	  ('Cartoonville Chugger', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Pretoria'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Rhodesfield'), '2023-07-16', '10:30:00', NULL),
+	  ('Looney Line Express', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Centurion'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Park'), '2023-07-25', '07:00:00', 1)
 	)
-  AS SOURCE ([train_name], [source_station], [destination_station], [travel_date], [departure_time])
-  ON (TARGET.train_name = SOURCE.train_name AND TARGET.source_station = SOURCE.source_station AND TARGET.destination_station = SOURCE.destination_station)
+  AS SOURCE ([train_name], [source_station], [destination_station], [travel_date], [departure_time], [peak_time])
+  ON (TARGET.train_name = SOURCE.train_name AND TARGET.source_station = SOURCE.source_station AND TARGET.destination_station = SOURCE.destination_station AND TARGET.peak_time = SOURCE.peak_time)
   WHEN MATCHED THEN 
 	UPDATE SET [travel_date] = SOURCE.travel_date, [departure_time] = SOURCE.departure_time, [date_updated] = CURRENT_TIMESTAMP
   WHEN NOT MATCHED BY TARGET THEN
-	INSERT ([train_name], [source_station], [destination_station], [travel_date], [departure_time], [date_created], [date_updated])
-	VALUES (SOURCE.train_name, SOURCE.source_station, SOURCE.destination_station, SOURCE.travel_date, SOURCE.departure_time, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+	INSERT ([train_name], [source_station], [destination_station], [travel_date], [departure_time], [peak_time], [date_created], [date_updated])
+	VALUES (SOURCE.train_name, SOURCE.source_station, SOURCE.destination_station, SOURCE.travel_date, SOURCE.departure_time, SOURCE.peak_time, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 SELECT * FROM [Train]
 GO
@@ -143,26 +161,8 @@ SELECT * FROM [Admin]
 GO
 
 
--- insert peak times 
-MERGE [PeakTimes] AS TARGET 
-USING (VALUES
-	  ('06:00', '08:30', '0.2'),
-	  ('15:00', '18:00', '0.2')
-	)
-  AS SOURCE ([start_time], [end_time], [price_increase_percentage])
-  ON (TARGET.start_time = SOURCE.start_time AND TARGET.end_time = SOURCE.end_time AND TARGET.price_increase_percentage = SOURCE.price_increase_percentage)
-  WHEN MATCHED THEN 
-	UPDATE SET start_time = SOURCE.start_time, end_time = SOURCE.end_time, [price_increase_percentage] = SOURCE.price_increase_percentage, [date_updated] = CURRENT_TIMESTAMP
-  WHEN NOT MATCHED BY TARGET THEN
-	INSERT ([start_time], [end_time], [price_increase_percentage], [date_created], [date_updated])
-	VALUES (SOURCE.start_time, SOURCE.end_time, SOURCE.price_increase_percentage, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-SELECT * FROM [PeakTimes]
-GO
-
-
 -- insert Booking and Passengers 
-DECLARE @train_id INT = (SELECT [train_id] FROM [Train] WHERE [train_name] = 'Toon Express');
+DECLARE @train_id INT = (SELECT [train_id] FROM [Train] WHERE [train_name] = 'Cartoonville Chugger');
 
 DECLARE @booking_id INT;
 
@@ -172,8 +172,8 @@ VALUES (GETDATE(), @train_id, 100.00, 'peter_@gmail.com', CURRENT_TIMESTAMP, CUR
 SET @booking_id = SCOPE_IDENTITY();
 
 -- Inserting passenger
-DECLARE @seat_id_1 INT = (SELECT seat_id FROM Seat WHERE seat_number = 'B1' AND [train_id] = @train_id); 
-DECLARE @seat_id_2 INT = (SELECT seat_id FROM Seat WHERE seat_number = 'B2' AND [train_id] = @train_id); 
+DECLARE @seat_id_1 INT = (SELECT seat_id FROM Seat WHERE seat_number = 'B3' AND [train_id] = @train_id); 
+DECLARE @seat_id_2 INT = (SELECT seat_id FROM Seat WHERE seat_number = 'B4' AND [train_id] = @train_id); 
 
 INSERT INTO Passenger (booking_id, seat_id, passenger_name, age, [date_created], [date_updated]) VALUES 
 	(@booking_id, @seat_id_1, 'John', 42, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -186,10 +186,3 @@ SELECT * FROM [Booking]
 SELECT * FROM [Passenger]
 SELECT * FROM [Seat]
 GO
-
-
-SELECT * FROM [Train]
-SELECT * FROM [TrainClass]
-SELECT * FROM [Seat]
-
-SELECT * FROM [TrainClassType]
