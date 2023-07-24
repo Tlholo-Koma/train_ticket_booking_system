@@ -8,6 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -64,9 +65,20 @@ public class TrainSeat {
 
     @Column(name = "date_created", nullable = false)
     @JsonIgnore
-    private LocalDateTime dateCreated;
+    private Date dateCreated;
 
     @Column(name = "date_updated", nullable = false)
     @JsonIgnore
-    private LocalDateTime dateUpdated;
+    private Date dateUpdated;
+
+    @PrePersist
+    protected void onCreate() {
+        dateCreated = new Date();
+        dateUpdated = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        dateUpdated = new Date();
+    }
 }

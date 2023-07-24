@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.model.*;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
@@ -33,7 +34,7 @@ public class TrainDeserializer extends JsonDeserializer<Train> {
         train.setDestinationStation(destinationStation);
 
         train.setTravelDate(LocalDate.parse(node.get("travel_date").asText()));
-        train.setDepartureTime(node.get("departure_time").asText());
+        train.setDepartureTime(Time.valueOf(node.get("departure_time").asText()));
 
         // Handle train_classes
         if (node.hasNonNull("train_classes")) {

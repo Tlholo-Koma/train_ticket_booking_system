@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -41,7 +42,7 @@ public class PeakTime {
     @Column(name = "price_increase_percentage", nullable = false)
     @ToString.Include
     @JsonProperty("price_increase_percentage")
-    private Double priceIncreasePercentage;
+    private BigDecimal priceIncreasePercentage;
 
     @Column(name = "created_by", nullable = false)
     @JsonIgnore

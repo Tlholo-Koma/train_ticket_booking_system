@@ -28,15 +28,12 @@ public class BookingApiController implements BookingApi {
     private final ObjectMapper objectMapper;
     private final HttpServletRequest request;
     private final BookingService bookingService;
-    private final TrainService trainService;
 
     @Autowired
-    public BookingApiController(ObjectMapper objectMapper, HttpServletRequest request,
-            BookingService bookingService, TrainService trainService) {
+    public BookingApiController(ObjectMapper objectMapper, HttpServletRequest request, BookingService bookingService) {
         this.objectMapper = objectMapper;
         this.request = request;
         this.bookingService = bookingService;
-        this.trainService = trainService;
     }
 
     public ResponseEntity<ApiResponseMessage> bookTrain(
@@ -44,16 +41,15 @@ public class BookingApiController implements BookingApi {
         log.debug("Received request to /booking/booking POST (bookTrain) with booking=" + booking);
 
         try {
-            Train train = trainService.getTrainById(booking.getTrainId());
-            booking.setTrainName(train.getTrainName());
-            booking.setSourceStation(train.getSourceStation().getStationName());
-            booking.setDestinationStation(train.getDestinationStation().getStationName());
-            booking.setTravelDate(train.getTravelDate());
-            booking.setDepartureTime(train.getDepartureTime());
+            Booking addedBooking = bookingService.createOrUpdateTrain(booking);
 
-            // TODO: add ticket price
-            Booking addedStation = bookingService.createOrUpdateTrain(booking);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Booking created successfully");
+            if (addedBooking == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "No train seats available for booking.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Booking created successfully.");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }

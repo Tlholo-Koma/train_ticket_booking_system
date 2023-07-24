@@ -2,11 +2,17 @@ package io.swagger.repository;
 
 import io.swagger.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -67,4 +73,16 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "LEFT JOIN TrainClassType AS TCT ON TC.class_type_id = TCT.class_type_id " +
             "WHERE B.user_email = :userEmail", nativeQuery = true)
     Optional<List<Booking>> findByUserEmail(@Param("userEmail") String user_email);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO Booking (booking_date,train_id, ticket_price,user_email, date_created, date_updated) " +
+            "VALUES (:bookingDate, :trainId, :ticketPrice, :userEmail, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)", nativeQuery = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer insertBooking(
+            @Param("bookingDate") Date bookingDate,
+            @Param("trainId") Integer trainId,
+            @Param("ticketPrice") BigDecimal ticketPrice,
+            @Param("userEmail") String userEmail);
+
 }

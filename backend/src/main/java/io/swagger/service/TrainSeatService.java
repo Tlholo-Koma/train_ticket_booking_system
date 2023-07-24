@@ -22,8 +22,8 @@ public class TrainSeatService {
         return trainSeatRepository.findAll();
     }
 
-    public Optional<TrainSeat> getTrainSeatById(Integer seatId) {
-        return trainSeatRepository.findById(seatId);
+    public TrainSeat getTrainSeatById(Integer seatId) {
+        return trainSeatRepository.findById(seatId).orElse(null);
     }
 
     public TrainSeat createOrUpdateTrainSeat(TrainSeat trainSeat) {

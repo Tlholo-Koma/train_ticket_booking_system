@@ -9,6 +9,7 @@ import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,7 +64,7 @@ public class Train {
     @ToString.Include
     @Column(name = "departure_time")
     @JsonProperty("departure_time")
-    private String departureTime;
+    private Time departureTime;
 
     @Column(name = "created_by")
     @JsonIgnore
@@ -76,6 +77,7 @@ public class Train {
     @Column(name = "date_updated")
     @JsonIgnore
     private Date dateUpdated;
+
     @ToString.Include
     @OneToMany( mappedBy = "train", orphanRemoval = true)
     @JsonProperty("train_classes")

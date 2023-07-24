@@ -1,6 +1,8 @@
 package io.swagger.service;
 
 import io.swagger.model.TrainClass;
+import io.swagger.model.TrainClassType;
+import io.swagger.models.auth.In;
 import io.swagger.repository.TrainClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,10 @@ public class TrainClassService {
 
     public Optional<TrainClass> getTrainClassById(Integer classId) {
         return trainClassRepository.findById(classId);
+    }
+
+    public TrainClass getTrainClassByTrainClassType(String trainClassTypeName, Integer trainId) {
+        return trainClassRepository.findByClassTypeClassTypeNameAndTrainTrainId(trainClassTypeName, trainId).orElse(null);
     }
 
     public TrainClass createOrUpdateTrainClass(TrainClass trainClass) {
