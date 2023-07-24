@@ -64,7 +64,7 @@ public class TrainApiController implements TrainApi {
         log.debug("Received request to /train/train/{trainId} DELETE (deleteTrain) with trainId=" + trainId);
 
         try {
-            Train foundTrain = trainService.getTrainById(trainId).orElse(null);
+            Train foundTrain = trainService.getTrainById(trainId);
 
             if (foundTrain == null) {
                 ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Train was not found.");

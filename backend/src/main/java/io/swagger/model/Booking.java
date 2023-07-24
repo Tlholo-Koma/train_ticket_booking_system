@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @ToString(onlyExplicitlyIncluded = true)
 @Setter
 @Getter
-public class TrainTicket {
+public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -43,7 +44,7 @@ public class TrainTicket {
 
     @ToString.Include
     @JsonProperty("travel_date")
-    private Date travelDate = null;
+    private LocalDate travelDate = null;
 
     @ToString.Include
     @JsonProperty("departure_time")

@@ -4,12 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 @Data
@@ -60,5 +56,5 @@ public class Passenger {
 	@ManyToOne
 	@JoinColumn(name = "booking_id")
 	@JsonIgnore
-	private TrainTicket ticket;
+	private Booking ticket;
 }

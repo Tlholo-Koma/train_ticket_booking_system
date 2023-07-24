@@ -2,11 +2,10 @@ package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
-import io.swagger.model.Station;
-import io.swagger.model.TrainTicket;
-import io.swagger.model.UserBooking;
-import io.swagger.service.TrainTicketService;
-import io.swagger.service.UserBookingService;
+import io.swagger.model.Booking;
+import io.swagger.model.Train;
+import io.swagger.service.BookingService;
+import io.swagger.service.TrainService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,26 +26,42 @@ public class BookingApiController implements BookingApi {
 
     private final ObjectMapper objectMapper;
     private final HttpServletRequest request;
-    private final UserBookingService userBookingService;
-    private final TrainTicketService trainTicketService;
+    private final BookingService bookingService;
+    private final TrainService trainService;
 
     @Autowired
     public BookingApiController(ObjectMapper objectMapper, HttpServletRequest request,
-            UserBookingService userBookingService, TrainTicketService trainTicketService) {
+            BookingService bookingService, TrainService trainService) {
         this.objectMapper = objectMapper;
         this.request = request;
-        this.userBookingService = userBookingService;
-        this.trainTicketService = trainTicketService;
+        this.bookingService = bookingService;
+        this.trainService = trainService;
     }
 
     public ResponseEntity<ApiResponseMessage> bookTrain(
-            @ApiParam(value = "User Booking" ,required=true )  @Valid @RequestBody UserBooking booking) {
+            @ApiParam(value = "User Booking" ,required=true )  @Valid @RequestBody Booking booking) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /booking/booking POST (bookTrain) with booking=" + booking);
 
-        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
-        log.debug("Response: " + responseMessage);
-        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
+        try {
+            Train train = trainService.getTrainById(booking.getTrainId());
+            booking.setTrainName(train.getTrainName());
+            booking.setSourceStation(train.getSourceStation().getStationName());
+            booking.setDestinationStation(train.getDestinationStation().getStationName());
+            booking.setTravelDate(train.getTravelDate());
+            booking.setDepartureTime(train.getDepartureTime());
+
+            // TODO: add ticket price
+            Booking addedStation = bookingService.createOrUpdateTrain(booking);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Booking created successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to add booking.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<ApiResponseMessage> deleteBooking(
@@ -64,7 +79,7 @@ public class BookingApiController implements BookingApi {
         log.debug("Received request to /booking/booking/{bookingId} GET (getBooking) with bookingId=" + bookingId);
 
         try {
-            TrainTicket foundBooking = trainTicketService.getTrainTicketById(bookingId);
+            Booking foundBooking = bookingService.getBookingById(bookingId);
             System.out.println(foundBooking);
 
             if (foundBooking == null) {
@@ -77,7 +92,7 @@ public class BookingApiController implements BookingApi {
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         } catch (Exception e) {
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get train ticket.", e.getMessage());
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get booking.", e.getMessage());
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -94,7 +109,7 @@ public class BookingApiController implements BookingApi {
     }
 
     public ResponseEntity<ApiResponseMessage> updateBooking(
-            @ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,@ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody TrainTicket booking) {
+            @ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,@ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody Booking booking) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /booking/booking/{bookingId} PUT (updateBooking) with bookingId=" + bookingId + " and booking=" + booking);
 

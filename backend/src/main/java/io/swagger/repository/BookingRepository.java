@@ -1,6 +1,6 @@
 package io.swagger.repository;
 
-import io.swagger.model.TrainTicket;
+import io.swagger.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface TrainTicketRepository extends JpaRepository<TrainTicket, Integer> {
+public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     @Query(value = "SELECT " +
             "B.booking_id AS 'booking_id'" +
@@ -36,5 +36,7 @@ public interface TrainTicketRepository extends JpaRepository<TrainTicket, Intege
             "LEFT JOIN TrainClass AS TC ON S.class_id = TC.class_id " +
             "LEFT JOIN TrainClassType AS TCT ON TC.class_type_id = TCT.class_type_id " +
             "WHERE B.booking_id = :bookingId", nativeQuery = true)
-    Optional<TrainTicket> findTicketDetailsById(@Param("bookingId") Integer bookingId);
+    Optional<Booking> findTicketDetailsById(@Param("bookingId") Integer bookingId);
+
+    boolean existsByTrainId(Integer trainId);
 }

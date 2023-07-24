@@ -4,7 +4,7 @@ import io.swagger.model.Train;
 import io.swagger.model.TrainClass;
 import io.swagger.model.TrainSeat;
 import io.swagger.repository.TrainRepository;
-import io.swagger.repository.UserBookingRepository;
+import io.swagger.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @Service
 public class TrainService {
 
-    private final UserBookingRepository userBookingRepository;
+    private final BookingRepository bookingRepository;
     private final TrainRepository trainRepository;
     private final TrainClassService trainClassService;
     private final TrainSeatService trainSeatService;
@@ -25,10 +25,10 @@ public class TrainService {
 
 
     @Autowired
-    public TrainService(UserBookingRepository userBookingRepository, TrainRepository trainRepository,
+    public TrainService(BookingRepository bookingRepository, TrainRepository trainRepository,
                         TrainClassService trainClassService, TrainSeatService trainSeatService,
                         JdbcTemplate jdbcTemplate) {
-        this.userBookingRepository = userBookingRepository;
+        this.bookingRepository = bookingRepository;
         this.trainRepository = trainRepository;
         this.trainClassService = trainClassService;
         this.trainSeatService = trainSeatService;
@@ -39,8 +39,8 @@ public class TrainService {
         return trainRepository.findAll();
     }
 
-    public Optional<Train> getTrainById(Integer trainId) {
-        return trainRepository.findById(trainId);
+    public Train getTrainById(Integer trainId) {
+        return trainRepository.findById(trainId).orElse(null);
     }
     
     public Train createOrUpdateTrain(Train train) {
@@ -65,11 +65,9 @@ public class TrainService {
         else {
             for (TrainClass trainClass : train.getTrainClasses()) {
                 trainClassService.deleteTrainClass(trainClass.getClassId());
-                //train.getTrainClasses().remove(trainClass);
             }
             for (TrainSeat trainSeat : train.getTrainSeats()) {
                 trainSeatService.deleteTrainSeat(trainSeat.getSeatId());
-                //train.getTrainSeats().remove(trainSeat);
             }
             train.setTrainClasses(null);
             train.setTrainSeats(null);
@@ -79,7 +77,7 @@ public class TrainService {
     }
 
     private boolean checkIfTrainUsedInBooking(Integer trainId) {
-        return userBookingRepository.existsByTrainId(trainId);
+        return bookingRepository.existsByTrainId(trainId);
     }
 
     private void callAddSeatsStoredProcedure(int trainId) {
