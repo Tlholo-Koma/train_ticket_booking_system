@@ -2,7 +2,6 @@ package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
-import io.swagger.model.Station;
 import io.swagger.model.Train;
 import io.swagger.service.TrainSearchService;
 import io.swagger.service.TrainService;
@@ -18,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-21T17:12:22.488+02:00")
@@ -51,6 +48,7 @@ public class TrainApiController implements TrainApi {
 
         try {
             Train addedTrain = trainService.createOrUpdateTrain(train);
+
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Train created successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);

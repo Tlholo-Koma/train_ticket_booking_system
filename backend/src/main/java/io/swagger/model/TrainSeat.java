@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -54,6 +55,12 @@ public class TrainSeat {
     @JsonProperty("is_booked")
     @ApiModelProperty(value = "")
     private boolean isBooked;
+
+    @ToString.Include
+    @Column(name = "seat_price", nullable = true)
+    @JsonProperty("seat_price")
+    @ApiModelProperty(value = "")
+    private BigDecimal seatPrice;
 
     @Column(name = "date_created", nullable = false)
     @JsonIgnore

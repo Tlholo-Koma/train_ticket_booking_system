@@ -114,13 +114,10 @@ DROP PROCEDURE IF EXISTS [AddSeats];
 GO
 
 CREATE PROCEDURE [AddSeats] (
-		@TrainName VARCHAR(255)
+		@train_id INT
 	)
 AS
 BEGIN
-	DECLARE @train_id INT = (SELECT [train_id] FROM [Train] WHERE [train_name] = @TrainName);
-	PRINT 'train_id: ' + CONVERT(VARCHAR, @train_id)
-
 	DECLARE @CounterClass INT = 1;
 	WHILE (@CounterClass <= (SELECT COUNT([class_type_id]) FROM [TrainClassType]))
 	BEGIN 
@@ -145,9 +142,9 @@ GO
 
 
 -- Inserting seats 
-EXEC [AddSeats] @trainName = 'Toon Express'
-EXEC [AddSeats] @trainName = 'Cartoonville Chugger'
-EXEC [AddSeats] @trainName = 'Looney Line Express'
+EXEC [AddSeats] @trainId = 1
+EXEC [AddSeats] @trainId = 2
+EXEC [AddSeats] @trainId = 3
 
 SELECT * FROM [Seat]
 GO 
