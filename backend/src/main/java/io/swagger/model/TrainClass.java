@@ -21,58 +21,59 @@ import java.util.Date;
 @JsonDeserialize(using = TrainClassDeserializer.class)
 public class TrainClass {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    @ToString.Include
-    @Column(name = "class_id")
-    @JsonProperty("class_id")
-    @ApiModelProperty(value = "")
-    private Integer classId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	@Column(name = "class_id")
+	@JsonProperty("class_id")
+	@ApiModelProperty(value = "")
+	private Integer classId;
 
-    @Column(name = "train_id", nullable = false)
-    @JsonIgnore
-    private Integer trainId;
+	@ManyToOne
+	@JoinColumn(name = "train_id", nullable = false)
+	@JsonIgnore
+	private Train train;
 
-    @ManyToOne
-    @JoinColumn(name = "class_type_id", nullable = false)
-    @ApiModelProperty(value = "")
-    @JsonProperty("class_type")
-    @ToString.Include
-    private TrainClassType classType;
+	@ManyToOne
+	@JoinColumn(name = "class_type_id", nullable = false)
+	@ApiModelProperty(value = "")
+	@JsonProperty("class_type")
+	@ToString.Include
+	private TrainClassType classType;
 
-    @Column(name = "capacity", nullable = false)
-    @ApiModelProperty(value = "")
-    @JsonProperty("capacity")
-    @ToString.Include
-    private Integer capacity;
+	@Column(name = "capacity", nullable = false)
+	@ApiModelProperty(value = "")
+	@JsonProperty("capacity")
+	@ToString.Include
+	private Integer capacity;
 
-    @Column(name = "base_price", nullable = false)
-    @ApiModelProperty(value = "")
-    @JsonProperty("base_price")
-    @ToString.Include
-    private BigDecimal basePrice;
+	@Column(name = "base_price", nullable = false)
+	@ApiModelProperty(value = "")
+	@JsonProperty("base_price")
+	@ToString.Include
+	private BigDecimal basePrice;
 
-    @Column(name = "date_created")
-    @JsonIgnore
-    private Date dateCreated;
+	@Column(name = "date_created")
+	@JsonIgnore
+	private Date dateCreated;
 
-    @Column(name = "date_updated")
-    @JsonIgnore
-    private Date dateUpdated;
-    
-    @PrePersist
-    protected void onCreate() {
-      dateCreated = new Date();
-      dateUpdated = new Date();
-    }
+	@Column(name = "date_updated")
+	@JsonIgnore
+	private Date dateUpdated;
 
-    @PreUpdate
-    protected void onUpdate() {
-      dateUpdated = new Date();
-    }
+	@PrePersist
+	protected void onCreate() {
+		dateCreated = new Date();
+		dateUpdated = new Date();
+	}
 
-    public void setClassType(TrainClassType classType) {
-        this.classType = classType;
-    }
+	@PreUpdate
+	protected void onUpdate() {
+		dateUpdated = new Date();
+	}
+
+	public void setClassType(TrainClassType classType) {
+		this.classType = classType;
+	}
 }

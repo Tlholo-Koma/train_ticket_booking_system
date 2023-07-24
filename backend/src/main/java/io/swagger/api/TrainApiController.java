@@ -64,12 +64,21 @@ public class TrainApiController implements TrainApi {
 
     public ResponseEntity<ApiResponseMessage> deleteTrain(
             @ApiParam(value = "ID of the train to delete",required=true) @PathVariable("trainId") Integer trainId) {
-        String accept = request.getHeader("Accept");
+         String accept = request.getHeader("Accept");
         log.debug("Received request to /train/train/{trainId} DELETE (deleteTrain) with trainId=" + trainId);
 
-        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
-        log.debug("Response: " + responseMessage);
-        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
+
+        try {
+             trainService.deleteTrain(trainId);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Train deleted successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete train.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<ApiResponseMessage> getTrains() {

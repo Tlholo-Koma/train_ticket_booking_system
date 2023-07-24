@@ -12,10 +12,14 @@ public class StationDeserializer extends JsonDeserializer<Station> {
     @Override
     public Station deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-        String stationName = node.asText(); // Assuming the JSON contains the station name as a simple string
+        Integer stationId = (node.get("station_id") != null) ? node.get("station_id").asInt() : null;
+        String stationName = (node.get("station_name") != null) ? node.get("station_name").asText() : null;
+        
         Station station = new Station();
+        station.setStationId(stationId);
         station.setStationName(stationName);
         return station;
     }
 }
+
 
