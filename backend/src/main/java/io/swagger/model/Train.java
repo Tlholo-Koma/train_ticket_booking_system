@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.utils.jackson.TrainClassDeserializer;
+import io.swagger.utils.jackson.TrainSeatDeserializer;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
@@ -75,18 +76,17 @@ public class Train {
     @Column(name = "date_updated")
     @JsonIgnore
     private Date dateUpdated;
-
     @ToString.Include
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "train_id", referencedColumnName = "train_id")
+    @OneToMany( mappedBy = "train", orphanRemoval = true)
     @JsonProperty("train_classes")
     @JsonDeserialize(using = TrainClassDeserializer.class)
     private List<TrainClass> trainClasses = new ArrayList<>();
 
     @ToString.Include
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany( orphanRemoval = true)
     @JoinColumn(name = "train_id", referencedColumnName = "train_id")
     @JsonProperty("train_seats")
+    @JsonDeserialize(using = TrainSeatDeserializer.class)
     private List<TrainSeat> trainSeats = new ArrayList<>();
 
     @PrePersist
