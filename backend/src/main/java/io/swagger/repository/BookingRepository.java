@@ -36,7 +36,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "LEFT JOIN TrainClass AS TC ON S.class_id = TC.class_id " +
             "LEFT JOIN TrainClassType AS TCT ON TC.class_type_id = TCT.class_type_id " +
             "WHERE B.booking_id = :bookingId", nativeQuery = true)
-    Optional<Booking> findTicketDetailsById(@Param("bookingId") Integer bookingId);
+    Optional<Booking> findBookingByBookingId(@Param("bookingId") Integer bookingId);
 
     boolean existsByTrainId(Integer trainId);
 }

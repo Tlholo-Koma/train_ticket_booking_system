@@ -6,8 +6,6 @@ import io.swagger.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class BookingService {
     private final BookingRepository bookingRepository;
@@ -23,9 +21,8 @@ public class BookingService {
 //        return bookingRepository.findAll();
 //    }
 
-    public Booking getBookingById(Integer ticketId) {
-        Optional<Booking> ticketOptional = bookingRepository.findTicketDetailsById(ticketId);
-        return ticketOptional.orElse(null);
+    public Booking getBookingById(Integer bookingId) {
+        return bookingRepository.findBookingByBookingId(bookingId).orElse(null);
     }
 
     public Booking createOrUpdateTrain(Booking booking) {
@@ -39,7 +36,11 @@ public class BookingService {
         return booking;
     }
 
-    public void deleteBooking(Integer ticketId) {
-        bookingRepository.deleteById(ticketId);
+    public void deleteBooking(Integer bookingId, Booking booking) {
+        for (Passenger passenger : booking.getPassengers()) {
+            // TODO: set is_booked is false, set seat_price to null 
+            passengerService.deletePassenger(passenger.getPassengerId());
+        }
+        bookingRepository.deleteById(bookingId);
     }
 }
