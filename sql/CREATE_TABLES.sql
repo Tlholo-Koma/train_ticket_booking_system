@@ -115,3 +115,34 @@ CREATE TABLE [Passenger] (
   FOREIGN KEY ([booking_id]) REFERENCES Booking([booking_id]),
   FOREIGN KEY ([seat_id]) REFERENCES Seat([seat_id])
 );
+
+DROP PROCEDURE IF EXISTS [AddSeats];
+GO
+
+CREATE PROCEDURE [AddSeats] (
+		@train_id INT
+	)
+AS
+BEGIN
+	DECLARE @CounterClass INT = 1;
+	WHILE (@CounterClass <= (SELECT COUNT([class_type_id]) FROM [TrainClassType]))
+	BEGIN 
+		DECLARE @CounterSeat INT = 1;
+		DECLARE @Counter INT = 1;
+		WHILE (@Counter <= (SELECT [capacity] FROM [TrainClass] WHERE [train_id] = @train_id AND [class_type_id] = @CounterClass))
+		BEGIN
+			DECLARE @SeatCharNumber VARCHAR(255) = (SELECT SUBSTRING([class_type_name], 1, 1) FROM [TrainClassType] WHERE [class_type_id] = @CounterClass) + CONVERT(VARCHAR, @Counter);
+			INSERT INTO [Seat] ([train_id], [class_id], [seat_type_id], [seat_number], [date_created], [date_updated])
+				VALUES (@train_id, @CounterClass, @CounterSeat, @SeatCharNumber, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+			SET @Counter = @Counter + 1
+
+			IF (@CounterSeat >= (SELECT COUNT([seat_type_id]) FROM [SeatType]))
+				SET @CounterSeat = 1
+			ELSE 
+				SET @CounterSeat = @CounterSeat + 1
+		END
+		SET @CounterClass = @CounterClass + 1
+	END 
+END
+GO
+
