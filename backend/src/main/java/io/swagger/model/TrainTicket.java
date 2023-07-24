@@ -1,20 +1,13 @@
 package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.springframework.validation.annotation.Validated;
-import org.threeten.bp.LocalDate;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Data
@@ -22,73 +15,59 @@ import java.util.Objects;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-@Table(name = "TrainTicket")
+@Setter
+@Getter
 public class TrainTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     @ToString.Include
-    @JsonProperty("ticket_id")
-    private Integer ticketId;
-
-    @JsonProperty("train_name")
-    @Column(name = "train_name")
-    private String trainName;
-
-    @JsonProperty("source_station")
-    @Column(name = "source_station")
-    private String sourceStation;
-
-    @JsonProperty("destination_station")
-    @Column(name = "destination_station")
-    private String destinationStation;
-
-    @JsonProperty("travel_date")
-    @Column(name = "travel_date")
-    private LocalDate travelDate;
-
-    @JsonProperty("departure_time")
-    @Column(name = "departure_time")
-    private String departureTime;
-
     @JsonProperty("booking_id")
-    @Column(name = "booking_id")
     private Integer bookingId;
 
+    @ToString.Include
+    @JsonProperty("train_id")
+    private Integer trainId = null;
+
+    @ToString.Include
+    @JsonProperty("train_name")
+    private String trainName = null;
+
+    @ToString.Include
+    @JsonProperty("source_station")
+    private String sourceStation = null;
+
+    @ToString.Include
+    @JsonProperty("destination_station")
+    private String destinationStation = null;
+
+    @ToString.Include
+    @JsonProperty("travel_date")
+    private Date travelDate = null;
+
+    @ToString.Include
+    @JsonProperty("departure_time")
+    private String departureTime = null;
+
+    @ToString.Include
     @JsonProperty("booking_date")
-    @Column(name = "booking_date")
-    private String bookingDate;
+    private Date bookingDate = null;
 
+    @ToString.Include
     @JsonProperty("ticket_price")
-    @Column(name = "ticket_price")
-    private BigDecimal ticketPrice;
+    private BigDecimal ticketPrice = null;
 
+    @ToString.Include
     @JsonProperty("train_class")
-    @Column(name = "train_class")
     private String trainClass;
 
+    @ToString.Include
     @JsonProperty("user_email")
-    @Column(name = "user_email")
-    private String userEmail;
+    private String userEmail = null;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "ticket_passenger",
-        joinColumns = @JoinColumn(name = "ticket_id"),
-        inverseJoinColumns = @JoinColumn(name = "passenger_id")
-    )
+    @ToString.Include
+    @JsonProperty("passengers")
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private List<Passenger> passengers = new ArrayList<>();
-
-    @Column(name = "created_by")
-    private final String createdBy = "SYSTEM";
-
-    @JsonProperty("date_created")
-    @Column(name = "date_created", nullable = false)
-    private LocalDate dateCreated;
-
-    @JsonProperty("date_updated")
-    @Column(name = "date_updated", nullable = false)
-    private LocalDate dateUpdated;
-
 }
 

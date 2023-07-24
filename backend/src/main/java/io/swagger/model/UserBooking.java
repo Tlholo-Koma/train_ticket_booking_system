@@ -46,8 +46,8 @@ public class UserBooking {
     @Column(name = "ticket_price", nullable = false)
     private BigDecimal ticketPrice;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
-    private List<Passenger> passengers = new ArrayList<>();
+//    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+//    private List<Passenger> passengers = new ArrayList<>();
 
     @JsonProperty("date_created")
     @Column(name = "date_created", nullable = false)

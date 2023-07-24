@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TrainTicketService {
@@ -16,19 +17,20 @@ public class TrainTicketService {
         this.trainTicketRepository = trainTicketRepository;
     }
 
-    public List<TrainTicket> getAllTrainTickets() {
-        return trainTicketRepository.findAll();
-    }
+//    public List<TrainTicket> getAllTrainTickets() {
+//        return trainTicketRepository.findAll();
+//    }
 
     public TrainTicket getTrainTicketById(Integer ticketId) {
-        return trainTicketRepository.findById(ticketId).orElse(null);
+        Optional<TrainTicket> ticketOptional = trainTicketRepository.findTicketDetailsById(ticketId);
+        return ticketOptional.orElse(null);
     }
 
-    public TrainTicket createTrainTicket(TrainTicket trainTicket) {
-        return trainTicketRepository.save(trainTicket);
-    }
+//    public TrainTicket createTrainTicket(TrainTicket trainTicket) {
+//        return trainTicketRepository.save(trainTicket);
+//    }
 
-    public void deleteTrainTicket(Integer ticketId) {
-        trainTicketRepository.deleteById(ticketId);
-    }
+//    public void deleteTrainTicket(Integer ticketId) {
+//        trainTicketRepository.deleteById(ticketId);
+//    }
 }
