@@ -15,8 +15,18 @@ function openStation(evt, cityName) {
     }
   
     // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(cityName).style.display = "block";
+    document.getElementById(cityName).style.display = "flex";
     evt.currentTarget.className += " active";
   }
 
-console.log('Hello');
+async function test(){
+  const response = await fetch(allaboard_url + "train/trains", {
+      method: "GET",
+      headers: {
+          "Content-type": "application/json; charset=UTF-8"
+      }
+  });
+  console.log(await (response.json()));
+  }
+  
+  test();

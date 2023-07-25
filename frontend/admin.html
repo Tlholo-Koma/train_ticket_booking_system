@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <script src="scripts/constant.js"></script>
     <script src="scripts/admin.js"></script>
+    
     <title>Admin Page</title>
 </head>
 <body>
@@ -27,16 +29,28 @@
                 <option>Train 1</option>
                 <option>Train 2</option>
             </select>
-            <article class="train-info">
-                <label>Train 1 Name</label>
-                <label>Station 1</label>
-                <label>Station 2</label>
-            </article>
+            <form class="train-info">
+                <label>Train Name</label> <br/>
+                <input readonly/> <br/>
+                <label>Source station</label> <br/>
+                <input/> <br/>
+                <label>Destination station</label> <br/>
+                <input/> <br/>
+                <label>Departure time</label> <br/>
+                <input/> <br/>
+                <label>Classes</label>
+                <ul>
+                    <li>class 1</li>
+                    <li>class 2</li>
+                    <li>class 3</li>
+                </ul>
+                <button type="submit">Edit</button>
+            </form>
         </section>
-        <div id="Paris" class="tabcontent">
+        <!-- <div id="Paris" class="tabcontent">
             <h3>Station 2</h3>
             <p>Paris is the capital of France.</p>
-        </div>
+        </div> -->
     </main>
     
 </body>

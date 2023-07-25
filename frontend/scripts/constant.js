@@ -1,0 +1,1 @@
+allaboard_url = "https://allaboard.bbdgrad.com/";
