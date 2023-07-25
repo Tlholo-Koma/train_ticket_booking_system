@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <script src="scripts/admin.js"></script>
     <title>Admin Page</title>
 </head>
 <body>
@@ -12,14 +13,31 @@
         <img src="images/5f6b46de99e9402099bb5b6a728a6e1c.png" id="logo"/>
         <h1>All Aboard</h1>
     </header>
-    <section>
+    <main>
         <h2>Stations</h2>
-        <button>Add Station</button>
-    </section>
-    <section>
-        <h2>Trains</h2>
-        <button>Add Train</button>
-    </section>
+        <nav class="tab">
+            <button class="tablinks" onclick="openStation(event, 'London')">Station 1</button>
+            <button class="tablinks" onclick="openStation(event, 'Paris')">Station 2</button>
+            <button class="tablinks" onclick="openStation(event, 'Tokyo')">Station 3</button>
+        </nav>
+        <section id="London" class="tabcontent">
+            <h3>Station 1</h3>
+            <button id="add-train">Add train</button>
+            <select class="train-list" multiple="multiple">
+                <option>Train 1</option>
+                <option>Train 2</option>
+            </select>
+            <article class="train-info">
+                <label>Train 1 Name</label>
+                <label>Station 1</label>
+                <label>Station 2</label>
+            </article>
+        </section>
+        <div id="Paris" class="tabcontent">
+            <h3>Station 2</h3>
+            <p>Paris is the capital of France.</p>
+        </div>
+    </main>
     
 </body>
 </html>
