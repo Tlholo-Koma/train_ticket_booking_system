@@ -80,6 +80,9 @@ public class TrainService {
             return false;
         }
         else {
+            for (TrainPeakTime trainPeakTime : train.getPeakTimes()) {
+                trainPeakTimeService.deleteTrainPeakTime(trainPeakTime.getTrainPeakTimeId());
+            }
             for (TrainClass trainClass : train.getTrainClasses()) {
                 trainClassService.deleteTrainClass(trainClass.getClassId());
             }
@@ -88,6 +91,7 @@ public class TrainService {
             }
             train.setTrainClasses(null);
             train.setTrainSeats(null);
+            train.setPeakTimes(null);
             trainRepository.deleteById(trainId);
             return true;
         }

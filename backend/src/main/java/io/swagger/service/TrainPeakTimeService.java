@@ -23,8 +23,8 @@ public class TrainPeakTimeService {
         return trainPeakTimeRepository.findById(trainPeakTimeId).orElse(null);
     }
 
-    public void deleteTrainPeakTime(TrainPeakTime trainPeakTime) {
-        trainPeakTimeRepository.delete(trainPeakTime);
+    public void deleteTrainPeakTime(Integer trainPeakTimeId) {
+        trainPeakTimeRepository.deleteById(trainPeakTimeId);
     }
 
 }
