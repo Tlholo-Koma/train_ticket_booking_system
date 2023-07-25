@@ -42,9 +42,22 @@ public class PeakTimeApiController implements PeakTimeApi {
         log.debug("Received request to /peakTime/peakTime POST (addPeakTime) with peakTime=" + peakTime);
 
         try {
+            // check if start_time < end_time
+            if (peakTime.getStartTime().compareTo(peakTime.getEndTime()) >= 0) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.BAD_REQUEST.value(), "Start time should be less than end time.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+            }
+
             PeakTime addedPeakTime = peakTimeService.createOrUpdatePeakTime(peakTime);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Peak time created successfully");
+
+            if (addedPeakTime == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.CONFLICT.value(), "Peak time overlaps with an existing peak time.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+            }
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Peak time created successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
@@ -69,7 +82,14 @@ public class PeakTimeApiController implements PeakTimeApi {
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
             }
 
-            peakTimeService.deletePeakTime(peakTimeId);
+            boolean deleted = peakTimeService.deletePeakTime(peakTimeId);
+
+            if (!deleted) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.CONFLICT.value(), "The Peak time is still in use and cannot be deleted.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+            }
+
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Peak time deleted successfully");
             log.debug("Response: " + responseMessage);

@@ -34,7 +34,7 @@ public class TrainDeserializer extends JsonDeserializer<Train> {
         train.setDestinationStation(destinationStation);
 
         train.setTravelDate(LocalDate.parse(node.get("travel_date").asText()));
-        train.setDepartureTime(Time.valueOf(node.get("departure_time").asText()));
+        train.setDepartureTime(Time.valueOf(node.get("departure_time").asText()).toLocalTime());
 
         // Handle train_classes
         if (node.hasNonNull("train_classes")) {

@@ -29,7 +29,8 @@ public interface PeakTimeApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ApiResponseMessage> addPeakTime(@ApiParam(value = "Peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime);
+    ResponseEntity<ApiResponseMessage> addPeakTime(
+            @ApiParam(value = "Peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime);
 
 
     @ApiOperation(value = "Delete a peak time", nickname = "deletePeakTime", notes = "", tags={ "peakTime", })
@@ -39,7 +40,8 @@ public interface PeakTimeApi {
         @ApiResponse(code = 404, message = "Peak time not found") })
     @RequestMapping(value = "/peakTime/peakTime/{peakTimeId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<ApiResponseMessage> deletePeakTime(@ApiParam(value = "ID of the peak time to delete",required=true) @PathVariable("peakTimeId") Integer peakTimeId);
+    ResponseEntity<ApiResponseMessage> deletePeakTime(
+            @ApiParam(value = "ID of the peak time to delete",required=true) @PathVariable("peakTimeId") Integer peakTimeId);
 
 
     @ApiOperation(value = "Get all peak times", nickname = "getpeakTimes", notes = "", response = PeakTime.class, responseContainer = "List", tags={ "peakTime", })
@@ -58,6 +60,8 @@ public interface PeakTimeApi {
         @ApiResponse(code = 404, message = "Peak time not found") })
     @RequestMapping(value = "/peakTime/peakTime/{peakTimeId}",
         method = RequestMethod.PUT)
-    ResponseEntity<ApiResponseMessage> updatePeakTime(@ApiParam(value = "ID of the peak time to update",required=true) @PathVariable("peakTimeId") Integer peakTimeId,@ApiParam(value = "Updated peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime);
+    ResponseEntity<ApiResponseMessage> updatePeakTime(
+            @ApiParam(value = "ID of the peak time to update",required=true) @PathVariable("peakTimeId") Integer peakTimeId,
+            @ApiParam(value = "Updated peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime);
 
 }
