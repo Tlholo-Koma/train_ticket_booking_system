@@ -1,104 +1,57 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
+import lombok.*;
 
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.Date;
 
-/**
- * TrainClassType
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+@Table(name = "trainclasstype")
+public class TrainClassType {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @ToString.Include
+    @JsonProperty("class_type_id")
+    @Column(name = "class_type_id")
+    @ApiModelProperty(value = "")
+    private Integer classTypeId;
 
-public class TrainClassType   {
-  @JsonProperty("train_class_id")
-  private Integer trainClassId = null;
+    @Column(name = "class_type_name", nullable = false)
+    @ToString.Include
+    @JsonProperty("class_type_name")
+    @ApiModelProperty(value = "")
+    private String classTypeName;
 
-  @JsonProperty("train_class_name")
-  private String trainClassName = null;
+    @Column(name = "created_by", nullable = false)
+    @JsonIgnore
+    private String createdBy ="SYSTEM";
 
-  public TrainClassType trainClassId(Integer trainClassId) {
-    this.trainClassId = trainClassId;
-    return this;
-  }
+    @Column(name = "date_created", nullable = false)
+    @JsonIgnore
+    private Date dateCreated;
 
-  /**
-   * Get trainClassId
-   * @return trainClassId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getTrainClassId() {
-    return trainClassId;
-  }
-
-  public void setTrainClassId(Integer trainClassId) {
-    this.trainClassId = trainClassId;
-  }
-
-  public TrainClassType trainClassName(String trainClassName) {
-    this.trainClassName = trainClassName;
-    return this;
-  }
-
-  /**
-   * Get trainClassName
-   * @return trainClassName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getTrainClassName() {
-    return trainClassName;
-  }
-
-  public void setTrainClassName(String trainClassName) {
-    this.trainClassName = trainClassName;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    TrainClassType trainClassType = (TrainClassType) o;
-    return Objects.equals(this.trainClassId, trainClassType.trainClassId) &&
-        Objects.equals(this.trainClassName, trainClassType.trainClassName);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(trainClassId, trainClassName);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class TrainClassType {\n");
+    @Column(name = "date_updated", nullable = false)
+    @JsonIgnore
+    private Date dateUpdated;
     
-    sb.append("    trainClassId: ").append(toIndentedString(trainClassId)).append("\n");
-    sb.append("    trainClassName: ").append(toIndentedString(trainClassName)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
+    @PrePersist
+    protected void onCreate() {
+      dateCreated = new Date();
+      dateUpdated = new Date();
     }
-    return o.toString().replace("\n", "\n    ");
-  }
-}
 
+    @PreUpdate
+    protected void onUpdate() {
+      dateUpdated = new Date();
+    }
+}

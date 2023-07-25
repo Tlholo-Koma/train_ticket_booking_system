@@ -1,232 +1,60 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
+import javax.persistence.*;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.util.Objects;
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+@Table(name = "Passenger")
+public class Passenger {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	@JsonProperty("passenger_id")
+	private Integer passengerId;
 
-/**
- * Passenger
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
+//	@JsonProperty("booking_id")
+//	@Column(name = "booking_id")
+//	private Integer bookingId;
 
+//	@JsonProperty("seat_id")
+//	@Column(name = "seat_id")
+//	private Integer seatId;
 
-public class Passenger   {
-  @JsonProperty("seat_id")
-  private Integer seatId = null;
+	@JsonProperty("passenger_name")
+	@ToString.Include
+	@Column(name = "passenger_name", nullable = false)
+	private String passengerName;
+	
+//	@ManyToOne
+//	@JoinColumn(name = "booking_id", insertable = false, updatable = false)
+//	private UserBooking booking;
 
-  @JsonProperty("seat_type")
-  private String seatType = null;
-
-  @JsonProperty("seat_number")
-  private String seatNumber = null;
-
-  @JsonProperty("seat_price")
-  private BigDecimal seatPrice = null;
-
-  @JsonProperty("passenger_id")
-  private Integer passengerId = null;
-
-  @JsonProperty("passenger_name")
-  private String passengerName = null;
-
-  @JsonProperty("age")
-  private Integer age = null;
-
-  public Passenger seatId(Integer seatId) {
-    this.seatId = seatId;
-    return this;
-  }
-
-  /**
-   * Get seatId
-   * @return seatId
-  **/
-  @ApiModelProperty(value = "")
+	@JsonProperty("passenger_age")
+	@ToString.Include
+	@Column(name = "age")
+	private Integer age;
 
 
-  public Integer getSeatId() {
-    return seatId;
-  }
+//	@JsonProperty("date_created")
+//	@Column(name = "date_created", nullable = false)
+//	private LocalDate dateCreated;
 
-  public void setSeatId(Integer seatId) {
-    this.seatId = seatId;
-  }
+//	@JsonProperty("date_updated")
+//	@Column(name = "date_updated", nullable = false)
+//	private LocalDate dateUpdated;
 
-  public Passenger seatType(String seatType) {
-    this.seatType = seatType;
-    return this;
-  }
-
-  /**
-   * Get seatType
-   * @return seatType
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getSeatType() {
-    return seatType;
-  }
-
-  public void setSeatType(String seatType) {
-    this.seatType = seatType;
-  }
-
-  public Passenger seatNumber(String seatNumber) {
-    this.seatNumber = seatNumber;
-    return this;
-  }
-
-  /**
-   * Get seatNumber
-   * @return seatNumber
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getSeatNumber() {
-    return seatNumber;
-  }
-
-  public void setSeatNumber(String seatNumber) {
-    this.seatNumber = seatNumber;
-  }
-
-  public Passenger seatPrice(BigDecimal seatPrice) {
-    this.seatPrice = seatPrice;
-    return this;
-  }
-
-  /**
-   * Get seatPrice
-   * @return seatPrice
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public BigDecimal getSeatPrice() {
-    return seatPrice;
-  }
-
-  public void setSeatPrice(BigDecimal seatPrice) {
-    this.seatPrice = seatPrice;
-  }
-
-  public Passenger passengerId(Integer passengerId) {
-    this.passengerId = passengerId;
-    return this;
-  }
-
-  /**
-   * Get passengerId
-   * @return passengerId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getPassengerId() {
-    return passengerId;
-  }
-
-  public void setPassengerId(Integer passengerId) {
-    this.passengerId = passengerId;
-  }
-
-  public Passenger passengerName(String passengerName) {
-    this.passengerName = passengerName;
-    return this;
-  }
-
-  /**
-   * Get passengerName
-   * @return passengerName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getPassengerName() {
-    return passengerName;
-  }
-
-  public void setPassengerName(String passengerName) {
-    this.passengerName = passengerName;
-  }
-
-  public Passenger age(Integer age) {
-    this.age = age;
-    return this;
-  }
-
-  /**
-   * Get age
-   * @return age
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getAge() {
-    return age;
-  }
-
-  public void setAge(Integer age) {
-    this.age = age;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Passenger passenger = (Passenger) o;
-    return Objects.equals(this.seatId, passenger.seatId) &&
-        Objects.equals(this.seatType, passenger.seatType) &&
-        Objects.equals(this.seatNumber, passenger.seatNumber) &&
-        Objects.equals(this.seatPrice, passenger.seatPrice) &&
-        Objects.equals(this.passengerId, passenger.passengerId) &&
-        Objects.equals(this.passengerName, passenger.passengerName) &&
-        Objects.equals(this.age, passenger.age);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(seatId, seatType, seatNumber, seatPrice, passengerId, passengerName, age);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Passenger {\n");
-    
-    sb.append("    seatId: ").append(toIndentedString(seatId)).append("\n");
-    sb.append("    seatType: ").append(toIndentedString(seatType)).append("\n");
-    sb.append("    seatNumber: ").append(toIndentedString(seatNumber)).append("\n");
-    sb.append("    seatPrice: ").append(toIndentedString(seatPrice)).append("\n");
-    sb.append("    passengerId: ").append(toIndentedString(passengerId)).append("\n");
-    sb.append("    passengerName: ").append(toIndentedString(passengerName)).append("\n");
-    sb.append("    age: ").append(toIndentedString(age)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	@ManyToOne
+	@JoinColumn(name = "booking_id")
+	@JsonIgnore
+	private Booking ticket;
 }
-
