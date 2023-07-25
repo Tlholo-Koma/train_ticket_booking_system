@@ -2,6 +2,7 @@ package io.swagger.service;
 
 import io.swagger.model.Train;
 import io.swagger.model.TrainClass;
+import io.swagger.model.TrainPeakTime;
 import io.swagger.model.TrainSeat;
 import io.swagger.repository.BookingRepository;
 import io.swagger.repository.TrainRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,17 +22,22 @@ public class TrainService {
     private final TrainClassService trainClassService;
     private final TrainSeatService trainSeatService;
     private final JdbcTemplate jdbcTemplate;
+    private final PeakTimeService peakTimeService;
+    private final TrainPeakTimeService trainPeakTimeService;
 
 
     @Autowired
     public TrainService(BookingRepository bookingRepository, TrainRepository trainRepository,
                         TrainClassService trainClassService, TrainSeatService trainSeatService,
-                        JdbcTemplate jdbcTemplate) {
+                        JdbcTemplate jdbcTemplate, PeakTimeService peakTimeService,
+                        TrainPeakTimeService trainPeakTimeService) {
         this.bookingRepository = bookingRepository;
         this.trainRepository = trainRepository;
         this.trainClassService = trainClassService;
         this.trainSeatService = trainSeatService;
         this.jdbcTemplate = jdbcTemplate;
+        this.peakTimeService = peakTimeService;
+        this.trainPeakTimeService = trainPeakTimeService;
     }
 
     public List<Train> getAllTrains() {
@@ -44,12 +51,24 @@ public class TrainService {
     public Train createOrUpdateTrain(Train train) {
     	train = trainRepository.save(train);
 
+        // adding train class
         for (TrainClass trainClass: train.getTrainClasses()) {
             trainClass.setTrain(train);
             trainClass = trainClassService.createOrUpdateTrainClass(trainClass);
         }
 
+        // adding train seats
         callAddSeatsStoredProcedure(train.getTrainId());
+
+        // adding peak time
+        TrainPeakTime trainPeakTime = new TrainPeakTime();
+        trainPeakTime.setTrain(train);
+        trainPeakTime.setPeakTime(peakTimeService.findPeakTimeByTime(train.getDepartureTime()));
+        trainPeakTimeService.saveTrainPeakTime(trainPeakTime);
+
+        List<TrainPeakTime> trainPeakTimes = new ArrayList<>();
+        trainPeakTimes.add(trainPeakTime);
+        train.setPeakTimes(trainPeakTimes);
 
         return train;
     }
