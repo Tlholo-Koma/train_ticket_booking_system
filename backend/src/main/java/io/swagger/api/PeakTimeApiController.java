@@ -69,7 +69,14 @@ public class PeakTimeApiController implements PeakTimeApi {
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
             }
 
-            peakTimeService.deletePeakTime(peakTimeId);
+            boolean deleted = peakTimeService.deletePeakTime(peakTimeId);
+
+            if (!deleted) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.CONFLICT.value(), "The Peak time is still in use and cannot be deleted.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+            }
+
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Peak time deleted successfully");
             log.debug("Response: " + responseMessage);

@@ -2,6 +2,7 @@ package io.swagger.service;
 
 import io.swagger.model.PeakTime;
 import io.swagger.repository.PeakTimeRepository;
+import io.swagger.repository.TrainPeakTimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,12 @@ import java.util.Optional;
 public class PeakTimeService {
 
     private final PeakTimeRepository peakTimeRepository;
+    private final TrainPeakTimeRepository trainPeakTimeRepository;
 
     @Autowired
-    public PeakTimeService(PeakTimeRepository peakTimeRepository) {
+    public PeakTimeService(PeakTimeRepository peakTimeRepository, TrainPeakTimeRepository trainPeakTimeRepository) {
         this.peakTimeRepository = peakTimeRepository;
+        this.trainPeakTimeRepository = trainPeakTimeRepository;
     }
 
     public List<PeakTime> getAllPeakTimes() {
@@ -31,8 +34,16 @@ public class PeakTimeService {
         return peakTimeRepository.save(peakTime);
     }
 
-    public void deletePeakTime(Integer peakTimeId) {
-        peakTimeRepository.deleteById(peakTimeId);
+    public boolean deletePeakTime(Integer peakTimeId) {
+        boolean isPeakTimeUsedInTrain = checkIfPeakTimeInTrain(peakTimeId);
+
+        if (isPeakTimeUsedInTrain) {
+            return false;
+        }
+        else {
+            peakTimeRepository.deleteById(peakTimeId);
+            return true;
+        }
     }
 
     public PeakTime findPeakTimeByTime(LocalTime givenTime){
@@ -42,5 +53,9 @@ public class PeakTimeService {
                 .filter(peakTime -> peakTime.getStartTime().compareTo(givenTime) <= 0
                         && peakTime.getEndTime().compareTo(givenTime) >= 0)
                 .findFirst().orElse(null);
+    }
+
+    private boolean checkIfPeakTimeInTrain(Integer peakTimeId) {
+        return trainPeakTimeRepository.existsByPeakTimePeakTimeId(peakTimeId);
     }
 }
