@@ -3,8 +3,10 @@ package io.swagger.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.Station;
+import io.swagger.service.StationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 @Controller
@@ -23,42 +25,111 @@ public class StationApiController implements StationApi {
     private static final Logger log = LoggerFactory.getLogger(StationApiController.class);
 
     private final ObjectMapper objectMapper;
-
     private final HttpServletRequest request;
+    private final StationService stationService;
 
-    @org.springframework.beans.factory.annotation.Autowired
-    public StationApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    @Autowired
+    public StationApiController(ObjectMapper objectMapper, HttpServletRequest request,
+            StationService stationService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.stationService = stationService;
     }
 
-    public ResponseEntity<Void> addStation(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody Station station) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-    }
+    public ResponseEntity<ApiResponseMessage> addStation(
+            @ApiParam(value = "Station object", required = true) @Valid @RequestBody Station station) {
+        log.debug("Received request to /station/station POST (addStation) with station=" + station);
 
-    public ResponseEntity<Void> deleteStation(@ApiParam(value = "ID of the station to delete",required=true) @PathVariable("stationId") Integer stationId) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    public ResponseEntity<List<Station>> getStations() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Station>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Station>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        try {
+            Station addedStation = stationService.createOrUpdateStation(station);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
+                    "Station created successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
-
-        return new ResponseEntity<List<Station>>(HttpStatus.NOT_IMPLEMENTED);
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to add station.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public ResponseEntity<Void> updateStation(@ApiParam(value = "ID of the station to update",required=true) @PathVariable("stationId") Integer stationId,@ApiParam(value = "Updated station object" ,required=true )  @Valid @RequestBody Station station) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<ApiResponseMessage> deleteStation(
+            @ApiParam(value = "ID of the station to delete", required = true) @PathVariable("stationId") Integer stationId) {
+        log.debug("Received request to /station/station/{stationId} DELETE (deleteStation) with stationId="
+                + stationId);
+
+        try {
+            Station foundStation = stationService.getStationById(stationId).orElse(null);
+
+            if (foundStation == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Station was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            boolean deleted = stationService.deleteStation(stationId);
+
+            if (!deleted) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.CONFLICT.value(), "The Station is still in use and cannot be deleted.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+            }
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
+                    "Station deleted successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete station.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    public ResponseEntity<ApiResponseMessage> getStations() {
+        log.debug("Received request to /station/stations GET (getStations)");
+
+        try {
+            List<Station> stations = stationService.getAllStations();
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Stations retrieved successfully.", stations);
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to retrieve stations.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<ApiResponseMessage> updateStation(
+            @ApiParam(value = "ID of the station to update", required = true) @PathVariable("stationId") Integer stationId,
+            @ApiParam(value = "Updated station object", required = true) @Valid @RequestBody Station station) {
+        log.debug("Received request to /station/station/{stationId} PUT (updateStation) with stationId=" + stationId
+                + " AND station=" + station);
+
+        try {
+            Station foundStation = stationService.getStationById(stationId).orElse(null);
+
+            if (foundStation == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Station was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            foundStation.setStationName(station.getStationName());
+            Station updatedStation = stationService.createOrUpdateStation(foundStation);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
+                    "Station updated successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to update station.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
+

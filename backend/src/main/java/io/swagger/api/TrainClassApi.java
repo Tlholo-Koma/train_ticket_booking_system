@@ -30,7 +30,7 @@ public interface TrainClassApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> addTrainClassType(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType);
+    ResponseEntity<ApiResponseMessage> addTrainClassType(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType);
 
 
     @ApiOperation(value = "Delete a train class type", nickname = "deleteTrainClassType", notes = "", tags={ "trainClass", })
@@ -40,7 +40,7 @@ public interface TrainClassApi {
         @ApiResponse(code = 404, message = "Train class type not found") })
     @RequestMapping(value = "/trainClass/trainClass/{classId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteTrainClassType(@ApiParam(value = "ID of the train class type to delete",required=true) @PathVariable("classId") Integer classId);
+    ResponseEntity<ApiResponseMessage> deleteTrainClassType(@ApiParam(value = "ID of the train class type to delete",required=true) @PathVariable("classId") Integer classId);
 
 
     @ApiOperation(value = "Get all classes", nickname = "getClasses", notes = "", response = TrainClassType.class, responseContainer = "List", tags={ "trainClass", })
@@ -49,7 +49,7 @@ public interface TrainClassApi {
     @RequestMapping(value = "/trainClass/trainClasses",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<TrainClassType>> getClasses();
+    ResponseEntity<ApiResponseMessage> getClasses();
 
 
     @ApiOperation(value = "Update a train class type", nickname = "updateTrainClassType", notes = "", tags={ "trainClass", })
@@ -59,6 +59,6 @@ public interface TrainClassApi {
         @ApiResponse(code = 404, message = "Train class type not found") })
     @RequestMapping(value = "/trainClass/trainClass/{classId}",
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateTrainClassType(@ApiParam(value = "ID of the train class type to update",required=true) @PathVariable("classId") Integer classId,@ApiParam(value = "Updated train class type object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType);
+    ResponseEntity<ApiResponseMessage> updateTrainClassType(@ApiParam(value = "ID of the train class type to update",required=true) @PathVariable("classId") Integer classId,@ApiParam(value = "Updated train class type object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType);
 
 }
