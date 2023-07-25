@@ -3,15 +3,13 @@ package io.swagger.service;
 import io.swagger.model.Train;
 import io.swagger.model.TrainClass;
 import io.swagger.model.TrainSeat;
-import io.swagger.repository.TrainRepository;
 import io.swagger.repository.BookingRepository;
+import io.swagger.repository.TrainRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
-
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service

@@ -14,23 +14,26 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-@Table(name = "TrainPeakTime")
+@Table(name = "Trainpeaktime")
 public class TrainPeakTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     @ToString.Include
-    @JsonProperty("train_peak_time_id")
     @ApiModelProperty(value = "")
+    @JsonIgnore
     private Integer trainPeakTimeId;
 
     @ManyToOne
     @JoinColumn(name = "train_id", nullable = false)
+    @JsonIgnore
     private Train train;
 
     @ManyToOne
     @JoinColumn(name = "peak_time_id")
+    @JsonProperty("peak_time")
+    @ToString.Include
     private PeakTime peakTime;
 
     @Column(name = "date_created", nullable = false)
