@@ -1,104 +1,55 @@
 package io.swagger.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
+import lombok.*;
 
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.Date;
 
-/**
- * SeatType
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
+@Table(name = "seattype")
+public class SeatType {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @ToString.Include
+    @JsonProperty("seat_type_id")
+    @ApiModelProperty(value = "")
+    private Integer seatTypeId;
 
+    @Column(name = "seat_type_name", nullable = false)
+    @ToString.Include
+    @JsonProperty("seat_type_name")
+    @ApiModelProperty(value = "")
+    private String seatTypeName;
 
-public class SeatType   {
-  @JsonProperty("seat_type_id")
-  private Integer seatTypeId = null;
+    @Column(name = "created_by", nullable = false)
+    @JsonIgnore
+    private String createdBy = "SYSTEM";
 
-  @JsonProperty("seat_type_name")
-  private String seatTypeName = null;
+    @Column(name = "date_created", nullable = false)
+    @JsonIgnore
+    private Date dateCreated;
 
-  public SeatType seatTypeId(Integer seatTypeId) {
-    this.seatTypeId = seatTypeId;
-    return this;
-  }
+    @Column(name = "date_updated", nullable = false)
+    @JsonIgnore
+    private Date dateUpdated;
 
-  /**
-   * Get seatTypeId
-   * @return seatTypeId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getSeatTypeId() {
-    return seatTypeId;
-  }
-
-  public void setSeatTypeId(Integer seatTypeId) {
-    this.seatTypeId = seatTypeId;
-  }
-
-  public SeatType seatTypeName(String seatTypeName) {
-    this.seatTypeName = seatTypeName;
-    return this;
-  }
-
-  /**
-   * Get seatTypeName
-   * @return seatTypeName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getSeatTypeName() {
-    return seatTypeName;
-  }
-
-  public void setSeatTypeName(String seatTypeName) {
-    this.seatTypeName = seatTypeName;
-  }
-
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
+    @PrePersist
+    protected void onCreate() {
+        dateCreated = new Date();
+        dateUpdated = new Date();
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    @PreUpdate
+    protected void onUpdate() {
+        dateUpdated = new Date();
     }
-    SeatType seatType = (SeatType) o;
-    return Objects.equals(this.seatTypeId, seatType.seatTypeId) &&
-        Objects.equals(this.seatTypeName, seatType.seatTypeName);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(seatTypeId, seatTypeName);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class SeatType {\n");
-    
-    sb.append("    seatTypeId: ").append(toIndentedString(seatTypeId)).append("\n");
-    sb.append("    seatTypeName: ").append(toIndentedString(seatTypeName)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
 }
-

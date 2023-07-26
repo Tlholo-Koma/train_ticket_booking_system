@@ -1,5 +1,6 @@
 package io.swagger.api;
 
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -8,6 +9,7 @@ import java.time.Instant;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 @javax.xml.bind.annotation.XmlRootElement
+@ToString
 public class ApiResponseMessage {
     Instant timestamp;
     int status;
@@ -76,30 +78,5 @@ public class ApiResponseMessage {
 
     public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ApiResponseMessage {\n");
-
-        sb.append("    timestamp: ").append(toIndentedString(timestamp)).append("\n");
-        sb.append("    status: ").append(toIndentedString(status)).append("\n");
-        sb.append("    type: ").append(toIndentedString(type)).append("\n");
-        sb.append("    message: ").append(toIndentedString(message)).append("\n");
-        sb.append("    data: ").append(toIndentedString(data)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }
