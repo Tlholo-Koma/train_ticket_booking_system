@@ -19,14 +19,15 @@ function openStation(evt, cityName) {
     evt.currentTarget.className += " active";
   }
 
-async function test(){
-  const response = await fetch(allaboard_url + "train/trains", {
-      method: "GET",
-      headers: {
-          "Content-type": "application/json; charset=UTF-8"
-      }
-  });
-  console.log(await (response.json()));
-  }
-  
-  test();
+  function edit() {
+    console.log('Editing');
+    document.getElementById('submit-button').style.visibility = 'visible';
+    document.getElementById('cancel-button').style.visibility = 'visible';
+    document.getElementById('edit-button').style.visibility = 'hidden';
+}
+
+function exitEdit() {
+    document.getElementById('submit-button').style.visibility = 'hidden';
+    document.getElementById('cancel-button').style.visibility = 'hidden';
+    document.getElementById('edit-button').style.visibility = 'visible';
+}

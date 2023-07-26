@@ -25,11 +25,16 @@
         <section id="London" class="tabcontent">
             <h3>Station 1</h3>
             <button id="add-train">Add train</button>
+
+
+            <section class="train-container">
+
             <select class="train-list" multiple="multiple">
                 <option>Train 1</option>
                 <option>Train 2</option>
             </select>
-            <form class="train-info">
+            
+            <article class="train-info">
                 <label>Train Name</label> <br/>
                 <input readonly/> <br/>
                 <label>Source station</label> <br/>
@@ -44,8 +49,12 @@
                     <li>class 2</li>
                     <li>class 3</li>
                 </ul>
-                <button type="submit">Edit</button>
-            </form>
+                <button id="edit-button" onclick="edit()">Edit</button>
+                <button id="submit-button" onclick="exitEdit()">Okay</button>
+                <button id="cancel-button" onclick="exitEdit()">Cancel</button>
+            </article>
+
+            </section>
         </section>
         <!-- <div id="Paris" class="tabcontent">
             <h3>Station 2</h3>
