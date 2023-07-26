@@ -33,7 +33,6 @@ CREATE TABLE [Train] (
   [destination_station] INT NOT NULL,
   [travel_date]			DATE NOT NULL,
   [departure_time]		TIME NOT NULL,
-  [peak_time_id]		INT DEFAULT NULL NULL,
   [created_by]			VARCHAR(255) DEFAULT 'SYSTEM',
   [date_created]		DATETIME NOT NULL,
   [date_updated]		DATETIME NOT NULL,
@@ -47,8 +46,17 @@ CREATE TABLE [PeakTimes] (
   [end_time]					TIME NOT NULL,
   [price_increase_percentage]	FLOAT NOT NULL,
   [created_by]					VARCHAR(255) DEFAULT 'SYSTEM',
-  [date_created]					DATETIME NOT NULL,
+  [date_created]				DATETIME NOT NULL,
   [date_updated]				DATETIME NOT NULL
+)
+
+CREATE TABLE [TrainPeakTime] (
+  [train_peak_time_id]			INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+  [train_id]					INT NOT NULL,
+  [peak_time_id]				INT DEFAULT NULL NULL,
+  [date_created]				DATETIME NOT NULL,
+  [date_updated]				DATETIME NOT NULL,
+  FOREIGN KEY ([train_id]) REFERENCES [Train]([train_id])
 )
 
 CREATE TABLE [TrainClassType] (

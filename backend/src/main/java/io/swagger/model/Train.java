@@ -2,20 +2,21 @@ package io.swagger.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.utils.jackson.StationDeserializer;
 import io.swagger.utils.jackson.TrainClassDeserializer;
+import io.swagger.utils.jackson.TrainPeakTimeDeserializer;
 import io.swagger.utils.jackson.TrainSeatDeserializer;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.swagger.utils.jackson.StationDeserializer;
 
 @Entity
 @Validated
@@ -64,7 +65,14 @@ public class Train {
     @ToString.Include
     @Column(name = "departure_time")
     @JsonProperty("departure_time")
-    private Time departureTime;
+    private LocalTime departureTime;
+
+    @ToString.Include
+    @OneToMany( orphanRemoval = true)
+    @JoinColumn(name = "train_id", referencedColumnName = "train_id")
+    @JsonProperty("peak_times")
+    @JsonDeserialize(using = TrainPeakTimeDeserializer.class)
+    private List<TrainPeakTime> peakTimes = null;
 
     @Column(name = "created_by")
     @JsonIgnore

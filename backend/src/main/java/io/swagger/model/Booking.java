@@ -6,8 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class Booking {
 
     @ToString.Include
     @JsonProperty("departure_time")
-    private Time departureTime = null;
+    private LocalTime departureTime = null;
 
     @ToString.Include
     @JsonProperty("booking_date")

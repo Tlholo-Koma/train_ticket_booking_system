@@ -51,19 +51,38 @@ GO
 -- Inserting trains
 MERGE [Train] AS TARGET 
 USING (VALUES
-	  ('Toon Express', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Centurion'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Park'), '2023-07-17', '09:00:00', NULL),
-	  ('Cartoonville Chugger', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Pretoria'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Rhodesfield'), '2023-07-16', '10:30:00', NULL),
-	  ('Looney Line Express', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Centurion'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Park'), '2023-07-25', '07:00:00', 1)
+	  ('Toon Express', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Centurion'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Park'), '2023-07-17', '09:00:00'),
+	  ('Cartoonville Chugger', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Pretoria'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Rhodesfield'), '2023-07-16', '10:30:00'),
+	  ('Looney Line Express', (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Centurion'), (SELECT [station_id] FROM [Station] WHERE [station_name] = 'Park'), '2023-07-25', '07:00:00')
 	)
-  AS SOURCE ([train_name], [source_station], [destination_station], [travel_date], [departure_time], [peak_time_id])
-  ON (TARGET.train_name = SOURCE.train_name AND TARGET.source_station = SOURCE.source_station AND TARGET.destination_station = SOURCE.destination_station AND TARGET.peak_time_id = SOURCE.peak_time_id)
+  AS SOURCE ([train_name], [source_station], [destination_station], [travel_date], [departure_time])
+  ON (TARGET.train_name = SOURCE.train_name AND TARGET.source_station = SOURCE.source_station AND TARGET.destination_station = SOURCE.destination_station)
   WHEN MATCHED THEN 
-	UPDATE SET [travel_date] = SOURCE.travel_date, [departure_time] = SOURCE.departure_time, [peak_time_id] = SOURCE.peak_time_id, [date_updated] = CURRENT_TIMESTAMP
+	UPDATE SET [travel_date] = SOURCE.travel_date, [departure_time] = SOURCE.departure_time, [date_updated] = CURRENT_TIMESTAMP
   WHEN NOT MATCHED BY TARGET THEN
-	INSERT ([train_name], [source_station], [destination_station], [travel_date], [departure_time], [peak_time_id], [date_created], [date_updated])
-	VALUES (SOURCE.train_name, SOURCE.source_station, SOURCE.destination_station, SOURCE.travel_date, SOURCE.departure_time, SOURCE.peak_time_id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+	INSERT ([train_name], [source_station], [destination_station], [travel_date], [departure_time], [date_created], [date_updated])
+	VALUES (SOURCE.train_name, SOURCE.source_station, SOURCE.destination_station, SOURCE.travel_date, SOURCE.departure_time, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 SELECT * FROM [Train]
+GO
+
+
+-- inserting train peak times 
+MERGE [TrainPeakTime] AS TARGET 
+USING (VALUES
+	  ((SELECT [train_id] FROM [Train] WHERE [train_name] = 'Toon Express'), NULL),
+	  ((SELECT [train_id] FROM [Train] WHERE [train_name] = 'Cartoonville Chugger'), NULL),
+	  ((SELECT [train_id] FROM [Train] WHERE [train_name] = 'Looney Line Express'), 1)
+	)
+  AS SOURCE ([train_id], [peak_time_id])
+  ON (TARGET.train_id = SOURCE.train_id AND TARGET.peak_time_id = SOURCE.peak_time_id)
+  WHEN MATCHED THEN 
+	UPDATE SET [peak_time_id] = SOURCE.peak_time_id, [date_updated] = CURRENT_TIMESTAMP
+  WHEN NOT MATCHED BY TARGET THEN
+	INSERT ([train_id], [peak_time_id], [date_created], [date_updated])
+	VALUES (SOURCE.train_id, SOURCE.peak_time_id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+SELECT * FROM [TrainPeakTime]
 GO
 
 
