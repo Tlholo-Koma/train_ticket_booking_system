@@ -63,6 +63,7 @@ h2 {
     flex: 0 0 40%; /* Take up 40% of the available space but do not grow or shrink */
     max-width: 40%;
     height: 100px;
+    overflow-y: auto;
 }
 
 .train-info {
