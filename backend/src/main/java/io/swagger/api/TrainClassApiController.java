@@ -3,8 +3,10 @@ package io.swagger.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import io.swagger.model.TrainClassType;
+import io.swagger.service.TrainClassTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 @Controller
@@ -23,42 +25,109 @@ public class TrainClassApiController implements TrainClassApi {
     private static final Logger log = LoggerFactory.getLogger(TrainClassApiController.class);
 
     private final ObjectMapper objectMapper;
-
     private final HttpServletRequest request;
+    private final TrainClassTypeService trainClassTypeService;
 
-    @org.springframework.beans.factory.annotation.Autowired
-    public TrainClassApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    @Autowired
+    public TrainClassApiController(ObjectMapper objectMapper, HttpServletRequest request,
+            TrainClassTypeService trainClassTypeService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.trainClassTypeService = trainClassTypeService;
     }
 
-    public ResponseEntity<Void> addTrainClassType(@ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-    }
+    public ResponseEntity<ApiResponseMessage> addTrainClassType(
+            @ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
+        log.debug("Received request to /trainClass/trainClass POST (addTrainClassType) with trainClassType=" + trainClassType);
 
-    public ResponseEntity<Void> deleteTrainClassType(@ApiParam(value = "ID of the train class type to delete",required=true) @PathVariable("classId") Integer classId) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    public ResponseEntity<List<TrainClassType>> getClasses() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<TrainClassType>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<TrainClassType>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        try {
+            TrainClassType addedTrainClassType = trainClassTypeService.createOrUpdateTrainClassType(trainClassType);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
+                    "Train class type created successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
-
-        return new ResponseEntity<List<TrainClassType>>(HttpStatus.NOT_IMPLEMENTED);
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to add train class type.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public ResponseEntity<Void> updateTrainClassType(@ApiParam(value = "ID of the train class type to update",required=true) @PathVariable("classId") Integer classId,@ApiParam(value = "Updated train class type object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<ApiResponseMessage> deleteTrainClassType(
+            @ApiParam(value = "ID of the train class type to delete",required=true) @PathVariable("classId") Integer classId) {
+        log.debug("Received request to /trainClass/trainClass/{classId} DELETE (deleteTrainClassType) with classId=" + classId);
+
+        try {
+            TrainClassType foundTrainClassType = trainClassTypeService.getTrainClassTypeById(classId).orElse(null);
+
+            if (foundTrainClassType == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Train class type was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            boolean deleted = trainClassTypeService.deleteTrainClassType(classId);
+
+            if (!deleted) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.CONFLICT.value(), "The Train class type is still in use and cannot be deleted.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.CONFLICT);
+            }
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
+                    "Train class type deleted successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete train class type.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<ApiResponseMessage> getClasses() {
+        log.debug("Received request to /trainClass/trainClasses GET (getClasses)");
+
+        try {
+            List<TrainClassType> trainClassTypes = trainClassTypeService.getAllTrainClassTypes();
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Train class types retrieved successfully.", trainClassTypes);
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to retrieve train class types.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<ApiResponseMessage> updateTrainClassType(
+            @ApiParam(value = "ID of the train class type to update",required=true) @PathVariable("classId") Integer classId,
+            @ApiParam(value = "Updated train class type object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
+        log.debug("Received request to /trainClass/trainClass/{classId} PUT (updateTrainClassType) with classId=" + classId + " AND trainClassType=" + trainClassType);
+
+        try {
+            TrainClassType foundTrainClassType = trainClassTypeService.getTrainClassTypeById(classId).orElse(null);
+
+            if (foundTrainClassType == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Train class type was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            foundTrainClassType.setClassTypeName(trainClassType.getClassTypeName());
+            TrainClassType updatedTrainClassType = trainClassTypeService.createOrUpdateTrainClassType(foundTrainClassType);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
+                    "Train class type updated successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to update train class type.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

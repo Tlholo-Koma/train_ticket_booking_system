@@ -2,10 +2,14 @@ package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
-import io.swagger.model.TrainTicket;
-import io.swagger.model.UserBooking;
+import io.swagger.model.Booking;
+import io.swagger.model.Train;
+import io.swagger.service.BookingService;
+import io.swagger.service.TrainService;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2023-07-20T12:56:46.917+02:00")
 
 @Controller
@@ -24,65 +26,121 @@ public class BookingApiController implements BookingApi {
     private static final Logger log = LoggerFactory.getLogger(BookingApiController.class);
 
     private final ObjectMapper objectMapper;
-
     private final HttpServletRequest request;
+    private final BookingService bookingService;
 
-    @org.springframework.beans.factory.annotation.Autowired
-    public BookingApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+    @Autowired
+    public BookingApiController(ObjectMapper objectMapper, HttpServletRequest request, BookingService bookingService) {
         this.objectMapper = objectMapper;
         this.request = request;
+        this.bookingService = bookingService;
     }
 
-    public ResponseEntity<Integer> bookTrain(@ApiParam(value = "User Booking" ,required=true )  @Valid @RequestBody UserBooking booking) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Integer>(objectMapper.readValue("{}", Integer.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ApiResponseMessage> bookTrain(
+            @ApiParam(value = "User Booking" ,required=true )  @Valid @RequestBody Booking booking) {
+        log.debug("Received request to /booking/booking POST (bookTrain) with booking=" + booking);
+
+        try {
+            Booking addedBooking = bookingService.createOrUpdateTrain(booking);
+
+            if (addedBooking == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "No train seats available for booking.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
             }
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Booking created successfully.");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
-
-        return new ResponseEntity<Integer>(HttpStatus.NOT_IMPLEMENTED);
+        catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to add booking.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public ResponseEntity<Void> deleteBooking(@ApiParam(value = "ID of the booking to delete",required=true) @PathVariable("bookingId") Integer bookingId) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-    }
+    public ResponseEntity<ApiResponseMessage> deleteBooking(
+            @ApiParam(value = "ID of the booking to delete",required=true) @PathVariable("bookingId") Integer bookingId) {
+        log.debug("Received request to /booking/booking/{bookingId} DELETE (deleteBooking) with bookingId=" + bookingId);
 
-    public ResponseEntity<TrainTicket> getBooking(@ApiParam(value = "ID of the booking to get",required=true) @PathVariable("bookingId") Integer bookingId) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<TrainTicket>(objectMapper.readValue("{\"empty\": false}", TrainTicket.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<TrainTicket>(HttpStatus.INTERNAL_SERVER_ERROR);
+        try {
+            Booking foundBooking = bookingService.getBookingById(bookingId);
+
+            if (foundBooking == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Booking was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
             }
-        }
 
-        return new ResponseEntity<TrainTicket>(HttpStatus.NOT_IMPLEMENTED);
+            bookingService.deleteBooking(bookingId, foundBooking);
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
+                    "Booking deleted successfully");
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to delete booking.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public ResponseEntity<List<TrainTicket>> getBookings(@ApiParam(value = "User email of bookings to get",required=true) @PathVariable("userEmail") String userEmail) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<TrainTicket>>(objectMapper.readValue("{}", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<TrainTicket>>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ApiResponseMessage> getBooking(
+            @ApiParam(value = "ID of the booking to get",required=true) @PathVariable("bookingId") Integer bookingId) {
+        log.debug("Received request to /booking/booking/{bookingId} GET (getBooking) with bookingId=" + bookingId);
+
+        try {
+            Booking foundBooking = bookingService.getBookingById(bookingId);
+            System.out.println(foundBooking);
+
+            if (foundBooking == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Booking was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
             }
-        }
 
-        return new ResponseEntity<List<TrainTicket>>(HttpStatus.NOT_IMPLEMENTED);
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Booking found successfully", foundBooking);
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get booking.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    public ResponseEntity<Void> updateBooking(@ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,@ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody TrainTicket booking) {
-        String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<ApiResponseMessage> getBookings(
+            @ApiParam(value = "User email of bookings to get",required=true) @PathVariable("userEmail") String userEmail) {
+        log.debug("Received request to /booking/getBooking/{userEmail} GET (getBookings) with userEmail=" + userEmail);
+
+        try {
+            List<Booking> foundBooking = bookingService.getBookingByUserEmail(userEmail);
+            System.out.println(foundBooking);
+
+            if (foundBooking == null) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Bookings was not found.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
+            }
+
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Bookings found successfully", foundBooking);
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to get bookings.", e.getMessage());
+            log.debug("Response: " + responseMessage);
+            return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<ApiResponseMessage> updateBooking(
+            @ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,@ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody Booking booking) {
+        log.debug("Received request to /booking/booking/{bookingId} PUT (updateBooking) with bookingId=" + bookingId + " and booking=" + booking);
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
 }
