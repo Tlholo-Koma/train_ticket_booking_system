@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,7 +31,8 @@ public class BookingService {
     }
 
     public Booking getBookingById(Integer bookingId) {
-        return bookingRepository.findBookingByBookingId(bookingId).orElse(null);
+        Booking booking = bookingRepository.findBookingByBookingId(bookingId).orElse(null);
+        return populateTrainSeatsForBooking(booking);
     }
 
     public Booking createOrUpdateTrain(Booking booking) {
@@ -106,6 +108,30 @@ public class BookingService {
     }
 
     public List<Booking> getBookingByUserEmail(String userEmail) {
-        return bookingRepository.findByUserEmail(userEmail).orElse(null);
+        List<Booking> bookings = bookingRepository.findByUserEmail(userEmail).orElse(null);
+        return populateTrainSeatsForBookings(bookings);
     }
+
+    private List<Booking> populateTrainSeatsForBookings(List<Booking> bookings) {
+        if (bookings != null) {
+            for (Booking booking : bookings) {
+                populateTrainSeatsForBooking(booking);
+            }
+        }
+        return bookings;
+    }
+
+    private Booking populateTrainSeatsForBooking(Booking booking) {
+        if (booking != null) {
+            for (Passenger passenger : booking.getPassengers()) {
+                Integer seatId = passenger.getSeatId();
+
+                List<TrainSeat> trainSeats = new ArrayList<>();
+                trainSeats.add(trainSeatService.getTrainSeatById(seatId));
+                passenger.setSeats(trainSeats);
+            }
+        }
+        return booking;
+    }
+
 }

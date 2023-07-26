@@ -118,7 +118,7 @@ public class BookingApiController implements BookingApi {
             List<Booking> foundBooking = bookingService.getBookingByUserEmail(userEmail);
             System.out.println(foundBooking);
 
-            if (foundBooking == null) {
+            if (foundBooking == null || foundBooking.size() == 0) {
                 ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Bookings was not found.");
                 log.debug("Response: " + responseMessage);
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);

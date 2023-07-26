@@ -49,16 +49,16 @@ public class Passenger {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "seat_id")
-	@JsonProperty("train_seats")
+	@JsonProperty("train_seat")
 	@JsonDeserialize(using = TrainSeatDeserializer.class)
 	private List<TrainSeat> seats;
 
-	@JsonProperty("date_created")
 	@Column(name = "date_created", nullable = false)
+	@JsonIgnore
 	private LocalDate dateCreated;
 
-	@JsonProperty("date_updated")
 	@Column(name = "date_updated", nullable = false)
+	@JsonIgnore
 	private LocalDate dateUpdated;
 
 }
