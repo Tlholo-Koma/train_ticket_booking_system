@@ -15,6 +15,7 @@ var request = {
 
 async function signIn() {
     let loginResponse = await client.loginPopup(request);
+    console.log(loginResponse);
     localStorage.setItem('mail', loginResponse.idToken.preferredName);
     localStorage.setItem('token', loginResponse.idToken.rawIdToken);
     
