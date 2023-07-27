@@ -2,6 +2,8 @@ package io.swagger.service;
 
 import io.swagger.model.*;
 import io.swagger.repository.BookingRepository;
+import io.swagger.strategy.TicketPriceCalculator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
