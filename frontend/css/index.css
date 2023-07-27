@@ -162,6 +162,35 @@ form .page .btns button.next {
   font-size: 1.7vmax;
   line-height: 3.5vmin;
 }
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+  .container .progress-bar .step p {
+    font-size: 1.5vmax;
+  }
+
+  .progress-bar .step .bullet {
+    height: 2.5vmin;
+    width: 2.5vmin;
+    font-size: 1.5vmax;
+    line-height: 2.5vmin;
+  }
+
+  .progress-bar .step .bullet.active {
+    border-width: 0.15vmin;
+  }
+
+  .progress-bar .step .bullet span {
+    font-size: 1.2vmax;
+  }
+
+  .progress-bar .step p.active {
+    font-size: 1.5vmax;
+  }
+
+  .progress-bar .step .check {
+    font-size: 1.3vmax;
+  }
+}
 
 .progress-bar .step .bullet.active {
   border-color: #d43f8d;

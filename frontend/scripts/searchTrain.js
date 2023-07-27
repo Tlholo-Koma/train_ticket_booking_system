@@ -1,49 +1,30 @@
 
 document.addEventListener('DOMContentLoaded', async() => {
-    // const data = [
-    //     {
-    //         "station_id": 1,
-    //         "station_name": "Hatfield"
-    //     },
-    //     {
-    //         "station_id": 2,
-    //         "station_name": "Pretoria"
-    //     },
-    //     {
-    //         "station_id": 3,
-    //         "station_name": "Centurion"
-    //     },
-    //     {
-    //         "station_id": 4,
-    //         "station_name": "Midrand"
-    //     },
-    //     {
-    //         "station_id": 5,
-    //         "station_name": "Marlboro"
-    //     },
-    //     {
-    //         "station_id": 6,
-    //         "station_name": "Sandton"
-    //     },
-    //     {
-    //         "station_id": 7,
-    //         "station_name": "Rosebank"
-    //     },
-    //     {
-    //         "station_id": 8,
-    //         "station_name": "Park"
-    //     },
-    //     {
-    //         "station_id": 9,
-    //         "station_name": "Rhodesfield"
-    //     },
-    //     {
-    //         "station_id": 10,
-    //         "station_name": "O.R. Tambo"
-    //     }
-    // ]
+   
+    allaboard_url = "http://localhost:8080";
 
-    let results = await (await apiGet('/station/stations')).json();
+    async function apiGet(endpoint) {
+        return await fetch(allaboard_url+ endpoint, {
+        method: "GET",
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    });
+    }
+    
+    async function apiPost(endpoint, body) {
+        return await fetch(allaboard_url+ endpoint, {
+        method: "POST",
+        body: body,
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        }
+    });
+    }
+
+    const results = apiGet('/')
 
     console.log(results);
 
@@ -52,7 +33,21 @@ document.addEventListener('DOMContentLoaded', async() => {
     const searchBtn = document.getElementById('search-btn');
     const errorLbl = document.getElementById('error-lbl');
     const travelDate = document.getElementById('travel-date');
-    const tbody = document.getElementById('tbody');
+    const tbody = document.getElementById('trainTable').getElementsByTagName('tbody')[0];
+    const data = [
+        {
+            "trainName": "Express Train",
+            "time": "10:00 AM",
+            "cost": "$50",
+            "peakTime": "No"
+          },
+          {
+            "trainName": "Fast Train",
+            "time": "12:30 PM",
+            "cost": "$60",
+            "peakTime": "Yes"
+          }
+    ];
 
     function populateDropdowns() {
 
@@ -92,8 +87,34 @@ document.addEventListener('DOMContentLoaded', async() => {
                 console.log('hello');
                 errorLbl.style.display="block";
                 errorLbl.textContent="please choose a different date from the future";
-            }
+            }        
         }
+
+        while(tbody.firstChild){
+            tbody.remove(tbody.firstChild)
+        }
+
+        for(const train of data){
+            const row = document.createElement('tr');
+
+            const trainNameCell = document.createElement('td');
+            trainNameCell.textContent = train.trainName;
+            row.appendChild(trainNameCell);
+        
+            const timeCell = document.createElement('td');
+            timeCell.textContent = train.time;
+            row.appendChild(timeCell);
+        
+            const costCell = document.createElement('td');
+            costCell.textContent = train.cost;
+            row.appendChild(costCell);
+        
+            const peakTimeCell = document.createElement('td');
+            peakTimeCell.textContent = train.peakTime;
+            row.appendChild(peakTimeCell);
+        
+            tbody.appendChild(row);
+          }
     }
     searchBtn.addEventListener('click', ()=>{
         searchTrains();

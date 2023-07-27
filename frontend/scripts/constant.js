@@ -5,7 +5,7 @@ async function apiGet(endpoint) {
     method: "GET",
     headers: {
         'Content-type': 'application/json; charset=UTF-8',
-        // 'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
 });
 }
