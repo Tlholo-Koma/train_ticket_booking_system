@@ -5,9 +5,20 @@ async function fetchStations() {
   let results = await (await apiGet('/station/stations')).json();
   
   let stations = results.data;
-  console.log(stations);
   let tab = document.createElement('nav');
-  
+  const input = document.getElementsByClassName("destStation");
+  stations.forEach((station) => {
+
+    const option = document.createElement("option");
+
+    option.value = station.station_name;
+
+    option.textContent = station.station_name;
+
+    input[0].appendChild(option);
+
+  });
+
   tab.className = 'tab';
   for (let i = 0; i < stations.length; i++ ) {
     let stationName = stations[i].station_name;
@@ -21,7 +32,6 @@ async function fetchStations() {
     navButton.className = 'tablinks';
     tab.appendChild(navButton);
   }
-  console.log(mainTag);
   mainTag[0].appendChild(tab);
 }
 
@@ -30,7 +40,6 @@ fetchStations();
 async function openStation(stationName) {
   let results = await (await apiGet('/train/getTrainsBasedOnStation?from='+stationName)).json();
   let trains = results.data;
-  console.log(trains);
 
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
@@ -38,12 +47,21 @@ async function openStation(stationName) {
   }
   let stationSection = document.createElement('section');
   stationSection.className = 'tabcontent';
+  stationSection.id = stationName
+
 
   let container = document.createElement('section');
   container.className = 'train-container';
 
   let addButton = document.createElement('button');
   addButton.id = 'add-train';
+
+  function openModal() {
+    let modal = document.getElementById("myModal");
+    modal.style.display = "block";
+}
+
+addButton.addEventListener("click", openModal);
   addButton.textContent = 'Add train'; 
   stationSection.appendChild(addButton);
 
@@ -54,8 +72,7 @@ async function openStation(stationName) {
   for (let i = 0; i < trains.length; i++) {
     let optionElement = document.createElement('option');
     optionElement.textContent = trains[i].train_name;
-    optionElement.addEventListener('click', function(e) {
-      console.log(container);
+    optionElement.addEventListener('click', function() {
       populateTrainInfo(container, trains[i]);
     })
     selectElement.appendChild(optionElement);
@@ -63,39 +80,16 @@ async function openStation(stationName) {
   container.appendChild(selectElement);
   stationSection.appendChild(container);
   mainTag[0].appendChild(stationSection);
-    // Declare all variables
-    // var i, tabcontent, tablinks;
-  
-    // // Get all elements with class="tabcontent" and hide them
-    // tabcontent = document.getElementsByClassName("tabcontent");
-    // for (i = 0; i < tabcontent.length; i++) {
-    //   tabcontent[i].style.display = "none";
-    // }
-  
-    // // Get all elements with class="tablinks" and remove the class "active"
-    // tablinks = document.getElementsByClassName("tablinks");
-    // for (i = 0; i < tablinks.length; i++) {
-    //   tablinks[i].className = tablinks[i].className.replace(" active", "");
-    // }
-  
-    // // Show the current tab, and add an "active" class to the button that opened the tab
-    // document.getElementById(cityName).style.display = "flex";
-    // evt.currentTarget.className += " active";
+    
 }
 
 formElements = {
   'Train Name': 'label',
   'train_name': 'input',
   'Destination station': 'label',
-  'destination_station.station_name': 'input',
+  'destination_station': 'input',
   'Departure time': 'label',
   'departure_time': 'input'
-}
-
-buttons = {
-  'edit-button': ['Edit', edit],
-  'submit-button': ['Okay', exitEdit],
-  'cancel-button': ['Cancel', exitEdit],
 }
 
 function populateTrainInfo(tabContent, trainObject) {
@@ -109,43 +103,68 @@ function populateTrainInfo(tabContent, trainObject) {
   for (const key in formElements) {
     let value = formElements[key];
     let element = document.createElement(value);
-    if (value === 'label') 
+    if (key === 'destination_station') {
+      element.id = key;
+      element.value = trainObject[key]['station_name'];
+    }else if (value === 'label') 
       element.textContent = key;
     else{
       element.id = key;
       element.value = trainObject[key];
     }
-      
-
-
-    console.log(element);
-    trainInfo.appendChild(element);
-  }
-
-  for (const key in buttons) {
-    let element = document.createElement('button');
-    element.id = key;
-    element.textContent = buttons[key][0];
-    element.addEventListener('click', function(e) {
-      let action = buttons[key][1];
-      action();
-    });
     trainInfo.appendChild(element);
   }
   tabContent.appendChild(trainInfo);
   
-  console.log(trainObject);
+}
+// Function to close the modal
+function closeModal() {
+  let modal = document.getElementById("myModal");
+    modal.style.display = "none";
 }
 
-function edit() {
-  console.log('Editing');
-  document.getElementById('submit-button').style.visibility = 'visible';
-  document.getElementById('cancel-button').style.visibility = 'visible';
-  document.getElementById('edit-button').style.visibility = 'hidden';
+async function postTrain() {
+  let trainName = document.getElementsByClassName("trainName");
+  let destName = document.getElementsByClassName("destStation");
+  let departTime = document.getElementsByClassName("departTime");
+  let sourceName = document.getElementsByClassName("tabcontent");
+  body = {
+    train_name: trainName[0].value,
+    "source_station": {
+      "station_name": sourceName[0].id
+    },
+    "destination_station": {
+      "station_name": destName[0].value
+    },
+    departure_time: departTime[0].value,
+    "train_classes": [
+      {
+        "base_price": 100.30,
+        "capacity": 2,
+        "class_type": {
+          "class_type_name": "Economy"
+        }
+      },
+      {
+        "base_price": 200.30,
+        "capacity": 2,
+        "class_type": {
+          "class_type_name": "Business"
+        }
+      },
+      {
+        "base_price": 300.30,
+        "capacity": 2,
+        "class_type": {
+          "class_type_name": "Sleeper"
+        }
+      }
+    ],
+    "travel_date": "2023-07-25"
+  } 
+
+  let results = await (await apiPost('/train/train', body)).json();
+
 }
 
-function exitEdit() {
-    document.getElementById('submit-button').style.visibility = 'hidden';
-    document.getElementById('cancel-button').style.visibility = 'hidden';
-    document.getElementById('edit-button').style.visibility = 'visible';
-}
+// Function to open the modal
