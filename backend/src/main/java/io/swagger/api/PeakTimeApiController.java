@@ -40,6 +40,8 @@ public class PeakTimeApiController implements PeakTimeApi {
             @ApiParam(value = "Peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /peakTime/peakTime POST (addPeakTime) with peakTime=" + peakTime);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             // check if start_time < end_time
@@ -72,6 +74,8 @@ public class PeakTimeApiController implements PeakTimeApi {
             @ApiParam(value = "ID of the peak time to delete",required=true) @PathVariable("peakTimeId") Integer peakTimeId) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /peakTime/peakTime/{peakTimeId} DELETE (deletePeakTime) with peakTimeId=" + peakTimeId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             PeakTime foundPeakTime = peakTimeService.getPeakTimeById(peakTimeId).orElse(null);
@@ -104,6 +108,8 @@ public class PeakTimeApiController implements PeakTimeApi {
     public ResponseEntity<ApiResponseMessage> getpeakTimes() {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /peakTime/peakTimes GET (getpeakTimes)");
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             List<PeakTime> peakTimes = peakTimeService.getAllPeakTimes();
@@ -124,6 +130,8 @@ public class PeakTimeApiController implements PeakTimeApi {
             @ApiParam(value = "Updated peak time object" ,required=true )  @Valid @RequestBody PeakTime peakTime) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /peakTime/peakTime/{peakTimeId} PUT (updatePeakTime) with peakTimeId=" + peakTimeId + " and peakTime=" + peakTime);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         // TODO: the code needs to be edited to (1) check no overlap with the peak times, (2) check if this peak time mathes with any train and update that
         /*

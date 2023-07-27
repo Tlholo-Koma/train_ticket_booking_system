@@ -39,6 +39,8 @@ public class BookingApiController implements BookingApi {
     public ResponseEntity<ApiResponseMessage> bookTrain(
             @ApiParam(value = "User Booking" ,required=true )  @Valid @RequestBody Booking booking) {
         log.debug("Received request to /booking/booking POST (bookTrain) with booking=" + booking);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Booking addedBooking = bookingService.createOrUpdateTrain(booking);
@@ -63,6 +65,8 @@ public class BookingApiController implements BookingApi {
     public ResponseEntity<ApiResponseMessage> deleteBooking(
             @ApiParam(value = "ID of the booking to delete",required=true) @PathVariable("bookingId") Integer bookingId) {
         log.debug("Received request to /booking/booking/{bookingId} DELETE (deleteBooking) with bookingId=" + bookingId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Booking foundBooking = bookingService.getBookingById(bookingId);
@@ -89,6 +93,8 @@ public class BookingApiController implements BookingApi {
     public ResponseEntity<ApiResponseMessage> getBooking(
             @ApiParam(value = "ID of the booking to get",required=true) @PathVariable("bookingId") Integer bookingId) {
         log.debug("Received request to /booking/booking/{bookingId} GET (getBooking) with bookingId=" + bookingId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Booking foundBooking = bookingService.getBookingById(bookingId);
@@ -112,6 +118,8 @@ public class BookingApiController implements BookingApi {
     public ResponseEntity<ApiResponseMessage> getBookings(
             @ApiParam(value = "User email of bookings to get",required=true) @PathVariable("userEmail") String userEmail) {
         log.debug("Received request to /booking/getBooking/{userEmail} GET (getBookings) with userEmail=" + userEmail);
+        String userEmailAttribute = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmailAttribute);
 
         try {
             List<Booking> foundBooking = bookingService.getBookingByUserEmail(userEmail);
@@ -133,8 +141,11 @@ public class BookingApiController implements BookingApi {
     }
 
     public ResponseEntity<ApiResponseMessage> updateBooking(
-            @ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,@ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody Booking booking) {
+            @ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,
+            @ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody Booking booking) {
         log.debug("Received request to /booking/booking/{bookingId} PUT (updateBooking) with bookingId=" + bookingId + " and booking=" + booking);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
         log.debug("Response: " + responseMessage);

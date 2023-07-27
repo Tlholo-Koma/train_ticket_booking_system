@@ -27,6 +27,10 @@ public class TokenValidationService implements HandlerInterceptor {
 
         if (isTokenValid) {
             log.debug("jwt token is valid");
+
+            String userEmail = getEmail(token);
+            request.setAttribute("user_email", userEmail);
+
             return true;
         }
         else {

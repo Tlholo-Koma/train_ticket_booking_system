@@ -39,6 +39,8 @@ public class StationApiController implements StationApi {
     public ResponseEntity<ApiResponseMessage> addStation(
             @ApiParam(value = "Station object", required = true) @Valid @RequestBody Station station) {
         log.debug("Received request to /station/station POST (addStation) with station=" + station);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Station addedStation = stationService.createOrUpdateStation(station);
@@ -58,6 +60,8 @@ public class StationApiController implements StationApi {
             @ApiParam(value = "ID of the station to delete", required = true) @PathVariable("stationId") Integer stationId) {
         log.debug("Received request to /station/station/{stationId} DELETE (deleteStation) with stationId="
                 + stationId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Station foundStation = stationService.getStationById(stationId).orElse(null);
@@ -89,6 +93,8 @@ public class StationApiController implements StationApi {
 
     public ResponseEntity<ApiResponseMessage> getStations() {
         log.debug("Received request to /station/stations GET (getStations)");
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             List<Station> stations = stationService.getAllStations();
@@ -109,6 +115,8 @@ public class StationApiController implements StationApi {
             @ApiParam(value = "Updated station object", required = true) @Valid @RequestBody Station station) {
         log.debug("Received request to /station/station/{stationId} PUT (updateStation) with stationId=" + stationId
                 + " AND station=" + station);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Station foundStation = stationService.getStationById(stationId).orElse(null);
