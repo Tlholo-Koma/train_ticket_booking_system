@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -33,30 +35,37 @@ public class Booking {
 
     @ToString.Include
     @JsonProperty("train_name")
+    @Null
     private String trainName = null;
 
     @ToString.Include
     @JsonProperty("source_station")
+    @Null
     private String sourceStation = null;
 
     @ToString.Include
     @JsonProperty("destination_station")
+    @Null
     private String destinationStation = null;
 
     @ToString.Include
     @JsonProperty("travel_date")
+    @Null
     private LocalDate travelDate = null;
 
     @ToString.Include
     @JsonProperty("departure_time")
+    @Null
     private LocalTime departureTime = null;
 
     @ToString.Include
     @JsonProperty("booking_date")
+    @Null
     private Date bookingDate = null;
 
     @ToString.Include
     @JsonProperty("ticket_price")
+    @Null
     private BigDecimal ticketPrice = null;
 
     @ToString.Include
@@ -69,7 +78,7 @@ public class Booking {
 
     @ToString.Include
     @JsonProperty("passengers")
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     private List<Passenger> passengers = new ArrayList<>();
 }
 

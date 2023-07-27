@@ -38,18 +38,26 @@ public class BookingService {
     public Booking createOrUpdateTrain(Booking booking) {
         // set train details
         Train train = trainService.getTrainById(booking.getTrainId());
-        booking.setTrainName(train.getTrainName());
-        booking.setSourceStation(train.getSourceStation().getStationName());
-        booking.setDestinationStation(train.getDestinationStation().getStationName());
-        booking.setTravelDate(train.getTravelDate());
-        booking.setDepartureTime(train.getDepartureTime());
+
+        if (train == null) {
+            return null;
+        }
+
+//        booking.setTrainName(train.getTrainName());
+//        booking.setSourceStation(train.getSourceStation().getStationName());
+//        booking.setDestinationStation(train.getDestinationStation().getStationName());
+//        booking.setTravelDate(train.getTravelDate());
+//        booking.setDepartureTime(train.getDepartureTime());
 
         // get train class
         TrainClass trainClass = trainClassService.getTrainClassByTrainClassType(booking.getTrainClass(), booking.getTrainId());
 
-        // TODO: add peak time
+        if (trainClass == null) {
+            return null;
+        }
+
         // is peak time
-        PeakTime peakTime = null;
+        PeakTime peakTime = train.getPeakTimes().get(0).getPeakTime();
 
         // number of passengers
         Integer numberOfPassengers = booking.getPassengers().size();
@@ -69,12 +77,13 @@ public class BookingService {
                 Passenger passenger = booking.getPassengers().get(i);
                 TrainSeat trainSeat = train.getTrainSeats().get(seatNumber);
 
+                // assigning a seat to a passenger
                 if (!trainSeat.isBooked()) {
                     trainSeat.setBooked(true);
                     trainSeat.setSeatPrice(seatPrice);
 
-                    // TODO: set passenger seat
-                    //passenger.setSeat(trainSeat);
+                    // set seat_id
+                    passenger.setSeatId(trainSeat.getSeatId());
 
                     // Save the updated seat in the repository.
                     trainSeatService.createOrUpdateTrainSeat(trainSeat);
@@ -89,12 +98,13 @@ public class BookingService {
             return null;
         }
 
-        Integer bookingId = bookingRepository.insertBooking(booking.getBookingDate(), train.getTrainId(), booking.getTicketPrice(), booking.getUserEmail());
+        bookingRepository.insertBooking(booking.getBookingDate(), train.getTrainId(), booking.getTicketPrice(), booking.getUserEmail());
+        booking.setBookingId(bookingRepository.findMaxBookingId());
 
-//        for (Passenger passenger : booking.getPassengers()) {
-            //passenger.set
-//            passengerService.createOrUpdatePassenger(passenger);
-//        }
+        for (Passenger passenger : booking.getPassengers()) {
+            passenger.setBooking(booking);
+            passengerService.createOrUpdatePassenger(passenger);
+        }
 
         return booking;
     }

@@ -80,11 +80,12 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Modifying
     @Query(value = "INSERT INTO Booking (booking_date,train_id, ticket_price,user_email, date_created, date_updated) " +
             "VALUES (:bookingDate, :trainId, :ticketPrice, :userEmail, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)", nativeQuery = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer insertBooking(
+    void insertBooking(
             @Param("bookingDate") Date bookingDate,
             @Param("trainId") Integer trainId,
             @Param("ticketPrice") BigDecimal ticketPrice,
             @Param("userEmail") String userEmail);
 
+    @Query(value = "SELECT MAX(booking_id) FROM Booking", nativeQuery = true)
+    Integer findMaxBookingId();
 }

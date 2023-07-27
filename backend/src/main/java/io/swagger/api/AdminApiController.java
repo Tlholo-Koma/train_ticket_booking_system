@@ -46,8 +46,7 @@ public class AdminApiController implements AdminApi {
 
         try {
             Admin addedAdmin = adminService.createOrUpdateAdmin(admin);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Admin created successfully");
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Admin created successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
