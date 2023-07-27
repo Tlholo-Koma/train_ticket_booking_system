@@ -64,10 +64,12 @@ public class TrainSeat {
     private BigDecimal seatPrice;
 
     @Column(name = "date_created", nullable = false)
+    @ApiModelProperty(value = "")
     @JsonIgnore
     private Date dateCreated;
 
     @Column(name = "date_updated", nullable = false)
+    @ApiModelProperty(value = "")
     @JsonIgnore
     private Date dateUpdated;
 

@@ -18,7 +18,7 @@ import java.util.Optional;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
-    @Query(value = "SELECT " +
+    @Query(value = "SELECT DISTINCT " +
             "B.booking_id AS 'booking_id'" +
             ", B.train_id AS 'train_id'" +
             ", T.train_name AS 'train_name' " +
@@ -30,9 +30,9 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             ", B.ticket_price AS 'ticket_price' " +
             ", B.user_email AS 'user_email' " +
             ", TCT.class_type_name AS 'train_class' " +
-            ", P.passenger_id AS 'passenger_id' " +
-            ", P.passenger_name AS 'passenger_name' " +
-            ", P.age AS 'passenger_age' " +
+            //", P.passenger_id AS 'passenger_id' " +
+            //", P.passenger_name AS 'passenger_name' " +
+            //", P.age AS 'passenger_age' " +
             //", S.seat_number AS  " +
             "FROM [Booking] as B " +
             "JOIN [Train] AS T ON T.train_id = B.train_id " +
@@ -43,7 +43,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "LEFT JOIN TrainClass AS TC ON S.class_id = TC.class_id " +
             "LEFT JOIN TrainClassType AS TCT ON TC.class_type_id = TCT.class_type_id " +
             "WHERE B.booking_id = :bookingId", nativeQuery = true)
-    Optional<Booking> findBookingByBookingId(@Param("bookingId") Integer bookingId);
+    Optional<Booking> findBookingByBookingId(
+            @Param("bookingId") Integer bookingId);
 
     boolean existsByTrainId(Integer trainId);
 
@@ -72,17 +73,19 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "LEFT JOIN TrainClass AS TC ON S.class_id = TC.class_id " +
             "LEFT JOIN TrainClassType AS TCT ON TC.class_type_id = TCT.class_type_id " +
             "WHERE B.user_email = :userEmail", nativeQuery = true)
-    Optional<List<Booking>> findByUserEmail(@Param("userEmail") String user_email);
+    Optional<List<Booking>> findByUserEmail(
+            @Param("userEmail") String user_email);
 
     @Transactional
     @Modifying
     @Query(value = "INSERT INTO Booking (booking_date,train_id, ticket_price,user_email, date_created, date_updated) " +
             "VALUES (:bookingDate, :trainId, :ticketPrice, :userEmail, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)", nativeQuery = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer insertBooking(
+    void insertBooking(
             @Param("bookingDate") Date bookingDate,
             @Param("trainId") Integer trainId,
             @Param("ticketPrice") BigDecimal ticketPrice,
             @Param("userEmail") String userEmail);
 
+    @Query(value = "SELECT MAX(booking_id) FROM Booking", nativeQuery = true)
+    Integer findMaxBookingId();
 }

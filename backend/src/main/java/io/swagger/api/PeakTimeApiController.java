@@ -125,6 +125,8 @@ public class PeakTimeApiController implements PeakTimeApi {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /peakTime/peakTime/{peakTimeId} PUT (updatePeakTime) with peakTimeId=" + peakTimeId + " and peakTime=" + peakTime);
 
+        // TODO: the code needs to be edited to (1) check no overlap with the peak times, (2) check if this peak time mathes with any train and update that
+        /*
         try {
             PeakTime foundPeakTime = peakTimeService.getPeakTimeById(peakTimeId).orElse(null);
 
@@ -147,6 +149,11 @@ public class PeakTimeApiController implements PeakTimeApi {
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+         */
+
+        ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented.");
+        log.debug("Response: " + responseMessage);
+        return new ResponseEntity<>(responseMessage, HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

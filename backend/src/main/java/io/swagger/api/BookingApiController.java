@@ -44,7 +44,7 @@ public class BookingApiController implements BookingApi {
             Booking addedBooking = bookingService.createOrUpdateTrain(booking);
 
             if (addedBooking == null) {
-                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "No train seats available for booking.");
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "No train seats available for booking or invalid train.");
                 log.debug("Response: " + responseMessage);
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
             }
@@ -92,7 +92,6 @@ public class BookingApiController implements BookingApi {
 
         try {
             Booking foundBooking = bookingService.getBookingById(bookingId);
-            System.out.println(foundBooking);
 
             if (foundBooking == null) {
                 ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Booking was not found.");
@@ -116,9 +115,8 @@ public class BookingApiController implements BookingApi {
 
         try {
             List<Booking> foundBooking = bookingService.getBookingByUserEmail(userEmail);
-            System.out.println(foundBooking);
 
-            if (foundBooking == null) {
+            if (foundBooking == null || foundBooking.size() == 0) {
                 ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Bookings was not found.");
                 log.debug("Response: " + responseMessage);
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
