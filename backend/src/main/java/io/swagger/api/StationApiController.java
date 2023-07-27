@@ -39,11 +39,13 @@ public class StationApiController implements StationApi {
     public ResponseEntity<ApiResponseMessage> addStation(
             @ApiParam(value = "Station object", required = true) @Valid @RequestBody Station station) {
         log.debug("Received request to /station/station POST (addStation) with station=" + station);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
+            station.setCreatedBy(userEmail);
             Station addedStation = stationService.createOrUpdateStation(station);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Station created successfully");
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Station created successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
@@ -58,6 +60,8 @@ public class StationApiController implements StationApi {
             @ApiParam(value = "ID of the station to delete", required = true) @PathVariable("stationId") Integer stationId) {
         log.debug("Received request to /station/station/{stationId} DELETE (deleteStation) with stationId="
                 + stationId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Station foundStation = stationService.getStationById(stationId).orElse(null);
@@ -89,6 +93,8 @@ public class StationApiController implements StationApi {
 
     public ResponseEntity<ApiResponseMessage> getStations() {
         log.debug("Received request to /station/stations GET (getStations)");
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             List<Station> stations = stationService.getAllStations();
@@ -109,6 +115,8 @@ public class StationApiController implements StationApi {
             @ApiParam(value = "Updated station object", required = true) @Valid @RequestBody Station station) {
         log.debug("Received request to /station/station/{stationId} PUT (updateStation) with stationId=" + stationId
                 + " AND station=" + station);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Station foundStation = stationService.getStationById(stationId).orElse(null);
@@ -120,9 +128,9 @@ public class StationApiController implements StationApi {
             }
 
             foundStation.setStationName(station.getStationName());
+            foundStation.setCreatedBy(userEmail);
             Station updatedStation = stationService.createOrUpdateStation(foundStation);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Station updated successfully");
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Station updated successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         } catch (Exception e) {
