@@ -43,11 +43,12 @@ public class AdminApiController implements AdminApi {
             @ApiParam(value = "Admin object" ,required=true )  @Valid @RequestBody Admin admin) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /admin/admin POST (addAdmin) with admin=" + admin);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Admin addedAdmin = adminService.createOrUpdateAdmin(admin);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Admin created successfully");
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Admin created successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
@@ -62,6 +63,8 @@ public class AdminApiController implements AdminApi {
             @ApiParam(value = "ID of the admin to delete",required=true) @PathVariable("adminId") Integer adminId) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /admin/admin/{adminId} DELETE (deleteAdmin) with adminId=" + adminId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Admin foundAdmin = adminService.getAdminById(adminId).orElse(null);
@@ -87,6 +90,8 @@ public class AdminApiController implements AdminApi {
     public ResponseEntity<ApiResponseMessage> getAdmins() {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /admin/admins GET (getAdmins)");
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             List<Admin> admins = adminService.getAllAdmins();
@@ -107,6 +112,8 @@ public class AdminApiController implements AdminApi {
             @ApiParam(value = "Updated admin object" ,required=true )  @Valid @RequestBody Admin admin) {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /admin/admin/{adminId} PUT (updateAdmin) with adminId=" + adminId + " AND admin=" + admin);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Admin foundAdmin = adminService.getAdminById(adminId).orElse(null);

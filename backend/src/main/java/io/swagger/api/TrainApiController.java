@@ -44,8 +44,11 @@ public class TrainApiController implements TrainApi {
     public ResponseEntity<ApiResponseMessage> addTrain(
             @ApiParam(value = "Train object" ,required=true )  @Valid @RequestBody Train train) {
         log.debug("Received request to /train/train POST (addTrain) with train=" + train);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
+            train.setCreatedBy(userEmail);
             Train addedTrain = trainService.createOrUpdateTrain(train);
 
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Train created successfully");
@@ -62,6 +65,8 @@ public class TrainApiController implements TrainApi {
     public ResponseEntity<ApiResponseMessage> deleteTrain(
             @ApiParam(value = "ID of the train to delete",required=true) @PathVariable("trainId") Integer trainId) {
         log.debug("Received request to /train/train/{trainId} DELETE (deleteTrain) with trainId=" + trainId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Train foundTrain = trainService.getTrainById(trainId);
@@ -94,6 +99,8 @@ public class TrainApiController implements TrainApi {
     public ResponseEntity<ApiResponseMessage> getTrains() {
         String accept = request.getHeader("Accept");
         log.debug("Received request to /train/trains GET (getTrains)");
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             List<Train> trains = trainService.getAllTrains();
@@ -114,6 +121,8 @@ public class TrainApiController implements TrainApi {
             @ApiParam(value = "The destination station") @Valid @RequestParam(value = "to", required = false) String to,
             @ApiParam(value = "The travel date") @Valid @RequestParam(value = "date", required = false) Date date) {
         log.debug("Received request to /train/getTrainsBasedOnStation GET (getTrainsBasedOnStation) with from=" + from + " AND to=" + to + " AND date=" + date);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             List<Train> searchResults = trainSearchService.search(from, to, date);
@@ -133,6 +142,9 @@ public class TrainApiController implements TrainApi {
             @ApiParam(value = "ID of the train to update",required=true) @PathVariable("trainId") Integer trainId,
             @ApiParam(value = "Updated train" ,required=true )  @Valid @RequestBody Train train) {
         log.debug("Received request to /train/train/{trainId} PUT (updateTrain) with =" + trainId + " AND train=" + train);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
+        train.setCreatedBy(userEmail);
 
         ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
         log.debug("Response: " + responseMessage);

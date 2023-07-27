@@ -39,12 +39,20 @@ public class BookingApiController implements BookingApi {
     public ResponseEntity<ApiResponseMessage> bookTrain(
             @ApiParam(value = "User Booking" ,required=true )  @Valid @RequestBody Booking booking) {
         log.debug("Received request to /booking/booking POST (bookTrain) with booking=" + booking);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
+            if (booking.getUserEmail() != userEmail) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.BAD_REQUEST.value(), "The logged in user is not doing the booking.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+            }
+
             Booking addedBooking = bookingService.createOrUpdateTrain(booking);
 
             if (addedBooking == null) {
-                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "No train seats available for booking.");
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "No train seats available for booking or invalid train.");
                 log.debug("Response: " + responseMessage);
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
             }
@@ -63,6 +71,8 @@ public class BookingApiController implements BookingApi {
     public ResponseEntity<ApiResponseMessage> deleteBooking(
             @ApiParam(value = "ID of the booking to delete",required=true) @PathVariable("bookingId") Integer bookingId) {
         log.debug("Received request to /booking/booking/{bookingId} DELETE (deleteBooking) with bookingId=" + bookingId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Booking foundBooking = bookingService.getBookingById(bookingId);
@@ -89,10 +99,11 @@ public class BookingApiController implements BookingApi {
     public ResponseEntity<ApiResponseMessage> getBooking(
             @ApiParam(value = "ID of the booking to get",required=true) @PathVariable("bookingId") Integer bookingId) {
         log.debug("Received request to /booking/booking/{bookingId} GET (getBooking) with bookingId=" + bookingId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             Booking foundBooking = bookingService.getBookingById(bookingId);
-            System.out.println(foundBooking);
 
             if (foundBooking == null) {
                 ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Booking was not found.");
@@ -113,12 +124,19 @@ public class BookingApiController implements BookingApi {
     public ResponseEntity<ApiResponseMessage> getBookings(
             @ApiParam(value = "User email of bookings to get",required=true) @PathVariable("userEmail") String userEmail) {
         log.debug("Received request to /booking/getBooking/{userEmail} GET (getBookings) with userEmail=" + userEmail);
+        String userEmailAttribute = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmailAttribute);
 
         try {
-            List<Booking> foundBooking = bookingService.getBookingByUserEmail(userEmail);
-            System.out.println(foundBooking);
+            if (userEmail != userEmailAttribute) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.BAD_REQUEST.value(), "You are not fetching your bookings!");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+            }
 
-            if (foundBooking == null) {
+            List<Booking> foundBooking = bookingService.getBookingByUserEmail(userEmail);
+
+            if (foundBooking == null || foundBooking.size() == 0) {
                 ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_FOUND.value(), "Bookings was not found.");
                 log.debug("Response: " + responseMessage);
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
@@ -135,8 +153,11 @@ public class BookingApiController implements BookingApi {
     }
 
     public ResponseEntity<ApiResponseMessage> updateBooking(
-            @ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,@ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody Booking booking) {
+            @ApiParam(value = "ID of the booking to update",required=true) @PathVariable("bookingId") Integer bookingId,
+            @ApiParam(value = "Updated booking object" ,required=true )  @Valid @RequestBody Booking booking) {
         log.debug("Received request to /booking/booking/{bookingId} PUT (updateBooking) with bookingId=" + bookingId + " and booking=" + booking);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
         log.debug("Response: " + responseMessage);

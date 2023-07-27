@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -30,6 +31,7 @@ public class Passenger {
 
 	@JsonProperty("seat_id")
 	@Column(name = "seat_id")
+	@ToString.Include
 	private Integer seatId;
 
 	@JsonProperty("passenger_name")
@@ -45,20 +47,32 @@ public class Passenger {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "booking_id")
 	@JsonIgnore
-	private Booking ticket;
+	private Booking booking;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "seat_id")
-	@JsonProperty("train_seats")
+	@JsonProperty("train_seat")
 	@JsonDeserialize(using = TrainSeatDeserializer.class)
+	@ToString.Include
 	private List<TrainSeat> seats;
 
-	@JsonProperty("date_created")
 	@Column(name = "date_created", nullable = false)
-	private LocalDate dateCreated;
+	@JsonIgnore
+	private Date dateCreated;
 
-	@JsonProperty("date_updated")
 	@Column(name = "date_updated", nullable = false)
-	private LocalDate dateUpdated;
+	@JsonIgnore
+	private Date dateUpdated;
+
+	@PrePersist
+	protected void onCreate() {
+		dateCreated = new Date();
+		dateUpdated = new Date();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		dateUpdated = new Date();
+	}
 
 }

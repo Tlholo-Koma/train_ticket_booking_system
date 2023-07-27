@@ -38,13 +38,14 @@ public class SeatTypeApiController implements SeatTypeApi {
 
     public ResponseEntity<ApiResponseMessage> addSeatType(
             @ApiParam(value = "Seat type object" ,required=true )  @Valid @RequestBody SeatType seatType) {
-        String accept = request.getHeader("Accept");
         log.debug("Received request to /seatType/seatType POST (addSeatType) with seatType=" + seatType);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
+            seatType.setCreatedBy(userEmail);
             SeatType addedSeatType = seatTypeService.createOrUpdateSeatType(seatType);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Seat type created successfully");
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Seat type created successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
@@ -57,8 +58,9 @@ public class SeatTypeApiController implements SeatTypeApi {
 
     public ResponseEntity<ApiResponseMessage> deleteSeatType(
             @ApiParam(value = "ID of the seat type to delete",required=true) @PathVariable("seatTypeId") Integer seatTypeId) {
-        String accept = request.getHeader("Accept");
         log.debug("Received request to /seatType/seatType/{seatTypeId} DELETE (deleteSeatType) with seatTypeId=" + seatTypeId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             SeatType foundSeatType = seatTypeService.getSeatTypeById(seatTypeId).orElse(null);
@@ -89,8 +91,9 @@ public class SeatTypeApiController implements SeatTypeApi {
     }
 
     public ResponseEntity<ApiResponseMessage> getSeatTypes() {
-        String accept = request.getHeader("Accept");
         log.debug("Received request to /seatType/seatTypes GET (getSeatTypes)");
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             List<SeatType> seatTypes = seatTypeService.getAllSeatTypes();
@@ -109,8 +112,9 @@ public class SeatTypeApiController implements SeatTypeApi {
     public ResponseEntity<ApiResponseMessage> updateSeatType(
             @ApiParam(value = "ID of the seat type to update",required=true) @PathVariable("seatTypeId") Integer seatTypeId,
             @ApiParam(value = "Updated seat type object" ,required=true )  @Valid @RequestBody SeatType seatType) {
-        String accept = request.getHeader("Accept");
         log.debug("Received request to /seatType/seatType/{seatTypeId} PUT (updateSeatType) with seatTypeId=" + seatTypeId + " and seatType=" + seatType);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             SeatType foundSeatType = seatTypeService.getSeatTypeById(seatTypeId).orElse(null);
@@ -121,6 +125,7 @@ public class SeatTypeApiController implements SeatTypeApi {
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
             }
 
+            foundSeatType.setCreatedBy(userEmail);
             foundSeatType.setSeatTypeName(seatType.getSeatTypeName());
             SeatType updatedSeatType = seatTypeService.createOrUpdateSeatType(foundSeatType);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),

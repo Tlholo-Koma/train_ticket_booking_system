@@ -2,10 +2,13 @@ package io.swagger.service;
 
 import io.swagger.model.*;
 import io.swagger.repository.BookingRepository;
+import io.swagger.strategy.TicketPriceCalculator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,24 +33,33 @@ public class BookingService {
     }
 
     public Booking getBookingById(Integer bookingId) {
-        return bookingRepository.findBookingByBookingId(bookingId).orElse(null);
+        Booking booking = bookingRepository.findBookingByBookingId(bookingId).orElse(null);
+        return populateTrainSeatsForBooking(booking);
     }
 
     public Booking createOrUpdateTrain(Booking booking) {
         // set train details
         Train train = trainService.getTrainById(booking.getTrainId());
-        booking.setTrainName(train.getTrainName());
-        booking.setSourceStation(train.getSourceStation().getStationName());
-        booking.setDestinationStation(train.getDestinationStation().getStationName());
-        booking.setTravelDate(train.getTravelDate());
-        booking.setDepartureTime(train.getDepartureTime());
+
+        if (train == null) {
+            return null;
+        }
+
+//        booking.setTrainName(train.getTrainName());
+//        booking.setSourceStation(train.getSourceStation().getStationName());
+//        booking.setDestinationStation(train.getDestinationStation().getStationName());
+//        booking.setTravelDate(train.getTravelDate());
+//        booking.setDepartureTime(train.getDepartureTime());
 
         // get train class
         TrainClass trainClass = trainClassService.getTrainClassByTrainClassType(booking.getTrainClass(), booking.getTrainId());
 
-        // TODO: add peak time
+        if (trainClass == null) {
+            return null;
+        }
+
         // is peak time
-        PeakTime peakTime = null;
+        PeakTime peakTime = train.getPeakTimes().get(0).getPeakTime();
 
         // number of passengers
         Integer numberOfPassengers = booking.getPassengers().size();
@@ -67,12 +79,13 @@ public class BookingService {
                 Passenger passenger = booking.getPassengers().get(i);
                 TrainSeat trainSeat = train.getTrainSeats().get(seatNumber);
 
+                // assigning a seat to a passenger
                 if (!trainSeat.isBooked()) {
                     trainSeat.setBooked(true);
                     trainSeat.setSeatPrice(seatPrice);
 
-                    // TODO: set passenger seat
-                    //passenger.setSeat(trainSeat);
+                    // set seat_id
+                    passenger.setSeatId(trainSeat.getSeatId());
 
                     // Save the updated seat in the repository.
                     trainSeatService.createOrUpdateTrainSeat(trainSeat);
@@ -87,12 +100,13 @@ public class BookingService {
             return null;
         }
 
-        Integer bookingId = bookingRepository.insertBooking(booking.getBookingDate(), train.getTrainId(), booking.getTicketPrice(), booking.getUserEmail());
+        bookingRepository.insertBooking(booking.getBookingDate(), train.getTrainId(), booking.getTicketPrice(), booking.getUserEmail());
+        booking.setBookingId(bookingRepository.findMaxBookingId());
 
-//        for (Passenger passenger : booking.getPassengers()) {
-            //passenger.set
-//            passengerService.createOrUpdatePassenger(passenger);
-//        }
+        for (Passenger passenger : booking.getPassengers()) {
+            passenger.setBooking(booking);
+            passengerService.createOrUpdatePassenger(passenger);
+        }
 
         return booking;
     }
@@ -106,6 +120,30 @@ public class BookingService {
     }
 
     public List<Booking> getBookingByUserEmail(String userEmail) {
-        return bookingRepository.findByUserEmail(userEmail).orElse(null);
+        List<Booking> bookings = bookingRepository.findByUserEmail(userEmail).orElse(null);
+        return populateTrainSeatsForBookings(bookings);
     }
+
+    private List<Booking> populateTrainSeatsForBookings(List<Booking> bookings) {
+        if (bookings != null) {
+            for (Booking booking : bookings) {
+                populateTrainSeatsForBooking(booking);
+            }
+        }
+        return bookings;
+    }
+
+    private Booking populateTrainSeatsForBooking(Booking booking) {
+        if (booking != null) {
+            for (Passenger passenger : booking.getPassengers()) {
+                Integer seatId = passenger.getSeatId();
+
+                List<TrainSeat> trainSeats = new ArrayList<>();
+                trainSeats.add(trainSeatService.getTrainSeatById(seatId));
+                passenger.setSeats(trainSeats);
+            }
+        }
+        return booking;
+    }
+
 }
