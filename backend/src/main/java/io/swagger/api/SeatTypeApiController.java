@@ -43,9 +43,9 @@ public class SeatTypeApiController implements SeatTypeApi {
         log.debug("Request made by " + userEmail);
 
         try {
+            seatType.setCreatedBy(userEmail);
             SeatType addedSeatType = seatTypeService.createOrUpdateSeatType(seatType);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Seat type created successfully");
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Seat type created successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
@@ -125,6 +125,7 @@ public class SeatTypeApiController implements SeatTypeApi {
                 return new ResponseEntity<>(responseMessage, HttpStatus.NOT_FOUND);
             }
 
+            foundSeatType.setCreatedBy(userEmail);
             foundSeatType.setSeatTypeName(seatType.getSeatTypeName());
             SeatType updatedSeatType = seatTypeService.createOrUpdateSeatType(foundSeatType);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),

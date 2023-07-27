@@ -51,6 +51,7 @@ public class PeakTimeApiController implements PeakTimeApi {
                 return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
             }
 
+            peakTime.setCreatedBy(userEmail);
             PeakTime addedPeakTime = peakTimeService.createOrUpdatePeakTime(peakTime);
 
             if (addedPeakTime == null) {
@@ -132,6 +133,8 @@ public class PeakTimeApiController implements PeakTimeApi {
         log.debug("Received request to /peakTime/peakTime/{peakTimeId} PUT (updatePeakTime) with peakTimeId=" + peakTimeId + " and peakTime=" + peakTime);
         String userEmail = (String) request.getAttribute("user_email");
         log.debug("Request made by " + userEmail);
+
+        peakTime.setCreatedBy(userEmail);
 
         // TODO: the code needs to be edited to (1) check no overlap with the peak times, (2) check if this peak time mathes with any train and update that
         /*

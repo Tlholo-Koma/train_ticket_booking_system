@@ -43,6 +43,12 @@ public class BookingApiController implements BookingApi {
         log.debug("Request made by " + userEmail);
 
         try {
+            if (booking.getUserEmail() != userEmail) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.BAD_REQUEST.value(), "The logged in user is not doing the booking.");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+            }
+
             Booking addedBooking = bookingService.createOrUpdateTrain(booking);
 
             if (addedBooking == null) {
@@ -122,6 +128,12 @@ public class BookingApiController implements BookingApi {
         log.debug("Request made by " + userEmailAttribute);
 
         try {
+            if (userEmail != userEmailAttribute) {
+                ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.BAD_REQUEST.value(), "You are not fetching your bookings!");
+                log.debug("Response: " + responseMessage);
+                return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+            }
+
             List<Booking> foundBooking = bookingService.getBookingByUserEmail(userEmail);
 
             if (foundBooking == null || foundBooking.size() == 0) {

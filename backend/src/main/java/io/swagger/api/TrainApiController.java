@@ -48,6 +48,7 @@ public class TrainApiController implements TrainApi {
         log.debug("Request made by " + userEmail);
 
         try {
+            train.setCreatedBy(userEmail);
             Train addedTrain = trainService.createOrUpdateTrain(train);
 
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Train created successfully");
@@ -143,6 +144,7 @@ public class TrainApiController implements TrainApi {
         log.debug("Received request to /train/train/{trainId} PUT (updateTrain) with =" + trainId + " AND train=" + train);
         String userEmail = (String) request.getAttribute("user_email");
         log.debug("Request made by " + userEmail);
+        train.setCreatedBy(userEmail);
 
         ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.NOT_IMPLEMENTED.value(), "Not implemented");
         log.debug("Response: " + responseMessage);

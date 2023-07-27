@@ -43,9 +43,9 @@ public class StationApiController implements StationApi {
         log.debug("Request made by " + userEmail);
 
         try {
+            station.setCreatedBy(userEmail);
             Station addedStation = stationService.createOrUpdateStation(station);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Station created successfully");
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Station created successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
@@ -128,9 +128,9 @@ public class StationApiController implements StationApi {
             }
 
             foundStation.setStationName(station.getStationName());
+            foundStation.setCreatedBy(userEmail);
             Station updatedStation = stationService.createOrUpdateStation(foundStation);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Station updated successfully");
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Station updated successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         } catch (Exception e) {

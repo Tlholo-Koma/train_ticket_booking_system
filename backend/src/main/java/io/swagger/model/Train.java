@@ -76,7 +76,7 @@ public class Train {
 
     @Column(name = "created_by")
     @JsonIgnore
-    private final String createdBy = "SYSTEM";
+    private String createdBy = "SYSTEM";
 
     @Column(name = "date_created")
     @JsonIgnore

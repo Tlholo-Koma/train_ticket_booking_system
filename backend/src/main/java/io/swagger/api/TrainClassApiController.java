@@ -43,9 +43,9 @@ public class TrainClassApiController implements TrainClassApi {
         log.debug("Request made by " + userEmail);
 
         try {
+            trainClassType.setCreatedBy(userEmail);
             TrainClassType addedTrainClassType = trainClassTypeService.createOrUpdateTrainClassType(trainClassType);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Train class type created successfully");
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Train class type created successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
@@ -126,6 +126,7 @@ public class TrainClassApiController implements TrainClassApi {
             }
 
             foundTrainClassType.setClassTypeName(trainClassType.getClassTypeName());
+            foundTrainClassType.setCreatedBy(userEmail);
             TrainClassType updatedTrainClassType = trainClassTypeService.createOrUpdateTrainClassType(foundTrainClassType);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Train class type updated successfully");
