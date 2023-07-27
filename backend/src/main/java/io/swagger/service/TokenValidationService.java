@@ -1,6 +1,7 @@
 package io.swagger.service;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.swagger.api.AdminApiController;
 import org.slf4j.Logger;
