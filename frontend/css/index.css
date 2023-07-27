@@ -13,7 +13,7 @@ body {
   justify-content: center;
   min-height: 100vh;
   overflow: hidden;
-  background: url("https://img.freepik.com/free-photo/abstract-luxury-plain-blur-grey-black-gradient-used-as-background-studio-wall-display-your-products_1258-63644.jpg?w=360"), -webkit-linear-gradient(bottom, #0250c5, #d43f8d);
+  background: -webkit-linear-gradient(bottom, #0250c5, #d43f8d);
 }
 
 ::selection {
@@ -145,7 +145,7 @@ form .page .btns button.next {
 
 .container .progress-bar .step p {
   font-weight: 500;
-  font-size: 1.8vmax;
+  font-size: 0.9vmax;
   color: #000;
   margin-bottom: 0.8vmin;
 }
@@ -284,7 +284,7 @@ th, td {
       justify-content: center;
       min-height: 100vh;
       overflow: hidden;
-      background: url("./img/abstract-luxury-plain-blur-grey-black-gradient-used-as-background-studio-wall-display-your-products_1258-63644.png"), -webkit-linear-gradient(bottom, #0250c5, #d43f8d);
+      background:  -webkit-linear-gradient(bottom, #0250c5, #d43f8d);
     }
     
     ::selection {
@@ -555,4 +555,18 @@ th, td {
 .page::-webkit-scrollbar-thumb:hover {
   background-color: transparent; 
 }
+
+.page {
+  height: 400px; 
+  overflow-y: auto; 
+}
+
+.page::-webkit-scrollbar {
+  width: 0; 
+}
+
+.page::-webkit-scrollbar-thumb {
+  background-color: transparent; 
+}
+
 

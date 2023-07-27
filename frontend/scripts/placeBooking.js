@@ -1,35 +1,30 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    const trainClassData = [
-        {
-            "class_type_id": 1,
-            "class_type_name": "Economy"
-        },
-        {
-            "class_type_id": 2,
-            "class_type_name": "Business"
-        },
-        {
-            "class_type_id": 3,
-            "class_type_name": "Sleeper"
-        }
-    ];
+    
+    allaboard_url = "https://allaboard.bbdgrad.com";
 
-    const seatTypeData = [
-        {
-            "seat_type_id": 1,
-            "seat_type_name": "Window Seat"
-        },
-        {
-            "seat_type_id": 2,
-            "seat_type_name": "Aisle Seat"
-        },
-        {
-            "seat_type_id": 3,
-            "seat_type_name": "Middle Seat"
+    async function apiGet(endpoint) {
+        return await fetch(allaboard_url+ endpoint, {
+        method: "GET",
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
-    ];
-
+    });
+    }
+    
+    async function apiPost(endpoint, body) {
+        return await fetch(allaboard_url+ endpoint, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        }
+    });
+    }
+    
+    
     const fullname = document.getElementById('name');
     const age = document.getElementById('age');
     const seatType = document.getElementById('seat-type-dropdown');
@@ -38,13 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorLbl = document.getElementById('error-lbl')
 
 
-    function populateDropdowns(){
+    async function populateDropdowns(){
+        const seatTypeD = await (await apiGet('/seatType/seatTypes')).json();
+        const seatTypeData = seatTypeD.data;
         seatTypeData.forEach(seat => {
             const option = document.createElement('option');
             option.value = seat.seat_type_id;
             option.textContent = seat.seat_type_name;
             seatType.appendChild(option);
         });
+        
+        const trainClassD = await (await apiGet('/trainClass/trainClasses')).json();
+        const trainClassData = trainClassD.data;
 
         trainClassData.forEach(classType =>{
             const option = document.createElement('option');
