@@ -14,8 +14,7 @@ async function apiGet(endpoint) {
 async function apiPost(endpoint, body) {
     return await fetch(allaboard_url+ endpoint, {
     method: "POST",
-    body: body,
-    credentials: "true",
+    body: JSON.stringify(body),
     headers: {
         'Content-type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
