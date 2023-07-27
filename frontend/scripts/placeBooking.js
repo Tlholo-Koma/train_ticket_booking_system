@@ -1,7 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    allaboard_url = "http://localhost:5000";
+    allaboard_url = "https://allaboard.bbdgrad.com";
 
     async function apiGet(endpoint) {
         return await fetch(allaboard_url+ endpoint, {
