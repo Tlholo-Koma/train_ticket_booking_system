@@ -67,4 +67,10 @@ public class TokenValidationService implements HandlerInterceptor {
     private boolean validateIssuer(String issuer, String validIssuer){
         return issuer.equals(validIssuer);
     }
+
+    public String getEmail(String token){
+        DecodedJWT jwt = JWT.decode(token);
+        Claim claim = jwt.getClaim("preferred_username");
+        return claim.toString();
+    }
 }
