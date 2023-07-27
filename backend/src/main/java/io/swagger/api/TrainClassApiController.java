@@ -39,11 +39,13 @@ public class TrainClassApiController implements TrainClassApi {
     public ResponseEntity<ApiResponseMessage> addTrainClassType(
             @ApiParam(value = "Station object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
         log.debug("Received request to /trainClass/trainClass POST (addTrainClassType) with trainClassType=" + trainClassType);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
+            trainClassType.setCreatedBy(userEmail);
             TrainClassType addedTrainClassType = trainClassTypeService.createOrUpdateTrainClassType(trainClassType);
-            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
-                    "Train class type created successfully");
+            ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(), "Train class type created successfully");
             log.debug("Response: " + responseMessage);
             return new ResponseEntity<>(responseMessage, HttpStatus.OK);
         }
@@ -57,6 +59,8 @@ public class TrainClassApiController implements TrainClassApi {
     public ResponseEntity<ApiResponseMessage> deleteTrainClassType(
             @ApiParam(value = "ID of the train class type to delete",required=true) @PathVariable("classId") Integer classId) {
         log.debug("Received request to /trainClass/trainClass/{classId} DELETE (deleteTrainClassType) with classId=" + classId);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             TrainClassType foundTrainClassType = trainClassTypeService.getTrainClassTypeById(classId).orElse(null);
@@ -88,6 +92,8 @@ public class TrainClassApiController implements TrainClassApi {
 
     public ResponseEntity<ApiResponseMessage> getClasses() {
         log.debug("Received request to /trainClass/trainClasses GET (getClasses)");
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             List<TrainClassType> trainClassTypes = trainClassTypeService.getAllTrainClassTypes();
@@ -107,6 +113,8 @@ public class TrainClassApiController implements TrainClassApi {
             @ApiParam(value = "ID of the train class type to update",required=true) @PathVariable("classId") Integer classId,
             @ApiParam(value = "Updated train class type object" ,required=true )  @Valid @RequestBody TrainClassType trainClassType) {
         log.debug("Received request to /trainClass/trainClass/{classId} PUT (updateTrainClassType) with classId=" + classId + " AND trainClassType=" + trainClassType);
+        String userEmail = (String) request.getAttribute("user_email");
+        log.debug("Request made by " + userEmail);
 
         try {
             TrainClassType foundTrainClassType = trainClassTypeService.getTrainClassTypeById(classId).orElse(null);
@@ -118,6 +126,7 @@ public class TrainClassApiController implements TrainClassApi {
             }
 
             foundTrainClassType.setClassTypeName(trainClassType.getClassTypeName());
+            foundTrainClassType.setCreatedBy(userEmail);
             TrainClassType updatedTrainClassType = trainClassTypeService.createOrUpdateTrainClassType(foundTrainClassType);
             ApiResponseMessage responseMessage = new ApiResponseMessage(HttpStatus.OK.value(),
                     "Train class type updated successfully");

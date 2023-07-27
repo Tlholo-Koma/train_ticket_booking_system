@@ -46,7 +46,7 @@ public class PeakTime {
 
     @Column(name = "created_by", nullable = false)
     @JsonIgnore
-    private final String createdBy = "SYSTEM";
+    private String createdBy = "SYSTEM";
 
     @Column(name = "date_created", nullable = false)
     @JsonIgnore

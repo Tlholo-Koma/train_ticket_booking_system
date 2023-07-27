@@ -27,6 +27,10 @@ public class TokenValidationService implements HandlerInterceptor {
 
         if (isTokenValid) {
             log.debug("jwt token is valid");
+
+            String userEmail = getEmail(token);
+            request.setAttribute("user_email", userEmail);
+
             return true;
         }
         else {
@@ -72,6 +76,6 @@ public class TokenValidationService implements HandlerInterceptor {
     public String getEmail(String token){
         DecodedJWT jwt = JWT.decode(token);
         Claim claim = jwt.getClaim("preferred_username");
-        return claim.toString();
+        return claim.toString().replaceAll("\"", "");
     }
 }
