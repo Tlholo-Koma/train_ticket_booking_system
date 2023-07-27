@@ -1,47 +1,51 @@
 
-document.addEventListener('DOMContentLoaded', () => {
-    const data = [
-        {
-            "station_id": 1,
-            "station_name": "Hatfield"
-        },
-        {
-            "station_id": 2,
-            "station_name": "Pretoria"
-        },
-        {
-            "station_id": 3,
-            "station_name": "Centurion"
-        },
-        {
-            "station_id": 4,
-            "station_name": "Midrand"
-        },
-        {
-            "station_id": 5,
-            "station_name": "Marlboro"
-        },
-        {
-            "station_id": 6,
-            "station_name": "Sandton"
-        },
-        {
-            "station_id": 7,
-            "station_name": "Rosebank"
-        },
-        {
-            "station_id": 8,
-            "station_name": "Park"
-        },
-        {
-            "station_id": 9,
-            "station_name": "Rhodesfield"
-        },
-        {
-            "station_id": 10,
-            "station_name": "O.R. Tambo"
-        }
-    ]
+document.addEventListener('DOMContentLoaded', async() => {
+    // const data = [
+    //     {
+    //         "station_id": 1,
+    //         "station_name": "Hatfield"
+    //     },
+    //     {
+    //         "station_id": 2,
+    //         "station_name": "Pretoria"
+    //     },
+    //     {
+    //         "station_id": 3,
+    //         "station_name": "Centurion"
+    //     },
+    //     {
+    //         "station_id": 4,
+    //         "station_name": "Midrand"
+    //     },
+    //     {
+    //         "station_id": 5,
+    //         "station_name": "Marlboro"
+    //     },
+    //     {
+    //         "station_id": 6,
+    //         "station_name": "Sandton"
+    //     },
+    //     {
+    //         "station_id": 7,
+    //         "station_name": "Rosebank"
+    //     },
+    //     {
+    //         "station_id": 8,
+    //         "station_name": "Park"
+    //     },
+    //     {
+    //         "station_id": 9,
+    //         "station_name": "Rhodesfield"
+    //     },
+    //     {
+    //         "station_id": 10,
+    //         "station_name": "O.R. Tambo"
+    //     }
+    // ]
+
+    let results = await (await apiGet('/station/stations')).json();
+
+    console.log(results);
 
     const toDropdown = document.getElementById('toDropdown');
     const fromDropdown = document.getElementById('fromDropdown');

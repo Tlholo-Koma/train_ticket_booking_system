@@ -1,11 +1,11 @@
-allaboard_url = "https://allaboard.bbdgrad.com/";
+allaboard_url = "http://localhost:8080";
 
 async function apiGet(endpoint) {
     return await fetch(allaboard_url+ endpoint, {
     method: "GET",
     headers: {
         'Content-type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        // 'Authorization': 'Bearer ' + localStorage.getItem('token')
     }
 });
 }

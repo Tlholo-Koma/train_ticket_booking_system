@@ -26,7 +26,7 @@ nextBtnFirst.addEventListener("click", function (event) {
   progressText[current - 1].classList.add("active");
   current += 1;
 });
-nextBtnSec.addEventListener("click", function (event) { 
+nextBtnSec.addEventListener("click", async function (event) { 
   
   event.preventDefault();
   slidePage.style.marginLeft = "-50%";
