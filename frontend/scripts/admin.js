@@ -85,11 +85,11 @@ async function openStation(stationName) {
 
 formElements = {
   'Train Name': 'label',
-  'trainName': 'input',
+  'train_name': 'input',
   'Destination station': 'label',
-  'destStation': 'input',
+  'destination_station.station_name': 'input',
   'Departure time': 'label',
-  'departTime': 'input'
+  'departure_time': 'input'
 }
 
 buttons = {
@@ -111,8 +111,13 @@ function populateTrainInfo(tabContent, trainObject) {
     let element = document.createElement(value);
     if (value === 'label') 
       element.textContent = key;
-    else
+    else{
       element.id = key;
+      element.value = trainObject[key];
+    }
+      
+
+
     console.log(element);
     trainInfo.appendChild(element);
   }
