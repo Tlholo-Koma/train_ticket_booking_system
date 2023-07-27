@@ -45,12 +45,6 @@ public class BookingService {
             return null;
         }
 
-//        booking.setTrainName(train.getTrainName());
-//        booking.setSourceStation(train.getSourceStation().getStationName());
-//        booking.setDestinationStation(train.getDestinationStation().getStationName());
-//        booking.setTravelDate(train.getTravelDate());
-//        booking.setDepartureTime(train.getDepartureTime());
-
         // get train class
         TrainClass trainClass = trainClassService.getTrainClassByTrainClassType(booking.getTrainClass(), booking.getTrainId());
 
