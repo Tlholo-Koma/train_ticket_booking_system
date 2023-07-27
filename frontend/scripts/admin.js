@@ -1,3 +1,27 @@
+
+async function fetchStations() {
+  let mainTag = document.getElementsByTagName('main');
+  let results = await (await apiGet('/station/stations')).json();
+  
+  let stations = results.data;
+  console.log(stations);
+  let tab = document.createElement('nav');
+  
+  tab.className = 'tab';
+  for (let i = 0; i < stations.length; i++ ) {
+    let navButton = document.createElement('button');
+    navButton.id = stations[i].station_name;
+    navButton.textContent = stations[i].station_name;
+    // navButton.onclick = openStation();
+    navButton.className = 'tablinks';
+    tab.appendChild(navButton);
+  }
+  console.log(mainTag[0]);
+  mainTag[0].appendChild(tab);
+}
+
+fetchStations();
+
 function openStation(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;
