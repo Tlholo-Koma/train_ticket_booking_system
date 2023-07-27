@@ -2,8 +2,8 @@ const config = {
     auth: {
         clientId: 'b5a0f0e5-e9be-4880-9eaa-f9eb9397b818',
         authority: 'https://login.microsoftonline.com/consumers/',
-        redirectUri: 'https://d1xb965e89guo1.cloudfront.net',
-        postLogoutRedirectUri: 'https://d1xb965e89guo1.cloudfront.net'
+        redirectUri: 'https://d1xb965e89guo1.cloudfront.net/index.html',
+        postLogoutRedirectUri: 'https://d1xb965e89guo1.cloudfront.net/login.html'
     }
 };
 
