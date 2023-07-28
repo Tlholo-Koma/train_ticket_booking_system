@@ -2,8 +2,8 @@ const config = {
     auth: {
         clientId: 'b5a0f0e5-e9be-4880-9eaa-f9eb9397b818',
         authority: 'https://login.microsoftonline.com/consumers/',
-        redirectUri: 'https://pzsmddzkdt.eu-west-1.awsapprunner.com/index', 
-        postLogoutRedirectUri: 'https://pzsmddzkdt.eu-west-1.awsapprunner.com/login' 
+        redirectUri: 'https://pzsmddzkdt.eu-west-1.awsapprunner.com/index.html', 
+        postLogoutRedirectUri: 'https://pzsmddzkdt.eu-west-1.awsapprunner.com/login.html' 
     },
     cache: {
         cacheLocation: 'localStorage',
