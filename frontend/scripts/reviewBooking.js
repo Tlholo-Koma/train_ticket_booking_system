@@ -7,20 +7,13 @@ const location = document.getElementById('review-location');
 const destination = document.getElementById('review-destination');
 const travelDate = document.getElementById('review-travel-date');
 
-const toDropdown = document.getElementById('toDropdown');
-const fromDropdown = document.getElementById('fromDropdown');
-const seatTypev = document.getElementById('seat-type-dropdown');
-const trainClassv = document.getElementById('train-class-dropdown');
-const fullnamev = document.getElementById('name');
-const agev = document.getElementById('age');
-const travelDatev = document.getElementById('travel-date');
 
-fullname.value = fullnamev.value;
-age.value = agev.value;
-seatType.value = seatTypev.value;
-trainClass.value = trainClassv.value;
-location.value = fromDropdown.value;
-destination.value = toDropdown.value;
-travelDate.value = travelDatev.value;
+fullname.value = localStorage.getItem('fullname');
+age.value = localStorage.getItem('age');
+seatType.value = localStorage.getItem('seatType');
+trainClass.value =localStorage.getItem('trainClass');
+location.value = localStorage.getItem('fromDropdownValue');
+destination.value = localStorage.getItem('toDropdownValue');
+travelDate.value = localStorage.getItem('travelDataValue');
 
 });
