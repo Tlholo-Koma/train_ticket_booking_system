@@ -88,58 +88,58 @@ document.addEventListener('DOMContentLoaded', async () => {
                                   <td>` +jsonResponse[i].peak_time + `</td>
                                 </tr>`;
           }
-        // if (toDropdown.value === "disabled selected" || fromDropdown.value === "disabled selected") {
-        //     errorLbl.style.display = "block";
-        //     errorLbl.textContent = "please select location and destination";
-        // } else if (toDropdown.value === fromDropdown.value) {
-        //     errorLbl.style.display = "block";
-        //     errorLbl.textContent = "location and destination cannot be the same";
-        // } else if (date < currentDate) {
-        //     errorLbl.style.display = "block";
-        //     errorLbl.textContent = "Please choose a different date from the future";
-        // } else {
+        if (toDropdown.value === "disabled selected" || fromDropdown.value === "disabled selected") {
+            errorLbl.style.display = "block";
+            errorLbl.textContent = "please select location and destination";
+        } else if (toDropdown.value === fromDropdown.value) {
+            errorLbl.style.display = "block";
+            errorLbl.textContent = "location and destination cannot be the same";
+        } else if (date < currentDate) {
+            errorLbl.style.display = "block";
+            errorLbl.textContent = "Please choose a different date from the future";
+        } else {
 
             errorLbl.style.display = "none";
             
 
-            // apiGet('/train/getTrainsBasedOnStation?from=' + from + '&to=' + to + '&date=' + date)
-            //     .then(response => response.json())
-            //     .then(data => {
+            apiGet('/train/getTrainsBasedOnStation?from=' + from + '&to=' + to + '&date=' + date)
+                .then(response => response.json())
+                .then(data => {
 
-            //         tbody.innerText = "";
+                    tbody.innerText = "";
 
 
-            //         data.forEach(train => {
-            //             const row = document.createElement('tr');
+                    data.forEach(train => {
+                        const row = document.createElement('tr');
 
-            //             const trainNameCell = document.createElement('td');
-            //             trainNameCell.textContent = train.trainName;
-            //             row.appendChild(trainNameCell);
+                        const trainNameCell = document.createElement('td');
+                        trainNameCell.textContent = train.trainName;
+                        row.appendChild(trainNameCell);
 
-            //             const timeCell = document.createElement('td');
-            //             timeCell.textContent = train.time;
-            //             row.appendChild(timeCell);
+                        const timeCell = document.createElement('td');
+                        timeCell.textContent = train.time;
+                        row.appendChild(timeCell);
 
-            //             const costCell = document.createElement('td');
-            //             costCell.textContent = train.cost;
-            //             row.appendChild(costCell);
+                        const costCell = document.createElement('td');
+                        costCell.textContent = train.cost;
+                        row.appendChild(costCell);
 
-            //             const peakTimeCell = document.createElement('td');
-            //             peakTimeCell.textContent = train.peakTime;
-            //             row.appendChild(peakTimeCell);
+                        const peakTimeCell = document.createElement('td');
+                        peakTimeCell.textContent = train.peakTime;
+                        row.appendChild(peakTimeCell);
 
-            //             tbody.appendChild(row);
-            //         });
+                        tbody.appendChild(row);
+                    });
 
-        //             localStorage.setItem('toDropdownValue', toDropdown.value);
-        //             localStorage.setItem('fromDropdownValue', fromDropdown.value);
-        //             localStorage.setItem('travelDateValue', travelDate.value);
-        //         })
-        //         .catch(error => {
-        //             console.error("Error fetching train data:", error);
-        //         });
+                    localStorage.setItem('toDropdownValue', toDropdown.value);
+                    localStorage.setItem('fromDropdownValue', fromDropdown.value);
+                    localStorage.setItem('travelDateValue', travelDate.value);
+                })
+                .catch(error => {
+                    console.error("Error fetching train data:", error);
+                });
         
-        // }
+        }
     }
 
     searchBtn.addEventListener('click', (event) => {

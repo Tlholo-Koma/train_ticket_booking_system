@@ -136,6 +136,3 @@ prevBtnFourth.addEventListener("click", function (event) {
   current -= 1;
 });
 
-function canBook() {
-
-}
