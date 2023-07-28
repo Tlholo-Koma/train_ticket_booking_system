@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             method: "GET",
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
-                'Authorization': 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6InlyZVgyUHNMaS1xa2JSOFFET21CX3lTeHA4USJ9.eyJ2ZXIiOiIyLjAiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vOTE4ODA0MGQtNmM2Ny00YzViLWIxMTItMzZhMzA0YjY2ZGFkL3YyLjAiLCJzdWIiOiJBQUFBQUFBQUFBQUFBQUFBQUFBQUFDcFpQMFZ2dHlYTnc5X1JPaklVNmZZIiwiYXVkIjoiM2M3Y2I2ZGEtZGFiMC00ODY5LWI0NzktZWIxZjhlODYwMzEyIiwiZXhwIjoxNjkwNTM4MjM3LCJpYXQiOjE2OTA0NTE1MzcsIm5iZiI6MTY5MDQ1MTUzNywibmFtZSI6IkxlaGxvaG9ub2xvIFNpcmUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJsLndpemFyZC5oQGdtYWlsLmNvbSIsIm9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC03NGQzLWExNzVlYTNlMjk1MSIsInRpZCI6IjkxODgwNDBkLTZjNjctNGM1Yi1iMTEyLTM2YTMwNGI2NmRhZCIsIm5vbmNlIjoiOTUxMDZkMDgtMjgyYi00NzE4LTk3NTktNGM1YmMwMjQ5MGI2IiwiYWlvIjoiRFJTejM3WE9nblM4NlFIWXZkQk5VdDJITGVsVCpFNElSRnBSZ0hialhrcmw4bDRmbTVCcktwNDZFU0dpIW1GNW9XN0ZFTTZ6TFBOR3Z4S0FZNnhGcFpNIW5BcTZmMWFCb21rTSFWSHNFaXNZNUI1cUhadEo2VUxCRFZuN3hYd2g1KlAxZzQ1TWhSMnlGNEo2YnY4SWl4byQifQ.cTCJCeTKKL4tpxWqtxdlmOyhRYNFgNCmOUVuCnb1F13efogHiOJscua-kmPb0AUTjMcf278illq36noesadGX30pe7SQNrSHsuwLfxiTQPZtXhzkdgQ72eViVRORBHZoQA62c4zUK0I72uo7M5wHbwfV_kSfV5EwMl5suRSnN9WUr5I43Go_SeFkKHqQ9lxTufpImqBaPHuf_07NtqoIkIySjOl5iUQs8o8EIeScYN_MV80WkAqhKmPE3ffCl8oUFavgW8Kw9PxPVeqozwFfhH_5GWI9gT0IzVpTsurcxnBIzY57RBdgmaC14UlReVG5XL3RSs9HX6ClrQuLKOyFzQ'
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         });
     }
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             body: body,
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         });
     }
@@ -40,14 +40,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         data.forEach(station => {
 
             const option = document.createElement('option');
-            option.value = station.station_id;
+            option.value = station.station_name;
             option.textContent = station.station_name;
             fromDropdown.appendChild(option);
         })
 
         data.forEach(station => {
             const option = document.createElement('option');
-            option.value = station.station_id;
+            option.value = station.station_name;
             option.textContent = station.station_name;
             toDropdown.appendChild(option);
         })
@@ -56,38 +56,70 @@ document.addEventListener('DOMContentLoaded', async () => {
     populateDropdowns();
 
 
-    function searchTrains() {
+    async function searchTrains() {
         const to = toDropdown.value;
         const currentDate = new Date();
         const from = fromDropdown.value;
-        const date = new Date(travelDate.value);
+        const date = travelDate.value; //new Date(travelDate.value);
 
         console.log(from)
         console.log(to)
         console.log(date)
-        const jsonResponse = [
-            {
-              "train_name": "Express",
-              "time": "10:00 AM",
-              "cost": "$25",
-              "peak_time": "No"
-            },
-            {
-              "train_name": "Super Express",
-              "time": "2:30 PM",
-              "cost": "$35",
-              "peak_time": "Yes"
-            }
+        // const jsonResponse = [
+        //     {
+        //       "train_name": "Express",
+        //       "time": "10:00 AM",
+        //       "cost": "$25",
+        //       "peak_time": "No"
+        //     },
+        //     {
+        //       "train_name": "Super Express",
+        //       "time": "2:30 PM",
+        //       "cost": "$35",
+        //       "peak_time": "Yes"
+        //     }
             
-          ];
-          for(let i = 0; i < jsonResponse.length; i++){
-            tbody.innerHTML += `<tr>
-                                  <td>`+ jsonResponse[i].train_name +`</td>
-                                  <td>` + jsonResponse[i].time+ `</td>
-                                  <td>` + jsonResponse[i].cost + `</td>
-                                  <td>` +jsonResponse[i].peak_time + `</td>
-                                </tr>`;
-          }
+        //   ];
+        //const trainResults = apiGet('/train/getTrainsBasedOnStation?from=' + from + '&to=' + to + '&date=' + date);
+        //console.log(trainResults);
+        //const jsonResponse = trainResults;
+        //console.log(jsonResponse);
+
+        // let results = await (await apiGet('/train/getTrainsBasedOnStation?from=' + from + '&to=' + to)).json();
+        // let jsonResponse = results.data;
+        // console.log(jsonResponse);
+
+        // jsonResponse.forEach(train => {
+        //     console.log(train);
+        //     const row = document.createElement('tr');
+
+        //     const trainNameCell = document.createElement('td');
+        //     trainNameCell.textContent = train.trainName;
+        //     row.appendChild(trainNameCell);
+
+        //     const timeCell = document.createElement('td');
+        //     timeCell.textContent = train.time;
+        //     row.appendChild(timeCell);
+
+        //     const costCell = document.createElement('td');
+        //     costCell.textContent = train.cost;
+        //     row.appendChild(costCell);
+
+        //     const peakTimeCell = document.createElement('td');
+        //     peakTimeCell.textContent = train.peakTime;
+        //     row.appendChild(peakTimeCell);
+
+        //     tbody.appendChild(row);
+        // });
+
+        //   for(let i = 0; i < jsonResponse.length; i++){
+        //     tbody.innerHTML += `<tr>
+        //                           <td>`+ jsonResponse[i].train_name +`</td>
+        //                           <td>` + jsonResponse[i].time+ `</td>
+        //                           <td>` + jsonResponse[i].cost + `</td>
+        //                           <td>` +jsonResponse[i].peak_time + `</td>
+        //                         </tr>`;
+        //   }
         if (toDropdown.value === "disabled selected" || fromDropdown.value === "disabled selected") {
             errorLbl.style.display = "block";
             errorLbl.textContent = "please select location and destination";
@@ -100,33 +132,57 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
 
             errorLbl.style.display = "none";
+
+            searchForm = document.getElementById("searchForm");
+            console.log(searchForm);
+            //searchForm.style.display = "none";
             
 
-            apiGet('/train/getTrainsBasedOnStation?from=' + from + '&to=' + to + '&date=' + date)
+            
+            //apiGet('/train/getTrainsBasedOnStation?from=' + from + '&to=' + to + '&date=' + date)
+            apiGet('/train/getTrainsBasedOnStation?from=' + from + '&to=' + to)
                 .then(response => response.json())
                 .then(data => {
 
                     tbody.innerText = "";
 
+                    data = data.data;
+                    console.log(data);
+
 
                     data.forEach(train => {
+                        console.log(train);
                         const row = document.createElement('tr');
 
                         const trainNameCell = document.createElement('td');
-                        trainNameCell.textContent = train.trainName;
+                        trainNameCell.textContent = train.train_name;
                         row.appendChild(trainNameCell);
 
                         const timeCell = document.createElement('td');
-                        timeCell.textContent = train.time;
+                        timeCell.textContent = train.departure_time;
                         row.appendChild(timeCell);
 
-                        const costCell = document.createElement('td');
-                        costCell.textContent = train.cost;
-                        row.appendChild(costCell);
+                        // <button class="next-1 next">Next</button>
+                        const selectTrainBtn = document.createElement("button");
+                        selectTrainBtn.innerText = "Select";
+                        selectTrainBtn.addEventListener('click', (event)=>{
+                            localStorage.setItem("train_id", train.train_id);
+                            event.preventDefault();
+                            slidePage.style.marginLeft = "-50%";
+                            bullet[current - 1].classList.add("active");
+                            progressCheck[current - 1].classList.add("active");
+                            progressText[current - 1].classList.add("active");
+                            current += 1;
+                        })
+                        row.appendChild(selectTrainBtn);
 
-                        const peakTimeCell = document.createElement('td');
-                        peakTimeCell.textContent = train.peakTime;
-                        row.appendChild(peakTimeCell);
+                        // const costCell = document.createElement('td');
+                        // costCell.textContent = train.cost;
+                        // row.appendChild(costCell);
+
+                        // const peakTimeCell = document.createElement('td');
+                        // peakTimeCell.textContent = train.peakTime;
+                        // row.appendChild(peakTimeCell);
 
                         tbody.appendChild(row);
                     });
@@ -138,6 +194,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .catch(error => {
                     console.error("Error fetching train data:", error);
                 });
+                
         
         }
     }
