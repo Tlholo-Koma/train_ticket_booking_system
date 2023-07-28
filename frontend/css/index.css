@@ -569,4 +569,62 @@ th, td {
   background-color: transparent; 
 }
 
+/* Basic styles for the responsive table */
+.table-container {
+  overflow-x: auto;
+  display: flex;
+  flex-grow: 1; 
+  padding: 20px;
+  justify-content: space-between; 
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+  th, td {
+      font-size: 14px;
+  }
+}
+
+
+th {
+color: #000; 
+}
+
+
+/* .table-container {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between; 
+  flex-grow: 1; 
+  padding: 20px;
+}
+
+.table-container table {
+  width: 100%;
+}
+
+.table-container th,
+.table-container td {
+  flex: 1; 
+  padding: 10px; 
+  border: 1px solid #ccc; 
+  text-align: center; 
+} */
+
+
+
+
+
+
 
