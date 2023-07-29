@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="styles/header.css">
     <link rel="stylesheet" type="text/css" href="styles/footer.css">
     <link rel="stylesheet" type="text/css" href="styles/search.css">
+    <link rel="stylesheet" type="text/css" href="styles/booking.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <title>All Aboard</title>
@@ -19,32 +20,231 @@
             <h1>All Aboard</h1>
         </section>
         <section class="header-content">
-            <button type="button" id="loginButton" style="display:none;">Login</button>
+            <button class="button" type="button" id="loginButton" style="display:none;">Login</button>
             <h2 id="loggedinEmail" style="display:none;">email@gmail.com</h2>
         </section>
     </header>
 
-    <main>
-        <section id="searchTrains">
-            <h1>Search for a train</h1>
-            <form id="searchTrainsForm">
-                <select id="sourceInput">
-                    <option value="">Select Source Station</option>
-                </select>
-                <select id="destinationInput">
-                    <option value="">Select Destination Station</option>
-                </select>
-                <input type="date" id="travelDate" placeholder="Travel Date" />
-
-                <button type="submit" id="searchBtn">Search</button>
-            </form>
+    <section class="stepper">
+        <section class="step active" onclick="setActiveStep(0)">
+            <button class="step-circle">1</button>
+            <p class="step-label">Search for train</p>
+        </section>
+        <section class="step" onclick="setActiveStep(1)">
+            <button class="step-circle">2</button>
+            <p class="step-label">Select a train</p>
+        </section>
+        <section class="step" onclick="setActiveStep(2)">
+            <button class="step-circle">3</button>
+            <p class="step-label">Book a train</p>
+        </section>
+        <section class="step" onclick="setActiveStep(3)">
+            <button class="step-circle">4</button>
+            <p class="step-label">Review booking</p>
+        </section>
+        <section class="step" onclick="setActiveStep(4)">
+            <button class="step-circle">5</button>
+            <p class="step-label">Confirm booking</p>
+        </section>
+    </section>
+      
+      
+    <main class="step-content">
+        <section class="step-content-item" id="step-1-content active">
+            <section id="searchTrains">
+                <h1>Search for a train</h1>
+                <form id="searchTrainsForm">
+                    <select id="sourceInput">
+                        <option value="">Select Source Station</option>
+                    </select>
+                    <select id="destinationInput">
+                        <option value="">Select Destination Station</option>
+                    </select>
+                    <input type="date" id="travelDate" placeholder="Travel Date" />
+        
+                    <button type="submit" class="button" id="searchBtn">Search</button>
+                </form>
+            </section>
         </section>
 
-        <section id="searchResults">      
+        <section class="step-content-item" id="step-2-content" style="display: none;">
+            <section id="searchResults"></section>
         </section>
 
-        <img src="images/maxime-ducasse-train.jpg" width="100%" />
+        <section class="step-content-item" id="step-3-content" style="display: none;">
+            <section id="createBooking">
+                <h1>Make a booking</h1>
+                <form>
+                    <input id="selectedTrainId" type="text" value="1" hidden="hidden" />
+        
+                    <section class="createBookingTrain">
+                        <label>Train name</label>
+                        <input id="selectedTrainName" type="text" value="" disabled />
+                    </section>
+        
+                    <br/>
+                    
+                    <section class="createBookingTrainClass">
+                        <label>Class type</label>
+                        <input id="selectedTrainClass" type="text" value="" disabled />
+                    </section>
+        
+                    <br/>
+        
+                    <h2>Passenger detatils</h2>
+                    <div id="passengerDetailsContainer">
+                        <div id="passengerDetailsTemplate">
+                            <div class="passengerDetails">
+                                <input type="text" placeholder="Passenger name" class="passengerName" />
+                                <input type="number" placeholder="Passenger age" class="passengerAge" min="1" />
+                                <button type="button" class="removePassengerButton">Remove</button> 
+                            </div>
+                        </div>
+                    </div>
+        
+                    <br/>
+                    
+                    <section class="createBookingButtons">
+                        <button type="submit" id="bookTrain">Book Train</button>
+                        <button type="button" id="addPassengerButton">Add Passenger</button>
+                    </section>
+                </form>
+            </section>
+        </section>
+        
+        <section class="step-content-item" id="step-4-content" style="display: none;">
+            <section id="confirmBooking">
+                <h1>Review and confirm</h1>
+        
+                <h3>Train name</h3>
+                <p>From</p>
+                <p>To</p>
+                <p>Travel date:</p>
+                <p>Travel time:</p>
+        
+                <p>Booking id: </p>
+                <p>User email: </p>
+        
+                <p>Train class</p>
+        
+                <h4>Passengers</h4>
+                <ul>
+                    <li>Peter (32), E2, R 100.10</li>
+                    <li>Mary (22), E1, R 150.20</li>
+                </ul>
+        
+                <p>Booking date:</p>
+                <p>Ticket price:</p>
+        
+                <button type="submit">Confirm Booking</button>
+                <button type="button">Cancel Booking</button>
+        
+            </section>
+        </section>
+        
+        <section class="step-content-item" id="step-5-content" style="display: none;">
+            <section>
+                <h1>Ticket confirmation</h1>
+                <p id="downloadTicket" style="display:block;">Your ticket will be downloaded.</p>
+            </section>
+        </section>
     </main>
+            
+      
+
+    <!--
+    <section id="searchTrains">
+        <h1>Search for a train</h1>
+        <form id="searchTrainsForm">
+            <select id="sourceInput">
+                <option value="">Select Source Station</option>
+            </select>
+            <select id="destinationInput">
+                <option value="">Select Destination Station</option>
+            </select>
+            <input type="date" id="travelDate" placeholder="Travel Date" />
+
+            <button type="submit" id="searchBtn">Search</button>
+        </form>
+    </section>
+
+
+    <section id="searchResults"></section>
+
+    <section id="createBooking">
+        <h1>Make a booking</h1>
+        <form>
+            <input id="selectedTrainId" type="text" value="1" hidden="hidden" />
+
+            <section class="createBookingTrain">
+                <label>Train name</label>
+                <input id="selectedTrainName" type="text" value="" disabled />
+            </section>
+
+            <br/>
+            
+            <section class="createBookingTrainClass">
+                <label>Class type</label>
+                <input id="selectedTrainClass" type="text" value="" disabled />
+            </section>
+
+            <br/>
+
+            <h2>Passenger detatils</h2>
+            <div id="passengerDetailsContainer">
+                <div id="passengerDetailsTemplate">
+                    <div class="passengerDetails">
+                        <input type="text" placeholder="Passenger name" class="passengerName" />
+                        <input type="number" placeholder="Passenger age" class="passengerAge" min="1" />
+                        <button type="button" class="removePassengerButton">Remove</button> 
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            
+            <section class="createBookingButtons">
+                <button type="submit" id="bookTrain">Book Train</button>
+                <button type="button" id="addPassengerButton">Add Passenger</button>
+            </section>
+        </form>
+    </section>
+
+    <section id="confirmBooking">
+        <h1>Review and confirm</h1>
+
+        <h3>Train name</h3>
+        <p>From</p>
+        <p>To</p>
+        <p>Travel date:</p>
+        <p>Travel time:</p>
+
+        <p>Booking id: </p>
+        <p>User email: </p>
+
+        <p>Train class</p>
+
+        <h4>Passengers</h4>
+        <ul>
+            <li>Peter (32), E2, R 100.10</li>
+            <li>Mary (22), E1, R 150.20</li>
+        </ul>
+
+        <p>Booking date:</p>
+        <p>Ticket price:</p>
+
+        <button type="submit">Confirm Booking</button>
+        <button type="button">Cancel Booking</button>
+
+    </section>
+
+    <section>
+        <h1>Ticket confirmation</h1>
+        <p id="downloadTicket" style="display:block;">Your ticket will be downloaded.</p>
+    </section>
+    -->
+
+    <img src="images/maxime-ducasse-train.jpg" width="100%" />
 
     <footer>
         &copy; AllAboard
