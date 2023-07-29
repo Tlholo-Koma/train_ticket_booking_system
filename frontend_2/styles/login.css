@@ -1,0 +1,27 @@
+.microsoft-button {
+    background-color: #0078d4; 
+    color: #ffffff; 
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 4px; 
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  .microsoft-button:hover {
+    background-color: #005a9e; /
+  }
+  
+  .microsoft-button::before {
+    content: url('../images/microsoft-2x_resize.png'); 
+    display: inline-block;
+    /* width: 10px;  */
+    /* height: 10px; */
+    background-size: cover;
+    margin-right: 8px; 
+    vertical-align: middle;
+  }
+  
