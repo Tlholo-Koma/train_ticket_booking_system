@@ -37,7 +37,7 @@ public class TrainSearchService {
         for (Train train : trains) {
             if ((source == null || source.isEmpty() || train.getSourceStation().getStationName().toLowerCase().contains(source.toLowerCase()))
                     && (destination == null || destination.isEmpty() || train.getDestinationStation().getStationName().toLowerCase().contains(destination.toLowerCase()))
-                    && (travelDate == null || train.getTravelDate().equals(travelDate))) {
+                    && (travelDate == null || train.getTravelDate().toString().equals(travelDate.toString()))) {
                 searchResults.add(train);
             }
         }
