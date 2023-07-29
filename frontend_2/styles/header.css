@@ -1,0 +1,30 @@
+header {
+    background-color: var(--header-color);
+    color: var(--header-text-color);
+    text-align: center;
+    padding: 15px 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#logo {
+    height: 100px;
+    width: 100px;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 1.5em;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 20px; 
+}
+
+#loggedinEmail {
+    color: white;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="styles/common.css">
+    <link rel="stylesheet" type="text/css" href="styles/header.css">
+    <link rel="stylesheet" type="text/css" href="styles/search.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <title>All Aboard</title>
+</head>
+<body>
+    <header>
+        <section class="header-logo">
+            <img id="logo" src="images/5f6b46de99e9402099bb5b6a728a6e1c.png" id="logo"/>
+            <h1>All Aboard</h1>
+        </section>
+        <section class="header-content">
+            <button type="button" id="loginButton" style="display:none;">Login</button>
+            <h2 id="loggedinEmail" style="display:none;">email@gmail.com</h2>
+        </section>
+    </header>
+
+    <main>
+        <section id="searchTrains">
+            <h1>Search for a train</h1>
+            <form id="searchTrainsForm">
+                <select id="sourceInput">
+                    <option value="">Select Source Station</option>
+                </select>
+                <select id="destinationInput">
+                    <option value="">Select Destination Station</option>
+                </select>
+                <input type="date" id="travelDate" placeholder="Travel Date" />
+
+                <button type="submit" id="searchBtn">Search</button>
+            </form>
+        </section>
+
+        <section id="searchResults">      
+            <article class="train-details">
+                <h2>Train Name</h2>
+                <section class="train-details-main">
+                    <p>Source Station - Destination Station</p>
+                    <p><i class="material-icons">calendar_month</i> Travel Date</p>
+                    <p><i class="material-icons">schedule</i> Departure Time</p>
+                </section>
+                <section class="train-classes">
+                  <ul>
+                    <li>
+                        <span>Economy (R 50)</span>
+                        <button type="button">Select</button>
+                    </li>
+                    <li>
+                        <span>Business (R 250)</span>
+                        <button type="button">Select</button>
+                    </li>
+                    <li>
+                        <span>Sleeper (R 150)</span>
+                        <button type="button">Select</button>
+                    </li>
+                  </ul>
+                </section>
+            </article>          
+        </section>
+    </main>
+
+    <footer>
+        &copy; AllAboard
+    </footer>
+
+    <script src="scripts/index.js"></script>
+    <script src="scripts/header.js"></script>
+    <script src="scripts/search.js"></script>
+</body>
+</html>

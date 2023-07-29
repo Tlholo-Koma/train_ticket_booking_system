@@ -1,0 +1,117 @@
+#searchTrains {
+    padding: 50px 100px;
+    background-color: var(--button-color-hover);
+}
+
+#searchTrains h1 {
+    color: var(--header-color);
+    padding-bottom: 20px;
+}
+
+#searchTrainsForm {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    gap: 40px;
+}
+
+#searchTrainsForm input,
+#searchTrainsForm input[type="date"],
+#searchTrainsForm select,
+#searchTrainsForm button[type="submit"] {
+    width: 250px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+#searchResults {
+    padding: 50px 100px;
+}
+
+.train-details {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.train-details-main {
+    margin-bottom: 5px;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 24px;
+}
+  
+p {
+    margin: 8px 0;
+    line-height: 20px;
+    vertical-align: middle;
+    position: relative;
+}
+
+p .material-icons {
+    padding-right: 5px;
+}
+
+i.material-icons {
+    vertical-align: middle;
+}
+  
+h3 {
+    font-size: 18px;
+}
+  
+.train-classes ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+  
+.train-classes ul li {
+    margin: 8px 0;
+    padding: 5px 5px 5px 15px;
+    background-color: var(--button-color-hover);
+    border-radius: 4px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.train-classes span:first-child {
+    flex-grow: 1;
+}
+
+.train-classes span:last-child {
+    margin-left: 16px;
+}
+
+.train-classes button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: medium;
+}
+
+
+@media screen and (max-width: 768px) {
+    #searchTrainsForm {
+        flex-direction: column;
+    }
+    
+    #searchTrainsForm input,
+    #searchTrainsForm input[type="date"],
+    #searchTrainsForm select,
+    #searchTrainsForm button[type="submit"] {
+        width: auto;
+    }
+}
