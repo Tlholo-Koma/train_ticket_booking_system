@@ -22,3 +22,8 @@ button:hover {
     cursor: pointer;
     background-color: var(--button-color-hover);
 }
+
+img {
+    margin: 0;
+    padding: 0;
+}
