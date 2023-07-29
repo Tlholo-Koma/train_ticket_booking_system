@@ -1,6 +1,5 @@
 #createBooking,
 #confirmBooking {
-    /* display: none; */
     padding: 50px 100px;
     background-color: var(--button-color-hover);
 }
@@ -41,4 +40,17 @@
     flex-direction: row;
     align-self: center;
     gap: 40px;
+}
+
+@media screen and (max-width: 768px) {
+    #createBooking,
+    #confirmBooking {
+        padding: 50px 50px;
+    }
+
+    .passengerDetails {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
 }

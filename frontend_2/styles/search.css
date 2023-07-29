@@ -7,7 +7,6 @@ main {
 #searchTrains {
     padding: 50px 100px;
     background-color: var(--button-color-hover);
-    border-bottom: solid 2px var(--header-color);
 }
 
 #searchTrains h1 {
@@ -137,6 +136,11 @@ h3 {
 
 
 @media screen and (max-width: 768px) {
+    #searchTrains,
+    #searchResults {
+        padding: 50px 50px;
+    }
+
     #searchTrainsForm {
         flex-direction: column;
     }

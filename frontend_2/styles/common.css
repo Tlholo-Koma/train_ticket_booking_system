@@ -4,14 +4,16 @@
     --button-color: #5D5D5D;
     --button-color-2: #F64740;
     --button-color-hover: #A29F94;
-    
+
     --stepper-greyed-out: #ccc;
     --stepper-active: blue;
     --stepper-completed: green;
+    --white: white;
 }
 
 body {
     margin: 0;
+    font-family: 'Poppins', sans-serif;
 }
 
 .button {
@@ -69,7 +71,8 @@ img {
   
 .step-tick {
     border-color: var(--stepper-completed) !important;
-    color: var(--stepper-completed) !important;
+    background-color: var(--stepper-completed) !important;
+    color: var(--white) !important
 }
   
 .active .step-circle {

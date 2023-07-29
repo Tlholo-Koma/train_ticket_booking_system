@@ -28,3 +28,9 @@ header {
 #loggedinEmail {
     color: white;
 }
+
+@media screen and (max-width: 768px) {
+    header {
+        padding: 10px 50px;
+    }
+}

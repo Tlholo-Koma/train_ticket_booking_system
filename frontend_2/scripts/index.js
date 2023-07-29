@@ -64,19 +64,31 @@ function setActiveStep(stepIndex) {
 
             const stepCircle = steps[i].querySelector('.step-circle');
             stepCircle.classList.remove('greyed');
+            stepCircle.classList.remove('step-tick');
+            stepCircle.textContent = i + 1;
+            stepCircle.removeAttribute("disabled");
         } 
         else if (i < stepIndex) {  // previous steps 
             steps[i].classList.add('active');
             
             // Replace number with tick
             const stepCircle = steps[i].querySelector('.step-circle');
+
+            stepCircle.classList.remove('greyed');
+            stepCircle.classList.remove('step-tick');
+            stepCircle.textContent = i + 1;
+
             stepCircle.classList.add('step-tick');
             stepCircle.textContent = "\u2713";
+            stepCircle.removeAttribute("disabled");
         } 
         else {  // next steps 
             // Set the steps after the current step as greyed out
             steps[i].classList.remove('active');
+
             const stepCircle = steps[i].querySelector('.step-circle');
+            stepCircle.classList.remove('step-tick');
+            stepCircle.textContent = i + 1;
             stepCircle.classList.add('greyed');
             stepCircle.setAttribute('disabled', 'disabled');
         }
